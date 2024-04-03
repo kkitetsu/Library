@@ -11,13 +11,13 @@ import com.example.todo.forms.DongwookRequest;
 @Controller
 public class LibraryController {
 
-	@GetMapping(value="/index")
+	@GetMapping(value="/login")
 	public String view(Model model) {
 		DongwookRequest tmp = new DongwookRequest();
 		model.addAttribute("kawabesan" , tmp);
-		return "tutorial";
+		return "login";
 	}
-	
+
 	@RequestMapping(value="/kitetsu" , method=RequestMethod.POST)
 	public String confirmLibrary(Model model,DongwookRequest don) {
 		String dongwook = don.getSuzaki();

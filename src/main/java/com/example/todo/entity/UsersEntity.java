@@ -2,7 +2,7 @@ package com.example.todo.entity;
 
 import java.time.LocalDate;
 
-public class usersEntity {
+public class UsersEntity {
 	
 	private Integer id;
 	

@@ -1,9 +1,35 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
 </head>
+
 <body>
+	<div class="main">
+		<div class="main_title">
+			ーHOME
+		</div>
+
+		<div class="search_box">
+			<input type="text">
+			<button type="submit">検索</button>
+		</div>
+		
+		<div th:if="${bookshelf}">
+			<div th:each="book: ${bookshelf}" class="main_content_box">
+				<div class="content">
+					<p class="title">タイトル</p><br>
+					<p th:text="*{book.title}"></p><br>
+					<p class="content">内容</p>
+					<p th:text="*{book.content}"></p><br>
+				</div>
+			</div>
+		</div>
+
+		
+	</div>
 </body>
+
 </html>

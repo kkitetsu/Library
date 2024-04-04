@@ -28,7 +28,6 @@ public class LibraryService {
 	 * @return List for books
 	 */
 	public List<BooksEntity> displayBooks(){
-		
 		return libraryMapper.displayBooks();
 		
 	}

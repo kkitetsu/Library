@@ -10,7 +10,11 @@ import com.example.todo.forms.LoginRequest;
 
 @Mapper
 public interface LibraryMapper {
+
 	public List<BooksEntity> displayBooks();
+	
 	public List<BooksEntity> searchBooks();
+	
 	public List<UsersEntity> login(LoginRequest loginRequest);
+	
 }

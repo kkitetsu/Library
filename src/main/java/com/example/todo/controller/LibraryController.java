@@ -35,6 +35,7 @@ public class LibraryController {
 	public String doLogin(Model model, HttpSession session, 
 										@ModelAttribute LoginRequest loginRequest) {
 		
+		
 		String hashedPassword = "";
 		try {
 			hashedPassword = HashGenerator.generateHash(loginRequest.getLogin_pw());

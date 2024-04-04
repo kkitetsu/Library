@@ -22,13 +22,6 @@ public class LibraryController {
 	@Autowired
 	private LibraryService libraryService;
 
-	@GetMapping(value="/index")
-	public String view(Model model) {
-		DongwookRequest tmp = new DongwookRequest();
-		model.addAttribute("kawabesan" , tmp);
-		return "tutorial";
-	}
-
 	@GetMapping(value = "/login")
 	public String getLoginPage(Model model) {
 		return "/login";

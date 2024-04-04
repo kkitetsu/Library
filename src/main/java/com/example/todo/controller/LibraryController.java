@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
 import com.example.todo.service.LibraryService;
@@ -20,13 +21,14 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class LibraryController {
-	
+
 	@Autowired
 	private LibraryService libraryService;
-	
-	@GetMapping(value="/login")
+
+	@GetMapping(value = "/login")
 	public String getLoginPage(Model model) {
 		return "/login";
+
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
@@ -51,7 +53,27 @@ public class LibraryController {
 
 		return "/home";
 	}
-	
+
+	@GetMapping(value = "/home")
+	public String home(Model model) {
+
+		List<BooksEntity> bookshelf = libraryService.displayBooks();
+
+		model.addAttribute("bookshelf", bookshelf);
+
+		return "/home";
+	}
+
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	public String search(Model model) {
+
+		//		String moji = model.getAttribute("search");
+		//		
+		//		List<BooksEntity> bookshelf = libraryService.searchBooks();
+
+		return "/home";
+	}
+
 	@GetMapping("/register")
     public String getRegisterPage() {
         return "/register";

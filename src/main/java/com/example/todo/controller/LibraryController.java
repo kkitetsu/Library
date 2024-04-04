@@ -1,32 +1,46 @@
 package com.example.todo.controller;
 
+import java.security.NoSuchAlgorithmException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.todo.forms.DongwookRequest;
+import com.example.todo.utils.HashGenerator;
 
 @Controller
 public class LibraryController {
-
+	
 	@GetMapping(value="/login")
-	public String view(Model model) {
-		DongwookRequest tmp = new DongwookRequest();
-		model.addAttribute("kawabesan" , tmp);
-		return "login";
+	public String getLoginPage(Model model) {
+		return "/login";
 	}
-	@GetMapping(value="/register")
-	public String view1(Model model) {
-		DongwookRequest tmp = new DongwookRequest();
-		model.addAttribute("kawabesan" , tmp);
-		return "register";
+	
+	@RequestMapping(value="/login", method=RequestMethod.POST)
+	public String doLogin(Model model, @RequestParam("id") String id,
+									   @RequestParam("pw") String pw) {
+		
+		String hashedPassword = "";
+		try {
+			hashedPassword = HashGenerator.generateHash(pw);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		// TODO: Handle login logic
+		System.out.println(hashedPassword);
+		
+		if (true) {
+			return "/login";
+		}
+		
+		return "/home";
 	}
-	@RequestMapping(value="/kitetsu" , method=RequestMethod.POST)
-	public String confirmLibrary(Model model,DongwookRequest don) {
-		String dongwook = don.getSuzaki();
-		model.addAttribute("kuzawa" , dongwook);
-		return "confirm";
-	}
+	
+	@GetMapping("/register")
+    public String getRegisterPage() {
+        return "/register";
+    }
 }

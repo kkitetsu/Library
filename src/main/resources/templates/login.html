@@ -34,6 +34,8 @@
 			</div>
 			<!-- メインコンテンツが入る赤色の箱-->
 			<div class="main_content_box">
+				<!--actionの行き先修正必要 -->
+				<!-- 各inputのnameはusers tableの名前をそのまま使用-->
 				<form action="???" method="POST">
 					<table class="login_table">
 						<tr class="table_row">
@@ -41,7 +43,7 @@
 								<label for="login_id"> ID</label>
 							</td>
 							<td>
-								<input type="text" class="input_box">
+								<input type="text" class="input_box" name="login_id">
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -49,12 +51,13 @@
 								<label for="password"> パスワード</label>
 							</td>
 							<td>
-								<input type="password" class="input_box">
+								<input type="password" class="input_box" name="password">
 							</td>
 						</tr>
 						<tr class="table_row">
 							<td>
 									<!-- 赤色、青色の箱はクラスを使って（赤：danger,青：primary）大きさはidで調整します。-->
+									<!-- 各ボタンの行き先を決めてください。-->
 									<input type="submit" class="btn btn-danger" id="small_size" value="ログイン">
 							</td>
 							<td>

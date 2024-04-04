@@ -10,4 +10,8 @@ import com.example.todo.entity.BooksEntity;
 public interface LibraryMapper {
 
 	public List<BooksEntity> displayBooks();
+	
+	public List<BooksEntity> searchBooks();
+	
+	
 }

@@ -27,4 +27,8 @@ public class LibraryService {
 		return libraryMapper.displayBooks();
 		
 	}
+	
+	public List<BooksEntity> searchBooks(){
+		return  libraryMapper.searchBooks();
+	}
 }

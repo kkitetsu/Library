@@ -42,4 +42,14 @@ public class LibraryController {
 		
 		return "/home";
 	}
+	
+	@RequestMapping(value="/search" , method=RequestMethod.POST)
+	public String search(Model model) {
+		
+//		String moji = model.getAttribute("search");
+//		
+//		List<BooksEntity> bookshelf = libraryService.searchBooks();
+		
+		return "/home";
+	}
 }

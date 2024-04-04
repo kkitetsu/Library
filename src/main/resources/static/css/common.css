@@ -1,0 +1,33 @@
+@charset "UTF-8";
+/* 画面構成に使うCSSです。*/
+
+.content_box {
+	width: 90%;
+	margin: 0 5%;
+}
+
+.header_logo {
+	width: 25%;
+}
+
+.header_title {
+	width: 50%;
+	color: red;
+}
+
+.header_btn_box {
+	width: 25%;
+}
+
+.content_box {
+	background-image: url(img/backgroundimage.jpg);
+}
+
+.login_table {
+	text-align: center;
+}
+
+.Footer {
+	text-align: center;
+	font-size: 2.5% auto;
+}

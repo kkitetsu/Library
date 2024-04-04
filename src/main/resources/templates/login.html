@@ -36,7 +36,7 @@
 			<div class="main_content_box">
 				<!--actionの行き先修正必要 -->
 				<!-- 各inputのnameはusers tableの名前をそのまま使用-->
-				<form action="???" method="POST">
+				<form action="/login" method="POST">
 					<table class="login_table">
 						<tr class="table_row">
 							<td>
@@ -56,16 +56,19 @@
 						</tr>
 						<tr class="table_row">
 							<td>
-									<!-- 赤色、青色の箱はクラスを使って（赤：danger,青：primary）大きさはidで調整します。-->
-									<!-- 各ボタンの行き先を決めてください。-->
-									<input type="submit" class="btn btn-danger" id="small_size" value="ログイン">
+								<!-- 赤色、青色の箱はクラスを使って（赤：danger,青：primary）大きさはidで調整します。-->
+								<!-- 各ボタンの行き先を決めてください。-->
+								<input type="submit" class="btn btn-danger" id="small_size" value="ログイン">
 							</td>
+				</form>
 							<td>
-									<input type="submit" class="btn btn-primary" id="small_size" value="会員登録">
+								<form action="/register">
+  									<button type="submit" class="btn btn-primary" id="small_size" value="会員登録">Register</button>
+								</form>
 							</td>
 						</tr>
 					</table>
-				</form>
+				
 			</div>
 
 		</div>

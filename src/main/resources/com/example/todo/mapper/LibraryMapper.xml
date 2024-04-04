@@ -6,4 +6,9 @@
 
 <mapper namespace="com.example.todo.mapper.LibraryMapper">
 
+	<!--  @author kk -->
+	<select id="login" resultType="com.example.todo.entity.usersEntity">
+		SELECT * FROM employees WHERE login_id=#{login_id} AND password= #{login_pw}
+	</select>
+
 </mapper>

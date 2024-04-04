@@ -18,4 +18,9 @@
 		</if>
 	</select>
 
+	<!--  @author kk -->
+	<select id="login" resultType="com.example.todo.entity.UsersEntity">
+		SELECT * FROM employees WHERE login_id=#{login_id} AND password= #{login_pw}
+	</select>
+
 </mapper>

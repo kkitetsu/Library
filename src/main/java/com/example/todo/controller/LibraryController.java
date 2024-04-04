@@ -17,7 +17,12 @@ public class LibraryController {
 		model.addAttribute("kawabesan" , tmp);
 		return "login";
 	}
-
+	@GetMapping(value="/register")
+	public String view1(Model model) {
+		DongwookRequest tmp = new DongwookRequest();
+		model.addAttribute("kawabesan" , tmp);
+		return "register";
+	}
 	@RequestMapping(value="/kitetsu" , method=RequestMethod.POST)
 	public String confirmLibrary(Model model,DongwookRequest don) {
 		String dongwook = don.getSuzaki();

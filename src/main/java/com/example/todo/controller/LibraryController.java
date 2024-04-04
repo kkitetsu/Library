@@ -12,16 +12,28 @@ import com.example.todo.forms.DongwookRequest;
 public class LibraryController {
 
 	@GetMapping(value="/login")
-	public String view(Model model) {
+	public String view_login(Model model) {
 		DongwookRequest tmp = new DongwookRequest();
 		model.addAttribute("kawabesan" , tmp);
 		return "login";
 	}
 	@GetMapping(value="/register")
-	public String view1(Model model) {
+	public String view_register(Model model) {
 		DongwookRequest tmp = new DongwookRequest();
 		model.addAttribute("kawabesan" , tmp);
 		return "register";
+	}
+	@GetMapping(value="/log")
+	public String view_log(Model model) {
+		DongwookRequest tmp = new DongwookRequest();
+		model.addAttribute("kawabesan" , tmp);
+		return "log";
+	}
+	@GetMapping(value="/mybook")
+	public String view_mybook(Model model) {
+		DongwookRequest tmp = new DongwookRequest();
+		model.addAttribute("kawabesan" , tmp);
+		return "mybook";
 	}
 	@RequestMapping(value="/kitetsu" , method=RequestMethod.POST)
 	public String confirmLibrary(Model model,DongwookRequest don) {

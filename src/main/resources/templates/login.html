@@ -28,31 +28,40 @@
 		</header>
 		<!--メインー（修正可能領域）-->
 		<div class="main">
-		<!--白い箱-->
+			<!--白い箱-->
 			<div class="main_title">
 				-ログイン
 			</div>
-		<-- メインコンテンツが入る赤色の箱-->
+			<!-- メインコンテンツが入る赤色の箱-->
 			<div class="main_content_box">
+				<!--actionの行き先修正必要 -->
+				<!-- 各inputのnameはusers tableの名前をそのまま使用-->
 				<form action="???" method="POST">
 					<table class="login_table">
-						<tr>
+						<tr class="table_row">
 							<td>
-								<div class="table_row">  id &nbsp; : &nbsp;&nbsp;<input type="text" class="input_box"> </div>
+								<label for="login_id"> ID</label>
+							</td>
+							<td>
+								<input type="text" class="input_box" name="login_id">
 							</td>
 						</tr>
-						<tr>
+						<tr class="table_row">
 							<td>
-								<div class="table_row">  pw : &nbsp;&nbsp;<input type="password" class="input_box"></div>
+								<label for="password"> パスワード</label>
+							</td>
+							<td>
+								<input type="password" class="input_box" name="password">
 							</td>
 						</tr>
-						<tr>
+						<tr class="table_row">
 							<td>
-								<div class="table_row">
-									<-- 赤色、青色の箱はクラスを使って（赤：danger,青：primary）大きさはidで調整します。-->
-									<input type="submit" class="btn btn-danger" id="small_size"value="ログイン">
+									<!-- 赤色、青色の箱はクラスを使って（赤：danger,青：primary）大きさはidで調整します。-->
+									<!-- 各ボタンの行き先を決めてください。-->
+									<input type="submit" class="btn btn-danger" id="small_size" value="ログイン">
+							</td>
+							<td>
 									<input type="submit" class="btn btn-primary" id="small_size" value="会員登録">
-								</div>
 							</td>
 						</tr>
 					</table>

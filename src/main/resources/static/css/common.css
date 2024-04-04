@@ -2,32 +2,118 @@
 /* 画面構成に使うCSSです。*/
 
 .content_box {
-	width: 90%;
-	margin: 0 5%;
+	width: 80%;
+	margin-right:10%;
+	margin-left:10%;
+	padding:none;
+	min-height:100%;
+	}
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 200px;
+    margin-bottom: 20px;
+    min-height:15%vh;
+}
+
+.header_logo,
+.header_title,
+.header_btn_box {
+    height: 100%;
 }
 
 .header_logo {
-	width: 25%;
+    flex: 0 0 auto; /* Flexbox가 너비를 자동으로 조절하도록 설정 */
 }
 
 .header_title {
-	width: 50%;
-	color: red;
+    flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
+    background-color: crimson;
+    color: white;
+    font-size: 5em ;
+    text-align: center;
+    font-weight: bold;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
 .header_btn_box {
-	width: 25%;
+    width:300px;
+    background-color:white;
 }
-
+#small_size{
+	font-weight:bolder;
+	width:300px;
+	height:auto;
+	font-size:60px;
+	margin:10px;
+	padding:10px;
+}
+.main_logo {
+    height: 100%;
+        display: inline-block;
+    vertical-align: middle;
+}
 .content_box {
-	background-image: url(img/backgroundimage.jpg);
+	background-image: url("../img/backgroundimage.jpg");
 }
 
-.login_table {
-	text-align: center;
+.login_table, .register_table{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-
-.Footer {
+.table_row{
+	color:white;
+	/*	display: flex;  Flexbox 사용 */
+    justify-content: center; /* 가로로 중앙 정렬 */
+    align-items: center; /* 세로로 중앙 정렬 */
+	font-size:40px;
+}
+.main {
+	background-color:white;
+	width:80%;
+	margin:0 10%;
+	padding:20px;
+	background: rgba(255, 255, 255, 0.4);
+	border-radius:20px;
+	font-weight:bolder;
+	min-height:70vh;
+}
+td{
+	margin:10px;
+	padding:10px;
+	text-align:center;
+}
+.main_title{
+	margin-left:50px;
+	color:aliceblue;
+	font-size:50px;
+	}
+.main_content_box{
+	background: rgba(216, 112, 147, 0.8);
+	padding: 20px 20px;
+	border-radius:10px;
+	width:90%;
+	margin:20px 5%;
+}
+footer {
 	text-align: center;
-	font-size: 2.5% auto;
+	font-size: 40px;
+	font-weight:bold;
+	background-color:crimson;
+	color:white;
+	margin-top:15px;
+	min-height:15%;
+}
+body{
+	min-width:100vh;
+}
+.input_box{
+	border:none;
+	border-radius:10px;
+	padding-left:10px;
 }

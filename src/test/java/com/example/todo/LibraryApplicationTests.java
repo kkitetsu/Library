@@ -6,7 +6,9 @@ import static org.mockito.Mockito.*;
 import java.security.NoSuchAlgorithmException;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.ui.Model;
 
 import com.example.todo.controller.LibraryController;
@@ -34,4 +36,24 @@ class LibraryApplicationTests {
         String viewName = controller.getLoginPage(model);
         assertEquals("/login", viewName);
 	}
+	
+	@Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Test
+    public void testDatabaseConnectivity() {
+        // Attempt to execute a simple query to verify database connectivity
+        boolean isConnected = false;
+        try {
+            jdbcTemplate.queryForObject("SELECT 1", Integer.class);
+            isConnected = true;
+        } catch (Exception e) {
+            // Connection failed
+            e.printStackTrace();
+        }
+
+        // Verify that the connection was successful
+        assertTrue(isConnected, "Failed to connect to the database");
+    }
+
 }

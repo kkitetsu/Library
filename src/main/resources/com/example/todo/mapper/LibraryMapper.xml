@@ -17,5 +17,4 @@
 			title = #{title}
 		</if>
 	</select>
-
 </mapper>

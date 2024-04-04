@@ -18,31 +18,21 @@ import com.example.todo.utils.HashGenerator;
 
 @Controller
 public class LibraryController {
-
-	@GetMapping(value="/login")
-	public String view_login(Model model) {
-		DongwookRequest tmp = new DongwookRequest();
-		model.addAttribute("kawabesan" , tmp);
-		return "login";
-	}
-	@GetMapping(value="/register")
-	public String view_register(Model model) {
-		DongwookRequest tmp = new DongwookRequest();
-		model.addAttribute("kawabesan" , tmp);
-		return "register";
-	}
-	@GetMapping(value="/log")
+	
+	@GetMapping(value = "/log")
 	public String view_log(Model model) {
 		DongwookRequest tmp = new DongwookRequest();
-		model.addAttribute("kawabesan" , tmp);
+		model.addAttribute("kawabesan", tmp);
 		return "log";
 	}
-	@GetMapping(value="/mybook")
+
+	@GetMapping(value = "/mybook")
 	public String view_mybook(Model model) {
 		DongwookRequest tmp = new DongwookRequest();
-		model.addAttribute("kawabesan" , tmp);
+		model.addAttribute("kawabesan", tmp);
 		return "mybook";
 	}
+
 	@Autowired
 	private LibraryService libraryService;
 
@@ -50,11 +40,10 @@ public class LibraryController {
 	public String getLoginPage(Model model) {
 		return "/login";
 	}
-	
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String doLogin(Model model, @RequestParam("id") String id,
 			@RequestParam("pw") String pw) {
-
 		String hashedPassword = "";
 		try {
 			hashedPassword = HashGenerator.generateHash(pw);
@@ -71,21 +60,16 @@ public class LibraryController {
 
 	@GetMapping(value = "/home")
 	public String home(Model model) {
-
 		List<BooksEntity> bookshelf = libraryService.displayBooks();
-
 		model.addAttribute("bookshelf", bookshelf);
-
 		return "/home";
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String search(Model model) {
-
 		//		String moji = model.getAttribute("search");
 		//		
 		//		List<BooksEntity> bookshelf = libraryService.searchBooks();
-
 		return "/home";
 	}
 

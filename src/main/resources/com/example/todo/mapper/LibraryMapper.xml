@@ -19,6 +19,14 @@
 	</select>
 	<!--  @author kk -->
 	<select id="login" resultType="com.example.todo.entity.UsersEntity">
-		SELECT * FROM employees WHERE login_id=#{login_id} AND password= #{login_pw}
+		SELECT * FROM users WHERE login_id=#{login_id} AND password= #{login_pw}
 	</select>
+	
+	<!--  @author kk -->
+	<insert id="register">
+		INSERT INTO users 
+		(name, department, mailaddress, login_id, password, joined_date, edited_date, del_flag)
+		VALUES
+		(#{name}, #{department}, #{mailaddress}, #{login_id}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
+	</insert>
 </mapper>

@@ -15,6 +15,10 @@ public interface LibraryMapper {
 	
 	public List<BooksEntity> searchBooks();
 	
+	/** @author kk */
 	public List<UsersEntity> login(LoginRequest loginRequest);
+	
+	/** @author kk */
+	public void register(UsersEntity usersEntity);
 	
 }

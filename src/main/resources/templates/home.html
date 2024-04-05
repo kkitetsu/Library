@@ -16,14 +16,20 @@
 <body>
 	<!--画面全体始め（ヘッダー、メイン、フッター）-->
 	<div class="content_box">
-		<!--ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い）-->
+		<!-- ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
 		<header>
 			<div class="header_logo"> <a href="https://www.rakuten-sec.co.jp/"><img src="img/rakuten_logo.png"
-						alt="Rakuten_sec_mark" class="maing_logo"> </a></div>
+						alt="Rakuten_sec_mark" class="main_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
-			<div class="header_btn_box"> </div>
+			<div class="header_btn_box">
+				<table class="header_table">
+					<th>
+					<td> <img src="img/alarm_icon.png" class="alert_icon"> </td>
+					<td> <img src="img/user_img.png" alt="user_icon" class="user_icon"> </td>
+					</th>
+				</table>
+			</div>
 		</header>
-
 
 		<div class="main">
 
@@ -52,8 +58,16 @@
 
 			<div class="search_box">
 				<form th:action="@{/home}" th:object="${search_box}" th:method="post">
-					<input type="text" th:field="*{book_name}">
-					<button type="submit">検索</button>
+					<table class="search_table">
+						<tr>
+							<td colspan="2">
+								<input type="text" th:field="*{book_name}" class="input_box">
+							</td>
+							<td>
+								<button type="submit" class="btn btn-danger" id="small_size">検索</button>
+							</td>
+						</tr>
+					</table>
 				</form>
 			</div>
 
@@ -66,23 +80,20 @@
 			<div class="main_content_box">
 				<div class="content" th:each="book: ${bookshelf}">
 					<img src="/img/naruto_magazine.jpeg" class="book_img">
-					<div class="select_btn">
-						<button class="red_btn">借</button>
-						<button class="blue_btn">貰</button>
-					</div>
+						<button class="btn btn-danger" id="borrow_btn">借</button>
+						<button class="btn btn-primary" id="take_btn">貰</button>
+
 					<p th:text="*{book.title}"></p><br>
 					<p th:text="*{book.content}"></p><br>
 				</div>
 
 			</div>
 		</div>
-
+		<footer>
+			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
+		</footer>
 	</div>
 
-	<footer>
-		問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
-	</footer>
-	</div>
 </body>
 
 <script>

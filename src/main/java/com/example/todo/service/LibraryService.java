@@ -17,8 +17,14 @@ public class LibraryService {
 	@Autowired
 	private LibraryMapper libraryMapper;
 	
+	/** @author kk */
 	public List<UsersEntity> login(LoginRequest loginRequest) {
 		return libraryMapper.login(loginRequest);
+	}
+	
+	/** @author kk */
+	public void register(UsersEntity usersEntity) {
+		libraryMapper.register(usersEntity);
 	}
 	
 	/**

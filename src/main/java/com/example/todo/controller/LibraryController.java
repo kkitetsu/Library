@@ -48,8 +48,8 @@ public class LibraryController {
 	public String doLogin(Model model, HttpSession session, 
 										@ModelAttribute LoginRequest loginRequest) {
 		String hashedPassword = getHashedPassword(loginRequest.getLogin_pw());
-		
 		loginRequest.setLogin_pw(hashedPassword);
+		
         // ユーザのログイン情報でsqlに取得
         List<UsersEntity> user_info = libraryService.login(loginRequest);
         if (user_info.isEmpty()) {

@@ -10,6 +10,7 @@ import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.TransactionEntity;
 import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
+import com.example.todo.forms.SearchBooksRequest;
 import com.example.todo.mapper.LibraryMapper;
 
 @Service
@@ -37,8 +38,8 @@ public class LibraryService {
 		return libraryMapper.displayLogs();
 	}
 	
-	public List<BooksEntity> searchBooks(){
-		return  libraryMapper.searchBooks();
+	public List<BooksEntity> searchBooks(SearchBooksRequest searchBooksRequest){
+		return  libraryMapper.searchBooks(searchBooksRequest);
 	}
 	
 	public List<SearchLogsDTO> displayBorrowLogs(){

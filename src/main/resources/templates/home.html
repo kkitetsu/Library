@@ -26,37 +26,87 @@
 
 
 		<div class="main">
+
 			<div class="main_title">
 				ーHOME
 			</div>
+			<!--　サイドバー -->
+			<div class="overlay"></div>
+			<nav class="nav">
+				<div class="toggle">
+					<span id="deleteconpo" class="toggler"></span>
+				</div>
+				<div class="logo">
+					<a href="#"><img src="img/rakuten_logo.png"></a>
+				</div>
+				<br>
+				<ul class="linkList">
+					<li><a href="#">情報修正</a></li>
+					<li><a href="#">貸出中</a></li>
+					<li><a href="#">借出中</a></li>
+					<li><a href="#">出品中</a></li>
+					<li><a href="#">ログアウト</a></li>
+				</ul>
+			</nav>
+			<!-- サイドバー終 -->
 
 			<div class="search_box">
-				<form action="@{/search}" th:object="search_box" th:method="post">
+				<form th:action="@{/home}" th:object="${search_box}" th:method="post">
 					<input type="text" th:field="*{book_name}">
 					<button type="submit">検索</button>
 				</form>
-
 			</div>
 
 			<div th:if="${bookshelf}">
-				<div class="main_content_box">
-					<div class="content" th:each="book: ${bookshelf}">
-						<img src="/img/naruto_magazine.jpeg" class="book_img">
-						<div class="select_btn">
-							<button class="red_btn">借</button>
-							<button class="blue_btn">貰</button>
-						</div>
-						<p th:text="*{book.title}"></p><br>
-						<p th:text="*{book.content}"></p><br>
-					</div>
+				<div class="condition" th:if="${condition}">
+					<lable>検索条件：</lable><span th:text="${condition}"></span>
 				</div>
+			</div>
+
+			<div class="main_content_box">
+				<div class="content" th:each="book: ${bookshelf}">
+					<img src="/img/naruto_magazine.jpeg" class="book_img">
+					<div class="select_btn">
+						<button class="red_btn">借</button>
+						<button class="blue_btn">貰</button>
+					</div>
+					<p th:text="*{book.title}"></p><br>
+					<p th:text="*{book.content}"></p><br>
+				</div>
+
 			</div>
 		</div>
 
-		<footer>
-			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
-		</footer>
+	</div>
+
+	<footer>
+		問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
+	</footer>
 	</div>
 </body>
+
+<script>
+	const toggler = document.querySelector(".toggle");
+
+	window.addEventListener("click", event => {
+		if (event.target.className == "toggle" || event.target.className == "toggle") {
+			document.body.classList.toggle("show-nav");
+			document.getElementById("deleteconpo").classList.toggle("deleteclass")
+		} else if (event.target.className == "overlay") {
+			document.body.classList.remove("show-nav");
+			document.getElementById("deleteconpo").classList.toggle("deleteclass")
+		}
+
+	});
+
+	//ドロワーのメニューをクリックしたら非表示
+	const hrefLink = document.querySelectorAll('.linkList li a');
+	for (i = 0; i < hrefLink.length; i++) {
+		hrefLink[i].addEventListener("click", () => {
+			document.body.classList.remove("show-nav");
+			document.getElementById("deleteconpo").classList.toggle("deleteclass")
+		});
+	}
+</script>
 
 </html>

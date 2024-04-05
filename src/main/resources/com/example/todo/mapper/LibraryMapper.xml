@@ -13,8 +13,9 @@
 	<select id="searchBooks"
 		resultType="com.example.todo.entity.BooksEntity">
 		SELECT id,title,content FROM books
-		<if test="title != null">
-			title = #{title}
+		WHERE exhibition_flag = 1
+		<if test="book_name != null">
+		  AND title LIKE CONCAT('%', #{book_name},'%')
 		</if>
 	</select>
 	<!--  @author kk -->

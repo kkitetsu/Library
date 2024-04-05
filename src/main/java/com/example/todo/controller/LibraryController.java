@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
+import com.example.todo.forms.SearchBooksRequest;
 import com.example.todo.service.LibraryService;
 import com.example.todo.utils.HashGenerator;
 
@@ -35,12 +36,14 @@ public class LibraryController {
 			return "/mybook";
 	}
 	
+	/** @author kk */
 	@GetMapping(value = "/login")
 	public String getLoginPage(Model model) {
 		model.addAttribute("loginRequest", new LoginRequest());
 		return "login";
 	}
 	
+	/** @author kk */
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String doLogin(Model model, HttpSession session, 
 										@ModelAttribute LoginRequest loginRequest) {
@@ -57,23 +60,33 @@ public class LibraryController {
             return "/login";
         }
         session.setAttribute("userId", loginRequest.getLogin_id());
+        model.addAttribute("search_box", new SearchBooksRequest());
 		return "/home";
 	}
 	
 	@GetMapping(value = "/home")
 	public String home(Model model) {
 		List<BooksEntity> bookshelf = libraryService.displayBooks();
+		model.addAttribute("search_box",new SearchBooksRequest());
 		model.addAttribute("bookshelf", bookshelf);
 		return "/home";
 	}
-	
-	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public String search(Model model) {
-		//		String moji = model.getAttribute("search");
-		//		List<BooksEntity> bookshelf = libraryService.searchBooks();
+
+	@RequestMapping(value = "/home", method = RequestMethod.POST)
+	public String search(Model model, SearchBooksRequest searchBooksRequest) {
+
+		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
+		
+		if (searchBooksRequest.getBook_name() != "") {
+			model.addAttribute("condition", searchBooksRequest.getBook_name());
+		}
+		model.addAttribute("search_box",new SearchBooksRequest());
+		model.addAttribute("bookshelf",bookshelf);
+		
 		return "/home";
 	}
 
+	/** @author kk */
 	@GetMapping("/register")
     public String getRegisterPage(Model model) {
 		model.addAttribute("userEntity", new UsersEntity());
@@ -86,6 +99,7 @@ public class LibraryController {
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
 		libraryService.register(usersEntity);
 		model.addAttribute("loginRequest", new LoginRequest());
+		model.addAttribute("search_box", new SearchBooksRequest());
 		return "/home";
 	}
 	

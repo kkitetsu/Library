@@ -24,11 +24,11 @@
 			<div class="header_logo"> <a href="https://www.rakuten-sec.co.jp/"><img src="img/rakuten_logo.png"
 						alt="Rakuten_sec_mark" class="main_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
-			<div class="header_btn_box"> 
+			<div class="header_btn_box">
 				<table class="header_table">
 					<th>
-						<td> <img src="img/alarm_icon.png" class="alert_icon"> </td>
-						<td> <img src="img/user_img.png" alt="user_icon" class="user_icon"> </td>
+					<td> <img src="img/alarm_icon.png" class="alert_icon"> </td>
+					<td> <img src="img/user_img.png" alt="user_icon" class="user_icon"> </td>
 					</th>
 				</table>
 			</div>
@@ -37,90 +37,35 @@
 		<div class="main">
 			<!--白い箱-->
 			<div class="main_title">
-				- 履歴確認
+				- 借りだし履歴
 			</div>
 			<!-- メインコンテンツが入る赤色の箱-->
 			<div class="main_content_box">
 
-				<Table class="log_table">
+				<Table class="log_table" th:if="${BorrowLogs}">
 					<tr>
 						<th id="border-right">
-							時間
+							借りだし日付
 						</th>
 						<th id="border-right">
-							区分
-						</th>
-						<th>
 							タイトル
 						</th>
+						<th id="border-right">
+							本の持ち主
+						</th>
+						<th>
+							期限
+						</th>
+
 					</tr>
-					<tr>
-						<td id="border-right">
-							2024年04月01日09時53分
-						</td>
-						<td id="border-right">
-							借りる
-						</td>
-						<td>
-							楽天主義
-						</td>
-					</tr>
-					<tr>
-						<td id="border-right">
-							2024年04月01日09時53分
-						</td>
-						<td id="border-right">
-							借りる
-						</td>
-						<td>
-							楽天主義
-						</td>
-					</tr>
-					<tr>
-						<td id="border-right">
-							2024年04月01日09時53分
-						</td>
-						<td id="border-right">
-							借りる
-						</td>
-						<td>
-							楽天主義
-						</td>
-					</tr>
-					<tr>
-						<td id="border-right">
-							2024年04月01日09時53分
-						</td>
-						<td id="border-right">
-							借りる
-						</td>
-						<td>
-							楽天主義
-						</td>
-					</tr>
-					<tr>
-						<td id="border-right">
-							2024年04月01日09時53分
-						</td>
-						<td id="border-right">
-							借りる
-						</td>
-						<td>
-							楽天主義
-						</td>
-					</tr>
-					<tr>
-						<td id="border-right">
-							2024年04月01日09時53分
-						</td>
-						<td id="border-right">
-							借りる
-						</td>
-						<td>
-							楽天主義
-						</td>
+					<tr th:each="log :${BorrowLogs}">
+						<td th:text="*{log.TradedDate}" id="border-right"></td>
+						<td th:text="*{log.BookTitle}" id="border-right"></td>
+						<td th:text="*{log.LenderName}" id="border-right"></td>
+						<td th:text="*{log.LimitDate}"></td>
 					</tr>
 				</Table>
+
 				<table class="btn_box">
 					<tr>
 						<td>
@@ -142,9 +87,8 @@
 					</tr>
 				</table>
 			</div>
-			<!-- フッター（修正禁止）-->
-
 		</div>
+		<!-- フッター（修正禁止）-->
 		<footer>
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>

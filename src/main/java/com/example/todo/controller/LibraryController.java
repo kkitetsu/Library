@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.example.todo.DTO.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
@@ -20,14 +21,23 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class LibraryController {
 	
-	@GetMapping(value = "/log")
-	public String getLogPage(Model model) {
-			return "/log";
+	@GetMapping(value = "/borrowlog")
+	public String getBorrowLogPage(Model model) {
+	    List<SearchLogsDTO> BorrowLogs = libraryService.displayBorrowLogs();
+	    model.addAttribute("BorrowLogs", BorrowLogs);
+		return "/borrowlog";
+	}
+	@GetMapping(value = "/lendlog")
+	public String getLendLogPage(Model model) {
+	    List<SearchLogsDTO> LendLogs = libraryService.displayLendLogs();
+	    model.addAttribute("LendLogs", LendLogs);
+		return "/lendlog";
 	}
 	@GetMapping(value = "/mybook")
 	public String getmybookPage(Model model) {
 			return "/mybook";
 	}
+
 	@Autowired
 	private LibraryService libraryService;
 	
@@ -71,7 +81,10 @@ public class LibraryController {
     public String getRegisterPage() {
         return "/register";
     }
-	
+	@GetMapping(value = "/modifyUserInfo")
+	public String getModifyUserInfo(Model model) {
+			return "/modifyUserInfo";
+	}
 	@RequestMapping(value="/register", method=RequestMethod.POST)
 	public String doUserRegistration() {
 		return "/login";

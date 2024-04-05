@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.todo.DTO.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
+import com.example.todo.entity.TransactionEntity;
 import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
 import com.example.todo.mapper.LibraryMapper;
@@ -29,10 +31,22 @@ public class LibraryService {
 	 */
 	public List<BooksEntity> displayBooks(){
 		return libraryMapper.displayBooks();
-		
+	}
+	
+	public List<TransactionEntity> displayLogs(){
+		return libraryMapper.displayLogs();
 	}
 	
 	public List<BooksEntity> searchBooks(){
 		return  libraryMapper.searchBooks();
 	}
+	
+	public List<SearchLogsDTO> displayBorrowLogs(){
+		return libraryMapper.displayBorrowLogs();
+	}
+	
+	public List<SearchLogsDTO> displayLendLogs(){
+		return libraryMapper.displayLendLogs();
+	}
+	
 }

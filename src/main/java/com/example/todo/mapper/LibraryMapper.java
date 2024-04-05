@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.todo.DTO.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
+import com.example.todo.entity.TransactionEntity;
 import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
 
@@ -16,5 +18,10 @@ public interface LibraryMapper {
 	public List<BooksEntity> searchBooks();
 	
 	public List<UsersEntity> login(LoginRequest loginRequest);
+
+	public List<TransactionEntity> displayLogs();
+
+	public List<SearchLogsDTO> displayBorrowLogs();
 	
+	public List<SearchLogsDTO> displayLendLogs();
 }

@@ -125,6 +125,7 @@ body{
 	border:none;
 	border-radius:10px;
 	padding-left:10px;
+	width:100%;
 }
 .log_table, .my_book_table{
 	width:90%;

@@ -36,14 +36,14 @@
 			<div class="main_content_box">
 				<!--actionの行き先修正必要 -->
 				<!-- 各inputのnameはusers tableの名前をそのまま使用-->
-				<form action="/login" method="POST">
+				<form th:action="@{/login}" th:method="POST" th:object="${loginRequest}">
 					<table class="login_table">
 						<tr class="table_row">
 							<td>
 								<label for="login_id"> ID</label>
 							</td>
 							<td>
-								<input type="text" class="input_box" name="login_id">
+								<input th:field="*{login_id}" type="number" class="input_box" name="login_id" required>
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -51,7 +51,7 @@
 								<label for="password"> パスワード</label>
 							</td>
 							<td>
-								<input type="password" class="input_box" name="password">
+								<input th:field="*{login_pw}" type="password" class="input_box" name="password" required>
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -63,7 +63,7 @@
 				</form>
 							<td>
 								<form action="/register">
-  									<button type="submit" class="btn btn-primary" id="small_size" value="会員登録">Register</button>
+  									<button type="submit" class="btn btn-primary" id="small_size" value="会員登録">会員登録</button>
 								</form>
 							</td>
 						</tr>

@@ -16,7 +16,7 @@
 	</select>
 	<!--  @author kk -->
 	<select id="login" resultType="com.example.todo.entity.UsersEntity">
-		SELECT * FROM employees WHERE login_id=#{login_id} AND password= #{login_pw}
+		SELECT * FROM users WHERE login_id=#{login_id} AND password= #{login_pw}
 	</select>
 	<select id="displayLogs" resultType="com.example.todo.entity.TransactionEntity">
 		SELECT id,book_id,lender_user_id,borrower_user_id,traded_date FROM transactions;		
@@ -37,5 +37,11 @@
 		inner join books as b on b.id = t.book_id
 		inner join users as u on u.id = t.borrower_user_id;	
 	</select>
-	
+	<!--  @author kk -->
+	<insert id="register">
+		INSERT INTO users 
+		(name, department, mailaddress, login_id, password, joined_date, edited_date, del_flag)
+		VALUES
+		(#{name}, #{department}, #{mailaddress}, #{login_id}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
+	</insert>
 </mapper>

@@ -18,11 +18,16 @@ public interface LibraryMapper {
 	
 	public List<BooksEntity> searchBooks(SearchBooksRequest searchBooksRequest);
 	
+	/** @author kk */
 	public List<UsersEntity> login(LoginRequest loginRequest);
 
 	public List<TransactionEntity> displayLogs();
 
 	public List<SearchLogsDTO> displayBorrowLogs();
 	
+
 	public List<SearchLogsDTO> displayLendLogs();
+
+	/** @author kk */
+	public void register(UsersEntity usersEntity);
 }

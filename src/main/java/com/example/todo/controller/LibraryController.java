@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
+import com.example.todo.forms.SearchBooksRequest;
 import com.example.todo.service.LibraryService;
 import com.example.todo.utils.HashGenerator;
 
@@ -57,13 +58,22 @@ public class LibraryController {
 	@GetMapping(value = "/home")
 	public String home(Model model) {
 		List<BooksEntity> bookshelf = libraryService.displayBooks();
+		model.addAttribute("search_box",new SearchBooksRequest());
 		model.addAttribute("bookshelf", bookshelf);
 		return "/home";
 	}
-	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public String search(Model model) {
-		//		String moji = model.getAttribute("search");
-		//		List<BooksEntity> bookshelf = libraryService.searchBooks();
+
+	@RequestMapping(value = "/home", method = RequestMethod.POST)
+	public String search(Model model, SearchBooksRequest searchBooksRequest) {
+
+		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
+		
+		if (searchBooksRequest.getBook_name() != "") {
+			model.addAttribute("condition", searchBooksRequest.getBook_name());
+		}
+		model.addAttribute("search_box",new SearchBooksRequest());
+		model.addAttribute("bookshelf",bookshelf);
+		
 		return "/home";
 	}
 

@@ -52,7 +52,6 @@ public class LibraryController {
 		loginRequest.setLogin_pw(hashedPassword);
         // ユーザのログイン情報でsqlに取得
         List<UsersEntity> user_info = libraryService.login(loginRequest);
-        System.out.println(user_info);
         if (user_info.isEmpty()) {
         	// もしログイン情報が間違いだったら、SQLは空
             model.addAttribute("errMsg", "社員番号もしくはパスワードが違います");
@@ -98,8 +97,10 @@ public class LibraryController {
 	public String doUserRegistration(Model model, @ModelAttribute UsersEntity usersEntity) {
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
 		libraryService.register(usersEntity);
+		
 		model.addAttribute("loginRequest", new LoginRequest());
 		model.addAttribute("search_box", new SearchBooksRequest());
+		
 		return "/home";
 	}
 	

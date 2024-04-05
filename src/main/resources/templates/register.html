@@ -44,7 +44,7 @@
 								<label for="login_id"> ID</label>
 							</td>
 							<td>
-								<input th:field="*{login_id}" type="number" class="input_box" name="login_id">
+								<input th:field="*{login_id}" type="number" class="input_box" name="login_id" required>
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -52,7 +52,7 @@
 								<label for="password"> パスワード</label>
 							</td>
 							<td>
-								<input th:field="*{password}" type="password" class="input_box" name="password">
+								<input th:field="*{password}" type="password" class="input_box" name="password" required>
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -60,7 +60,7 @@
 								<label for="name"> 名前 </label>
 							</td>
 							<td>
-								<input th:field="*{name}" type="text" class="input_box" name="name">
+								<input th:field="*{name}" type="text" class="input_box" name="name" required>
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -82,7 +82,7 @@
 								<label for="mailaddress"> メールアドレス</label>
 							</td>
 							<td>
-								<input th:field="*{mailaddress}" type="text" class="input_box" name="mailaddress">
+								<input th:field="*{mailaddress}" type="text" class="input_box" name="mailaddress" required>
 							</td>
 						</tr>
 					

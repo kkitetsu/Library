@@ -6,42 +6,40 @@ import static org.mockito.Mockito.*;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
-import org.junit.jupiter.api.BeforeEach;
+import javax.sql.DataSource;
+
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.ui.Model;
 
 import com.example.todo.controller.LibraryController;
+import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
-import com.example.todo.mapper.LibraryMapper;
 import com.example.todo.service.LibraryService;
 import com.example.todo.utils.HashGenerator;
 
 import jakarta.servlet.http.HttpSession;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 class LibraryApplicationTests {
 	
-	@Mock
+	@Autowired
     private LibraryService libraryService;
-	
-	@Mock
-    private LibraryMapper libraryMapper;
 
-    @InjectMocks
+	@Autowired
     private LibraryController libraryController;
     
-    @BeforeEach
-    public void setUp() {
-        libraryController = new LibraryController(); 
-    }
+    @Autowired
+    private DataSource dataSource; 
+    
+    
 
 	@Test
 	public void testHashing() {
@@ -56,8 +54,36 @@ class LibraryApplicationTests {
         String viewName = libraryController.getLoginPage(model);
         assertEquals("login", viewName);
 	}
+	
+	@Test
+	public void testRegistration() {
+		UsersEntity usersEntity = new UsersEntity();
+		usersEntity.setDel_flag(0);
+		usersEntity.setDepartment("testDepartment");
+		usersEntity.setEdited_date(LocalDate.now());
+		usersEntity.setJoined_date(LocalDate.now());
+		usersEntity.setLogin_id(0);
+		usersEntity.setMailaddress("test@example.com");
+		usersEntity.setName("testName");
+		usersEntity.setPassword(libraryController.getHashedPassword("testPassword"));
+		libraryService.register(usersEntity);
+		
+		checkDatabase(usersEntity.getMailaddress());
+	}
+
+	private void checkDatabase(String inputMailAddress) {
+		try (Connection connection = dataSource.getConnection();
+	            Statement statement = connection.createStatement()) {
+            
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM users WHERE name='testName'");
+            assertTrue(resultSet.next());
+            assertEquals(inputMailAddress, resultSet.getString("mailaddress"));
+	            
+	    } catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
     
-    @Test
     public void testLogin() {
         int userId = 1;
         String password = "testpassword";

@@ -99,6 +99,13 @@ class LibraryApplicationTests {
         
         // If the result is not null, it means the login is successful
         assertNotNull(result);
+        
+        // Test login where login input information is wrong
+        loginRequest = new LoginRequest(); 
+        loginRequest.setLogin_id(1001);
+        loginRequest.setLogin_pw("WRONG PASSWORD");
+        result = libraryService.login(loginRequest);
+        assertTrue(result.isEmpty());
     }
     
 	/** @author kk */

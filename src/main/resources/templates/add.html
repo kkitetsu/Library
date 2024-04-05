@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="UTF-8">
 <!-- Bootstrap利用のため、必要なコード修正禁止 -->
@@ -9,11 +9,57 @@
 		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
 		crossorigin="anonymous"></script>
 <!--CSS共通リンク-->
-	<link rel="stylesheet" href="css/userPage.css"/>
+	<link rel="stylesheet" href="css/common.css"/>
+	<link rel="stylesheet" href="css/add.css"/>
 <!--タイトルの選択-->
 	<title>Add book</title>
 </head>
 <body>
+<!--画面全体始め（ヘッダー、メイン、フッター)-->
+	<div class="content_box">
 
+<!--ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
+		<header>
+			<div class="header_logo"> <a href="https://www.rakuten-sec.co.jp/"><img src="img/rakuten_logo.png" alt="Rakuten_sec_mark" class="maing_logo"> </a></div>
+			<div class="header_title"> 楽天図書館 </div>
+			<div class="header_btn_box"> </div>
+		</header>
+
+<!--メインー　（修正可能領域）-->	
+		<div class="main_title">
+			-出品
+		</div>
+		
+		<div class="main_content_box">
+			<form th:action="@{/add}" th:object="${bookAddRequest}" th:method="post">
+				<input type = "file" th:field = "*{image}"/>
+				<table class="add_table">
+					<tr>
+						<td><label for="title">タイトル</label></td>
+						<td><input type="text" th:field="*{title}"></td>
+					</tr>
+					<tr>
+						<td><label>区分</label></td>
+						<td>
+							<select th:field = "*{category}">
+							<option value = "貸出">貸出</option>
+							<option value = "譲渡">譲渡</option>
+						</td>	
+					</tr>
+					<tr id = "limitdate">
+						<td>貸出期限</td>
+						<td>
+							<input type = "date" th:field = "*{limitdate}">
+						</td>	
+					</tr>
+					<tr>
+						<td>
+							<input type="submit" class="btn btn-danger" value="登録">
+							<a href = "">キャンセル</a>
+						</td>
+					</tr>
+				</table>
+<!--JavaScriptリンク-->
+	<script type="text/javascript" th:src="@{/js/add.js}"></script>
 </body>
 </html>

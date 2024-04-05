@@ -13,9 +13,10 @@ header {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: 200px;
+    height: 150px;
     margin-bottom: 20px;
     min-height:15%vh;
+    background-color:rgb(188,0,1);
 }
 
 .header_logo,
@@ -30,7 +31,6 @@ header {
 
 .header_title {
     flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
-    background-color: crimson;
     color: white;
     font-size: 5em ;
     text-align: center;
@@ -41,16 +41,25 @@ header {
 }
 
 .header_btn_box {
-    width:300px;
-    background-color:white;
+    width:250px;
 }
 #small_size{
 	font-weight:bolder;
-	width:300px;
+	width:350px;
 	height:auto;
 	font-size:60px;
 	margin:10px;
 	padding:10px;
+	border-radius:30px;
+}
+#smaller_size{
+	font-weight:bolder;
+	width:200px;
+	height:auto;
+	font-size:60px;
+	margin:10px;
+	padding:10px;
+	border-radius:30px;
 }
 .main_logo {
     height: 100%;
@@ -94,7 +103,7 @@ td{
 	font-size:50px;
 	}
 .main_content_box{
-	background: rgba(216, 112, 147, 0.8);
+	background: rgba(216, 112, 147, 0.9);
 	padding: 20px 20px;
 	border-radius:10px;
 	width:90%;
@@ -104,7 +113,7 @@ footer {
 	text-align: center;
 	font-size: 40px;
 	font-weight:bold;
-	background-color:crimson;
+    background-color:rgb(188,0,1);
 	color:white;
 	margin-top:15px;
 	min-height:15%;
@@ -116,4 +125,45 @@ body{
 	border:none;
 	border-radius:10px;
 	padding-left:10px;
+}
+.log_table, .my_book_table{
+	width:90%;
+	margin:10px 5%;
+	background-color:rgb(188,0,1);
+	color:white;
+	font-size:30px;
+	text-align:center;
+	border-radius:25px;
+}
+.log_table td, .my_book_table td{
+	border-top:white solid;
+	}
+#border-right{
+	border-right:white solid;
+}
+.btn_box{
+	width:90%;
+	margin:0 5%;
+}
+.btn_box td{
+	width:33%;
+}
+#edit{
+	font-size:30px;
+	font-weight:bold;
+}
+
+.header_table{
+	height:100%;
+}
+.user_icon, .alert_icon{
+	height:100px;
+	width:100px;
+	border-radius:50px;
+}
+.user_icon{
+	background-color: white;
+}
+.header_table td{
+	width:50%;
 }

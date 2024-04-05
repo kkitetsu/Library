@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.todo.entity.BooksEntity;
+import com.example.todo.forms.SearchBooksRequest;
 import com.example.todo.mapper.LibraryMapper;
 
 @Service
@@ -28,7 +29,7 @@ public class LibraryService {
 		
 	}
 	
-	public List<BooksEntity> searchBooks(){
-		return  libraryMapper.searchBooks();
+	public List<BooksEntity> searchBooks(SearchBooksRequest searchBooksRequest){
+		return  libraryMapper.searchBooks(searchBooksRequest);
 	}
 }

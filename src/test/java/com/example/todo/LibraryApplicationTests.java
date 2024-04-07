@@ -1,14 +1,26 @@
 package com.example.todo;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.ui.Model;
 
 import com.example.todo.controller.LibraryController;
+import com.example.todo.entity.UsersEntity;
+import com.example.todo.forms.LoginRequest;
 import com.example.todo.service.LibraryService;
 
 @SpringBootTest
@@ -24,7 +36,6 @@ class LibraryApplicationTests {
     private DataSource dataSource; 
     
     /** @author kk */
-    /*
     @AfterEach
     public void cleanup() throws SQLException {
         try (Connection connection = dataSource.getConnection();
@@ -32,7 +43,6 @@ class LibraryApplicationTests {
             statement.executeUpdate("DELETE FROM users");
         }
     }
-    */
     
     /** @author kk */
 	@Test
@@ -43,7 +53,6 @@ class LibraryApplicationTests {
 	}
 	
 	/** @author kk */
-	/*
 	@Test
     public void testGetLoginPage() {
         Model model = mock(Model.class);
@@ -52,7 +61,6 @@ class LibraryApplicationTests {
 	}
 	
 	/** @author kk */
-	/*
 	@Test
 	public void testRegistration() {
 		UsersEntity usersEntity = createTestUserEntity();
@@ -61,7 +69,6 @@ class LibraryApplicationTests {
 	}
  
 	/** @author kk */
-	/*
 	private void checkInsertedDatabase(String inputMailAddress, int inputLoginId) {
 		try (Connection connection = dataSource.getConnection();
 	            Statement statement = connection.createStatement()) {
@@ -75,9 +82,7 @@ class LibraryApplicationTests {
 	}
     
 	/** @author kk */
-	/*
 	@Test
-	/*
     public void testLogin() {
 		
 		// First create a dummy data
@@ -104,7 +109,6 @@ class LibraryApplicationTests {
     }
     
 	/** @author kk */
-	/*
     private UsersEntity createTestUserEntity() {
     	UsersEntity usersEntity = new UsersEntity();
 		usersEntity.setDel_flag(0);
@@ -117,6 +121,5 @@ class LibraryApplicationTests {
 		usersEntity.setPassword(libraryController.getHashedPassword("testPassword"));
 		return usersEntity;
     }
-    */
 
 }

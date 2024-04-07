@@ -32,6 +32,7 @@ class LibraryApplicationTests {
             statement.executeUpdate("DELETE FROM users");
         }
     }
+    */
     
     /** @author kk */
 	@Test
@@ -58,7 +59,7 @@ class LibraryApplicationTests {
 		libraryService.register(usersEntity);
 		checkInsertedDatabase(usersEntity.getMailaddress(), usersEntity.getLogin_id());
 	}
-
+ 
 	/** @author kk */
 	/*
 	private void checkInsertedDatabase(String inputMailAddress, int inputLoginId) {
@@ -76,6 +77,7 @@ class LibraryApplicationTests {
 	/** @author kk */
 	/*
 	@Test
+	/*
     public void testLogin() {
 		
 		// First create a dummy data

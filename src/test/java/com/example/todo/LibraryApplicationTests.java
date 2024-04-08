@@ -95,10 +95,9 @@ class LibraryApplicationTests {
         loginRequest.setLogin_pw(usersEntity.getPassword());
 
         // Insert test user into the database
-        List<UsersEntity> result = libraryService.login(loginRequest);
-        
         // If the result is not null, it means the login is successful
-        assertNotNull(result);
+        List<UsersEntity> result = libraryService.login(loginRequest);
+        assertNotNull(result); 
         
         // Test login where login input information is wrong
         loginRequest = new LoginRequest(); 

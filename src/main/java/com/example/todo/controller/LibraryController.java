@@ -1,11 +1,15 @@
 package com.example.todo.controller;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,8 +49,17 @@ public class LibraryController {
 	
 	/** @author kk */
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String doLogin(Model model, HttpSession session, 
-										@ModelAttribute LoginRequest loginRequest) {
+	public String doLogin(@Validated @ModelAttribute LoginRequest loginRequest, BindingResult bindingResult, 
+																		Model model, HttpSession session) {
+		if (bindingResult.hasErrors()) {
+			List<String> errorList = new ArrayList<String>();
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errorList.add(error.getDefaultMessage());
+            }
+			model.addAttribute("errMsg", errorList);
+            model.addAttribute("logininfo", new LoginRequest());
+			return "/login";
+        }
 		String hashedPassword = getHashedPassword(loginRequest.getLogin_pw());
 		loginRequest.setLogin_pw(hashedPassword);
 		
@@ -94,7 +107,17 @@ public class LibraryController {
 	
 	/** @author kk */
 	@RequestMapping(value="/register", method=RequestMethod.POST)
-	public String doUserRegistration(Model model, @ModelAttribute UsersEntity usersEntity) {
+	public String doUserRegistration(@Validated @ModelAttribute UsersEntity usersEntity, 
+												BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			List<String> errorList = new ArrayList<String>();
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errorList.add(error.getDefaultMessage());
+            }
+			model.addAttribute("errMsg", errorList);
+            model.addAttribute("userEntity", new UsersEntity());
+			return "/register";
+        }
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
 		libraryService.register(usersEntity);
 		

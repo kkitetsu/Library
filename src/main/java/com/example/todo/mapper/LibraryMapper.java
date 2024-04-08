@@ -53,4 +53,10 @@ public interface LibraryMapper {
 	
 	/** @author kk */
 	public void register(UsersEntity usersEntity);
+	
+	/** @author kk */
+	public void updateTransaction(int bookId, int lenderId, int borrowerId);
+	
+	/** @author kk */
+	public List<UsersEntity> getUsers();
 }

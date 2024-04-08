@@ -211,9 +211,19 @@ public class LibraryController {
 		return "/confirm";
 	}
 	
-	/** @author kk */
+	/** 
+	 * @author kk 
+	 * 
+	 * Confirm borrowing and update transaction data.
+	 * 
+	 */
 	@RequestMapping(value="/confirm", method=RequestMethod.POST)
 	public String doBookConfirm(@ModelAttribute BooksEntity booksEntity, Model model) {
+		// TODO: Get each id from html
+		int borrowerId = Integer.parseInt("65");
+		int lenderId   = Integer.parseInt("65");
+		int bookId     = Integer.parseInt("0002");
+		libraryService.updateTransaction(bookId, lenderId, borrowerId);
 		return "/borrowlog";
 	}
 	

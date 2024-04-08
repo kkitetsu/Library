@@ -16,7 +16,12 @@
 	</select>
 	<!--  @author kk -->
 	<select id="login" resultType="com.example.todo.entity.UsersEntity">
-		SELECT * FROM users WHERE login_id=#{login_id} AND password= #{login_pw}
+		SELECT * FROM users WHERE login_id=#{login_id} AND password= #{login_pw};
+	</select>
+	
+	<!--  @author kk -->
+	<select id="getUsers" resultType="com.example.todo.entity.UsersEntity">
+		SELECT * FROM users;
 	</select>
 	<!-- 
 	@author Lee 
@@ -66,4 +71,13 @@
 		VALUES
 		(#{name}, #{department}, #{mailaddress}, #{login_id}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
 	</insert>
+	
+	<!--  @author kk -->
+	<insert id="updateTransaction">
+		INSERT INTO transactions
+		(book_id, lender_user_id, borrower_user_id, traded_date)
+		VALUES
+		(#{bookId}, #{lenderId}, #{borrowerId}, CURRENT_TIMESTAMP)
+	</insert>
+	
 </mapper>

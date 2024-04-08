@@ -18,6 +18,11 @@ public class LibraryService {
 
 	@Autowired
 	private LibraryMapper libraryMapper;
+	
+	/** @author kk */
+	public List<UsersEntity> getUsers() {
+		return libraryMapper.getUsers();
+	}
 
 	/** @author kk */
 	public List<UsersEntity> login(LoginRequest loginRequest) {
@@ -27,6 +32,16 @@ public class LibraryService {
 	/** @author kk */
 	public void register(UsersEntity usersEntity) {
 		libraryMapper.register(usersEntity);
+	}
+	
+	/** 
+	 * @author kk 
+	 * @param bookId 
+	 * @param lenderId 
+	 * @param borrowerId
+	 */
+	public void updateTransaction(int bookId, int lenderId, int borrowerId) {
+		libraryMapper.updateTransaction(bookId, lenderId, borrowerId);
 	}
 
 	/**

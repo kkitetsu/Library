@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.todo.mapper.LibraryMapper">
+	<!-- 全件検索 -->
+	<select id="displayBooks"
+		resultType="com.example.todo.entity.BooksEntity">
+		SELECT id,title,content FROM books;
+	</select>
+	<select id="searchBooks"
+		resultType="com.example.todo.entity.BooksEntity">
+		SELECT id,title,content FROM books
+		WHERE exhibition_flag = 1
+		<if test="book_name != null">
+		  AND title LIKE CONCAT('%', #{book_name},'%')
+		</if>
+	</select>
+	<!--  @author kk -->
+	<select id="login" resultType="com.example.todo.entity.UsersEntity">
+		SELECT * FROM users WHERE login_id=#{login_id} AND password= #{login_pw}
+	</select>
+	<!-- 
+	@author Lee 
+	Transaction作成sql文
+	-->
+	<select id="displayLogs" resultType="com.example.todo.entity.TransactionEntity">
+		SELECT id,book_id,lender_user_id,borrower_user_id,traded_date FROM transactions;		
+	</select>
+	<!-- 
+	@author Lee
+	他のユーザーより借りた履歴
+	-->
+	<select id="displayBorrowLogs" resultType="com.example.todo.dto.SearchLogsDTO">
+		select t.id as TransId, t.traded_date as TradedDate, b.title as BookTitle, 
+		u.name as LenderName, b.limitdate as LimitDate,
+		t.borrower_user_id as BorrowerId from transactions as t
+		inner join books as b on b.id = t.book_id
+		inner join users as u on u.id = t.lender_user_id ;	
+	</select>
+	<!-- 
+	@author Lee
+	他のユーザーに貸した履歴
+	-->	
+	<select id="displayLendLogs" resultType="com.example.todo.dto.SearchLogsDTO">
+		select t.id as TransId, t.traded_date as TradedDate, b.title as BookTitle, 
+		u.name as BorrowerName, b.limitdate as LimitDate,
+		t.lender_user_id as LenderId from transactions as t
+		inner join books as b on b.id = t.book_id
+		inner join users as u on u.id = t.borrower_user_id;	
+	</select>
+	<!--  @author kk -->
+	<insert id="register">
+		INSERT INTO users 
+		(name, department, mailaddress, login_id, password, joined_date, edited_date, del_flag)
+		VALUES
+		(#{name}, #{department}, #{mailaddress}, #{login_id}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
+	</insert>
+</mapper>

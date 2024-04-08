@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
@@ -20,22 +21,45 @@ import com.example.todo.utils.HashGenerator;
 
 import jakarta.servlet.http.HttpSession;
 
+
 @Controller
 public class LibraryController {
 	
 	@Autowired
 	private LibraryService libraryService;
-
-	@GetMapping(value = "/log")
-	public String getLogPage(Model model) {
-			return "/log";
-	}
 	
+	/**
+	 * @author Lee 
+	 * 貸しログ出力画面の表示
+	 * 今後、user idを@paramにするmethodに変える予定
+	 **/
+	@GetMapping(value = "/borrowlog")
+	public String getBorrowLogPage(Model model) {
+	    List<SearchLogsDTO> BorrowLogs = libraryService.displayBorrowLogs();
+	    model.addAttribute("BorrowLogs", BorrowLogs);
+		return "/borrowlog";
+	}
+	/**
+	 * @author Lee 
+	 * 借りログ出力画面の表示
+	 * 今後、user idを@paramにするmethodに変える予定
+	 **/
+	@GetMapping(value = "/lendlog")
+	public String getLendLogPage(Model model) {
+	    List<SearchLogsDTO> LendLogs = libraryService.displayLendLogs();
+	    model.addAttribute("LendLogs", LendLogs);
+		return "/lendlog";
+		}
+	/**
+	 * @author Lee 
+	 * 登録したマイブックの出力画面の表示
+	 * 今後、user idを@paramにするmethodに変える予定
+	 **/	
 	@GetMapping(value = "/mybook")
 	public String getmybookPage(Model model) {
 			return "/mybook";
 	}
-	
+
 	/** @author kk */
 	@GetMapping(value = "/login")
 	public String getLoginPage(Model model) {
@@ -46,7 +70,7 @@ public class LibraryController {
 	/** @author kk */
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String doLogin(Model model, HttpSession session, 
-										@ModelAttribute LoginRequest loginRequest) {
+		@ModelAttribute LoginRequest loginRequest) {
 		String hashedPassword = getHashedPassword(loginRequest.getLogin_pw());
 		loginRequest.setLogin_pw(hashedPassword);
 		
@@ -91,6 +115,11 @@ public class LibraryController {
 		model.addAttribute("userEntity", new UsersEntity());
         return "/register";
     }
+	
+	@GetMapping(value = "/modifyUserInfo")
+	public String getModifyUserInfo(Model model) {
+			return "/modifyUserInfo";
+	}
 	
 	/** @author kk */
 	@RequestMapping(value="/register", method=RequestMethod.POST)

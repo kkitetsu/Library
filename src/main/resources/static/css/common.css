@@ -26,11 +26,11 @@ header {
 }
 
 .header_logo {
-    flex: 0 0 auto; /* Flexbox가 너비를 자동으로 조절하도록 설정 */
+    flex: 0 0 auto;
 }
 
 .header_title {
-    flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
+    flex: 1;
     color: white;
     font-size: 5em ;
     text-align: center;
@@ -77,9 +77,9 @@ header {
 }
 .table_row{
 	color:white;
-	/*	display: flex;  Flexbox 사용 */
-    justify-content: center; /* 가로로 중앙 정렬 */
-    align-items: center; /* 세로로 중앙 정렬 */
+	/*	display: flex;*/
+    justify-content: center; 
+    align-items: center; 
 	font-size:40px;
 }
 .main {
@@ -122,19 +122,29 @@ body{
 	min-width:100vh;
 }
 .input_box{
-	border:none;
+	height:95%;
 	border-radius:10px;
 	padding-left:10px;
+	width:100%;
 }
 .log_table, .my_book_table{
 	width:90%;
 	margin:10px 5%;
 	background-color:rgb(188,0,1);
 	color:white;
-	font-size:30px;
+	font-size:40px;
 	text-align:center;
 	border-radius:25px;
 }
+.search_table{
+	width:90%;
+	margin:10px 5%;
+	color:white;
+	font-size:50px;
+	text-align:center;
+	border-radius:25px;
+}
+
 .log_table td, .my_book_table td{
 	border-top:white solid;
 	}
@@ -156,14 +166,17 @@ body{
 .header_table{
 	height:100%;
 }
+
 .user_icon, .alert_icon{
 	height:100px;
 	width:100px;
 	border-radius:50px;
 }
+
 .user_icon{
 	background-color: white;
 }
+
 .header_table td{
 	width:50%;
 }

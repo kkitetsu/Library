@@ -21,6 +21,9 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class LibraryController {
 	
+	@Autowired
+	private LibraryService libraryService;
+	
 	@GetMapping(value = "/log")
 	public String getLogPage(Model model) {
 			return "/log";
@@ -29,13 +32,12 @@ public class LibraryController {
 	public String getmybookPage(Model model) {
 			return "/mybook";
 	}
-	@Autowired
-	private LibraryService libraryService;
 	
 	@GetMapping(value = "/login")
 	public String getLoginPage(Model model) {
 		return "/login";
 	}
+	
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String doLogin(Model model, HttpSession session, 
 										@ModelAttribute LoginRequest loginRequest) {
@@ -55,19 +57,43 @@ public class LibraryController {
         }
 		return "/home";
 	}
+	
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Access home.
+	 * 
+	 * @param model
+	 * @return URL of home.html
+	 */
 	@GetMapping(value = "/home")
 	public String home(Model model) {
+		//本のリストを取得
 		List<BooksEntity> bookshelf = libraryService.displayBooks();
+		
+		//検索フィールド
 		model.addAttribute("search_box",new SearchBooksRequest());
+		
+		//本のリストを格納
 		model.addAttribute("bookshelf", bookshelf);
 		return "/home";
 	}
 
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Select books which match conditions.
+	 * 
+	 * @param model
+	 * @param searchBooksRequest
+	 * @return URL of home.html
+	 */
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
 	public String search(Model model, SearchBooksRequest searchBooksRequest) {
-
+		//条件に合う本のリストを取得
 		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
 		
+		//条件が入力
 		if (searchBooksRequest.getBook_name() != "") {
 			model.addAttribute("condition", searchBooksRequest.getBook_name());
 		}

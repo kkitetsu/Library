@@ -24,7 +24,7 @@ public class LibraryService {
 	/**
 	 * @author shunsukekuzawa
 	 * 
-	 * Search all books list for displaying them at /home .
+	 * Select all book-info for display.
 	 * 
 	 * @return List for books
 	 */
@@ -33,6 +33,14 @@ public class LibraryService {
 		
 	}
 	
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Search books which meet conditions.
+	 * 
+	 * @param searchBooksRequest
+	 * @return
+	 */
 	public List<BooksEntity> searchBooks(SearchBooksRequest searchBooksRequest){
 		return  libraryMapper.searchBooks(searchBooksRequest);
 	}

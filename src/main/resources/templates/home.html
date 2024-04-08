@@ -21,7 +21,19 @@
 			<div class="header_logo"> <a href="https://www.rakuten-sec.co.jp/"><img src="img/rakuten_logo.png"
 						alt="Rakuten_sec_mark" class="maing_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
-			<div class="header_btn_box"> </div>
+			<div class="header_btn_box"><button id="openModal"><img src="img/rakuten_logo.png"></button></div>
+			
+			<!-- モーダルウィンドウの内容 -->
+			<div id="myModal" class="modal">
+				<div class="modal-content">
+					<span id="closeModal">&times;</span>
+					<div th:if="${notification}">
+						<div class="notification" th:each="note: ${notification}">
+							<span th:text="${note.user}"></span>様から<span th:text="${note.title}"></span>が<span th:text="${note.category}"></span>の要請がありました
+						</div>
+			</div>
+				</div>
+			</div>
 		</header>
 
 
@@ -30,6 +42,7 @@
 			<div class="main_title">
 				ーHOME
 			</div>
+			
 			<!--　サイドバー -->
 			<div class="overlay"></div>
 			<nav class="nav">
@@ -73,8 +86,8 @@
 					<p th:text="*{book.title}"></p><br>
 					<p th:text="*{book.content}"></p><br>
 				</div>
-
 			</div>
+			
 		</div>
 
 	</div>
@@ -89,14 +102,12 @@
 	const toggler = document.querySelector(".toggle");
 
 	window.addEventListener("click", event => {
-		if (event.target.className == "toggle" || event.target.className == "toggle") {
+		if (event.target.className == "toggle") {
 			document.body.classList.toggle("show-nav");
-			document.getElementById("deleteconpo").classList.toggle("deleteclass")
 		} else if (event.target.className == "overlay") {
 			document.body.classList.remove("show-nav");
-			document.getElementById("deleteconpo").classList.toggle("deleteclass")
 		}
-
+		document.getElementById("deleteconpo").classList.toggle("deleteclass")
 	});
 
 	//ドロワーのメニューをクリックしたら非表示
@@ -107,6 +118,28 @@
 			document.getElementById("deleteconpo").classList.toggle("deleteclass")
 		});
 	}
+	
+	// モーダルウィンドウとボタン、クローズアイコンの要素を取得
+　　var modal = document.getElementById("myModal");
+　　var btn = document.getElementById("openModal");
+　　var span = document.getElementById("closeModal");
+
+　　// ボタンがクリックされた時にモーダルを表示
+　　btn.onclick = function() {
+　　　modal.style.display = "block";
+　　}
+
+　　// ×（クローズアイコン）がクリックされた時にモーダルを非表示
+　　span.onclick = function() {
+    　modal.style.display = "none";
+　　}
+
+　　// モーダルの外側をクリックした時にモーダルを非表示
+　　window.onclick = function(event) {
+    　if (event.target == modal) {
+      　modal.style.display = "none";
+    　}
+　　}
 </script>
 
 </html>

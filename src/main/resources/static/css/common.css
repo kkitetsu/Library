@@ -70,7 +70,7 @@ header {
 	background-image: url("../img/backgroundimage.jpg");
 }
 
-.login_table, .register_table{
+.login_table, .register_table, edit_table{
     display: flex;
     justify-content: center;
     align-items: center;

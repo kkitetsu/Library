@@ -29,6 +29,15 @@ public class LibraryService {
 		libraryMapper.register(usersEntity);
 	}
 
+	
+	/** 
+	 * @author Lee
+	 * Userの情報修正
+	 **/
+	public void editUser(UsersEntity usersEntity) {
+		libraryMapper.editUser(usersEntity);
+	}
+	
 	/**
 	 * @author shunsukekuzawa
 	 * 

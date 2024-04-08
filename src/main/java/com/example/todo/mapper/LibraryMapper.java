@@ -55,4 +55,10 @@ public interface LibraryMapper {
 
       /** @author kk */
 	public void register(UsersEntity usersEntity);
+
+	/**
+	 * @author Lee 
+	 * @return ユーザーの情報修正
+	 **/
+	public void editUser(UsersEntity usersEntity);
 }

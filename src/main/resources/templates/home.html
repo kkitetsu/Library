@@ -80,10 +80,10 @@
 			<div class="main_content_box">
 				<div class="content" th:each="book: ${bookshelf}">
 					<img src="/img/naruto_magazine.jpeg" class="book_img">
-						<form action="/confirm">
-							<button class="btn btn-danger" id="borrow_btn">借</button>
-							<button class="btn btn-primary" id="take_btn"> 貰</button>
-						</form>
+					<form action="/confirm">
+						<button class="btn btn-danger" id="borrow_btn">借</button>
+						<button class="btn btn-primary" id="take_btn"> 貰</button>
+					</form>
 
 					<p th:text="*{book.title}"></p><br>
 					<p th:text="*{book.content}"></p><br>
@@ -91,6 +91,14 @@
 
 			</div>
 		</div>
+
+		<form th:action="@{/registerbook}" th:method="post">
+			<div>
+				<button type="submit" id="add_btn"> + </button>
+			</div>
+		</form>
+
+
 		<footer>
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>

@@ -62,7 +62,17 @@
 		WHERE exhibition_flag=1;
 	</select>
 	
-	
+	<!--  @author lee:ユーザーの情報アップデート -->
+	<update id="editUser">
+		UPDATE users set 
+		name = #{name},
+		department  = #{department},
+		mailaddress = #{mailaddress}, 
+		login_id = #{login_id},
+		password = #{password},
+	    edited_date = CURRENT_TIMESTAMP
+	    where id = 2;
+	</update>
 	
 	<!--  @author kk -->
 	<insert id="register">
@@ -71,4 +81,5 @@
 		VALUES
 		(#{name}, #{department}, #{mailaddress}, #{login_id}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
 	</insert>
+	
 </mapper>

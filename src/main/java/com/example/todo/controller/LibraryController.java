@@ -32,7 +32,6 @@ public class LibraryController {
 	
 	@Autowired
 	private LibraryService libraryService;
-	
 	/**
 	 * @author Lee 
 	 * 貸しログ出力画面の表示
@@ -99,7 +98,38 @@ public class LibraryController {
 	model.addAttribute("maxPageNum", maxPageNum);
 	return "/mybook";
 	}
-
+	/**
+	 * @author Lee 
+	 * 借りログ出力画面の表示
+	 * 今後、user idを@paramにするmethodに変える予定
+	 **/
+	@GetMapping(value = "/edituser")
+	public String geteditUserPage(Model model) {
+		model.addAttribute("userEntity", new UsersEntity());
+		return "/edituserInfo";}
+	/**
+	 * @author Lee 
+	 * ユーザーの情報を更新するmethod
+	 **/
+	@RequestMapping(value="/edituser", method=RequestMethod.POST)
+	public String EditUserInfo(@Validated @ModelAttribute UsersEntity usersEntity, 
+												BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			List<String> errorList = new ArrayList<String>();
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errorList.add(error.getDefaultMessage());
+            }
+			model.addAttribute("errMsg", errorList);
+            model.addAttribute("userEntity", new UsersEntity());
+			return "/edituser";
+        }
+		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
+		libraryService.editUser(usersEntity);
+		model.addAttribute("loginRequest", new LoginRequest());
+		model.addAttribute("search_box", new SearchBooksRequest());
+		return "/login";
+	}
+	
 	/** @author kk */
 	@GetMapping(value = "/login")
 	public String getLoginPage(Model model) {

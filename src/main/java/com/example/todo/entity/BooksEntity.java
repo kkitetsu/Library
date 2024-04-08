@@ -20,4 +20,8 @@ public class BooksEntity {
 	
 	private String image;
 	
+	private String category;
+	
+	private String limitdate;
+	
 }

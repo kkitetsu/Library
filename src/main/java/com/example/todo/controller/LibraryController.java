@@ -157,6 +157,18 @@ public class LibraryController {
 		return "/home";
 	}
 	
+	/** @author kk */
+	@GetMapping("/confirm")
+	public String getConfirmPage(Model model) {
+		BooksEntity book = new BooksEntity();
+		book.setTitle("testBook");
+		book.setCategory("HAHA");
+		book.setImage("THIS IS IMAGE");
+		book.setLimitdate("YYYYMMDD");
+		model.addAttribute("bookEntity", book);
+		return "/confirm";
+	}
+	
 	/**
 	 * @author kk
 	 * 

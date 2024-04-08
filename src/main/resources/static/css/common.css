@@ -191,3 +191,11 @@ input[type="file"] {
 .header_table td{
 	width:50%;
 }
+
+a{
+	text-decoration:none;
+	color:inherit;
+}
+a:hover{
+	color:black;
+}

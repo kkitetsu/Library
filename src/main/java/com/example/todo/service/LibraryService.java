@@ -53,7 +53,7 @@ public class LibraryService {
 	public List<TransactionEntity> displayLogs() {
 		return libraryMapper.displayLogs();
 	}
-
+	
 	public List<BooksEntity> searchBooks(SearchBooksRequest searchBooksRequest) {
 		return libraryMapper.searchBooks(searchBooksRequest);
 	}
@@ -84,7 +84,15 @@ public class LibraryService {
 	 * LimitDate（返却期限）
 	 * LenderId（貸し手のID）
 	 **/
-	public List<SearchLogsDTO> displayLendLogs() {
-		return libraryMapper.displayLendLogs();
+	public List<SearchLogsDTO> displayLendLogs(final int SUBLISTSIZE, int startIndex) {
+		return libraryMapper.displayLendLogs(SUBLISTSIZE, startIndex);
+	}
+	/** 
+	 * @author Lee
+	 * 「貸し」の履歴数を返却
+	 * @return Logsize
+	 **/
+	public int getLendLogsSize() {
+		return libraryMapper.getLendLogsSize();
 	}
 }

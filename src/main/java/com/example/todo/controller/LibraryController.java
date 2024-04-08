@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
@@ -48,9 +49,16 @@ public class LibraryController {
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
 	@GetMapping(value = "/lendlog")
-	public String getLendLogPage(Model model) {
-	    List<SearchLogsDTO> LendLogs = libraryService.displayLendLogs();
+	public String getLendLogPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
+		int LogsSize = libraryService.getLendLogsSize();
+		final int SUBLISTSIZE=5;
+		int startIndex =(currPage - 1) * SUBLISTSIZE;
+
+		
+	    List<SearchLogsDTO> LendLogs = libraryService.displayLendLogs(SUBLISTSIZE,startIndex);
 	    model.addAttribute("LendLogs", LendLogs);
+	    model.addAttribute("currentPage", currPage);
+	    model.addAttribute("maxPageNum", (int)(Math.ceil(LogsSize/SUBLISTSIZE)));
 		return "/lendlog";
 		}
 	/**

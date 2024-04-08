@@ -43,8 +43,14 @@ public interface LibraryMapper {
 	 * @param 貸した履歴リクエストデータ(今後 ユーザーID　主キーに修正予定)
 	 * @return 貸した履歴結果
 	 **/
-	public List<SearchLogsDTO> displayLendLogs();
-
+	public List<SearchLogsDTO> displayLendLogs(final int SUBLISTSIZE, int startIndex);
+	/**
+	 * @author Lee 
+	 * @param 貸した履歴リクエストデータ(今後 ユーザーID　主キーに修正予定)
+	 * @return 貸した履歴のサイズ
+	 **/
+     int getLendLogsSize();
+	
 	/** @author kk */
 	public void register(UsersEntity usersEntity);
 }

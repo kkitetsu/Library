@@ -16,30 +16,28 @@
 	</select>
 	<!--  @author kk -->
 	<select id="login" resultType="com.example.todo.entity.UsersEntity">
-		SELECT * FROM users WHERE login_id=#{login_id} AND password= #{login_pw}
+		SELECT * FROM users WHERE login_id=#{login_id} AND password= #{login_pw};
 	</select>
-	<!-- 
-	@author Lee 
-	Transaction作成sql文
-	-->
+	
+	<!--  @author kk -->
+	<select id="getUsers" resultType="com.example.todo.entity.UsersEntity">
+		SELECT * FROM users;
+	</select>
+	
+	<!-- @author Lee : Mybookのlistの為のSQL文-->
+	<select id="displayMyBooks"
+		resultType="com.example.todo.entity.BooksEntity">
+		SELECT id,title,exhibitor_user_id as exhibitorUserId,category,limitdate FROM books
+		where exhibition_flag=1
+		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};
+	</select>
+	
+	<!-- @author Lee : Transaction作成sql文 -->
 	<select id="displayLogs" resultType="com.example.todo.entity.TransactionEntity">
 		SELECT id,book_id,lender_user_id,borrower_user_id,traded_date FROM transactions;		
 	</select>
-	<!-- 
-	@author Lee
-	他のユーザーより借りた履歴
-	-->
-	<select id="displayBorrowLogs" resultType="com.example.todo.dto.SearchLogsDTO">
-		select t.id as TransId, t.traded_date as TradedDate, b.title as BookTitle, 
-		u.name as LenderName, b.limitdate as LimitDate,
-		t.borrower_user_id as BorrowerId from transactions as t
-		inner join books as b on b.id = t.book_id
-		inner join users as u on u.id = t.lender_user_id ;	
-	</select>
-	<!-- 
-	@author Lee
-	他のユーザーに貸した履歴
-	-->
+
+	<!-- @author Lee :他のユーザーに貸した/借りた履歴 -->
 	<select id="displayLendLogs" resultType="com.example.todo.dto.SearchLogsDTO">
 		select t.id as TransId, t.traded_date as TradedDate, b.title as BookTitle, 
 		u.name as BorrowerName, b.limitdate as LimitDate,
@@ -48,13 +46,25 @@
 		inner join users as u on u.id = t.borrower_user_id
 		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};	
 	</select>
+	<select id="displayBorrowLogs" resultType="com.example.todo.dto.SearchLogsDTO">
+		select t.id as TransId, t.traded_date as TradedDate, b.title as BookTitle, 
+		u.name as LenderName, b.limitdate as LimitDate,
+		t.borrower_user_id as BorrowerId from transactions as t
+		inner join books as b on b.id = t.book_id
+		inner join users as u on u.id = t.lender_user_id
+		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};
+	</select>	
 	
-	<!--
-	@author Lee
-	貸しログの大きさ計算
-	-->
+	<!-- @author Lee:貸し/借りログ/MY BOOKの大きさ計算-->
 	<select id="getLendLogsSize">
 		SELECT COUNT(*) AS row_count FROM transactions
+	</select>
+	<select id="getBorrowLogsSize">
+		SELECT COUNT(*) AS row_count FROM transactions
+	</select>
+	<select id="getMyBookLogsSize">
+		SELECT COUNT(*) AS row_count FROM books
+		WHERE exhibition_flag=1;
 	</select>
 	
 	
@@ -66,4 +76,13 @@
 		VALUES
 		(#{name}, #{department}, #{mailaddress}, #{login_id}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
 	</insert>
+	
+	<!--  @author kk -->
+	<insert id="updateTransaction">
+		INSERT INTO transactions
+		(book_id, lender_user_id, borrower_user_id, traded_date)
+		VALUES
+		(#{bookId}, #{lenderId}, #{borrowerId}, CURRENT_TIMESTAMP)
+	</insert>
+	
 </mapper>

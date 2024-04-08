@@ -73,7 +73,7 @@
 						<td>
 							<div class="btn btn-danger" id="smaller_size" th:if="${currentPage} > 1">
 								<a th:href="@{/lendlog(currPage=${currentPage - 1})}">
-									前へ
+									&lt
 								</a>
 							</div>
 						</td>
@@ -85,7 +85,7 @@
 						<td>
 							<div class="btn btn-danger" id="smaller_size" th:if="${currentPage<maxPageNum}">
 								<a th:href="@{/lendlog(currPage=${currentPage + 1})}">
-									次へ
+									&gt
 								</a>
 							</div>
 						</td>
@@ -93,7 +93,12 @@
 					<tr>
 						<Td></Td>
 						<Td>
-							<div class="btn btn-primary" id="small_size"> ホーム </div>
+							<div>
+								<form th:action="@{/home}" th:method="GET">
+									<button type="submit" class="btn btn-primary" id="small_size" value="home">
+										ホーム</button>
+								</form>
+							</div>
 						</Td>
 						<td></td>
 					</tr>

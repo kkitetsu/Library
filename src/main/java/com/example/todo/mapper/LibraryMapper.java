@@ -23,6 +23,8 @@ public interface LibraryMapper {
 	 **/
 	public List<BooksEntity> displayMyBooks(final int SUBLISTSIZE, int startIndex);
 	
+	public List<UsersEntity> add(LoginRequest loginRequest);
+	
 	public List<BooksEntity> searchBooks(SearchBooksRequest searchBooksRequest);
 	
 	/** @author kk */
@@ -61,4 +63,9 @@ public interface LibraryMapper {
 	 * @return ユーザーの情報修正
 	 **/
 	public void editUser(UsersEntity usersEntity);
+	/** @author kk */
+	public void updateTransaction(int bookId, int lenderId, int borrowerId);
+	
+	/** @author kk */
+	public List<UsersEntity> getUsers();
 }

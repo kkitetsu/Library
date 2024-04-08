@@ -1,5 +1,4 @@
 package com.example.todo.controller;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.UsersEntity;
+import com.example.todo.forms.BookAddRequest;
 import com.example.todo.forms.LoginRequest;
 import com.example.todo.forms.SearchBooksRequest;
 import com.example.todo.service.LibraryService;
@@ -26,10 +26,9 @@ import com.example.todo.utils.HashGenerator;
 
 import jakarta.servlet.http.HttpSession;
 
-
 @Controller
 public class LibraryController {
-	
+
 	@Autowired
 	private LibraryService libraryService;
 	/**
@@ -83,20 +82,20 @@ public class LibraryController {
 	 **/	
 	@GetMapping(value = "/mybook")
 	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
-	int LogsSize = libraryService.getMyBookLogsSize();
-	final int SUBLISTSIZE=5;
-	int maxPageNum=1;
-	int startIndex =(currPage - 1) * SUBLISTSIZE;
-	List<BooksEntity> bookshelf = libraryService.displayMyBooks(SUBLISTSIZE,startIndex);
-	model.addAttribute("mybook", bookshelf);
-	model.addAttribute("currentPage", currPage);
-	if ( LogsSize%SUBLISTSIZE==0){
-		maxPageNum=(int) LogsSize/SUBLISTSIZE;
-	} else {
-		maxPageNum=(int)(LogsSize/SUBLISTSIZE)+1;
-	}
-	model.addAttribute("maxPageNum", maxPageNum);
-	return "/mybook";
+		int LogsSize = libraryService.getMyBookLogsSize();
+		final int SUBLISTSIZE=5;
+		int maxPageNum=1;
+		int startIndex =(currPage - 1) * SUBLISTSIZE;
+		List<BooksEntity> bookshelf = libraryService.displayMyBooks(SUBLISTSIZE,startIndex);
+		model.addAttribute("mybook", bookshelf);
+		model.addAttribute("currentPage", currPage);
+		if ( LogsSize%SUBLISTSIZE==0){
+			maxPageNum=(int) LogsSize/SUBLISTSIZE;
+		} else {
+			maxPageNum=(int)(LogsSize/SUBLISTSIZE)+1;
+		}
+		model.addAttribute("maxPageNum", maxPageNum);
+		return "/mybook";
 	}
 	/**
 	 * @author Lee 
@@ -163,9 +162,43 @@ public class LibraryController {
             return "/login";
         }
         session.setAttribute("userId", loginRequest.getLogin_id());
-        model.addAttribute("search_box", new SearchBooksRequest());
+		return "redirect:/home";
+	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	public String search(Model model) {
+		//		String moji = model.getAttribute("search");
+		//		List<BooksEntity> bookshelf = libraryService.searchBooks();
 		return "/home";
 	}
+	
+	@GetMapping(value = "/exhibit")
+    public String displayAdd(Model model) {
+        BookAddRequest bka = new BookAddRequest();
+		model.addAttribute("bookAddRequest", bka);
+        return "/add";
+    }
+	
+    
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult result, Model model, HttpSession session) {
+        session.setAttribute("userId", 1);
+		int userId = (int) session.getAttribute("userId");
+		if (result.hasErrors()) {
+            // 入力チェックエラーの場合
+            List<String> errorList = new ArrayList<String>();
+            for (ObjectError error : result.getAllErrors()) {
+                errorList.add(error.getDefaultMessage());
+            }
+            model.addAttribute("validationError", errorList);
+            return "/exhibit";
+        }
+       model.addAttribute("search_box", new SearchBooksRequest());
+       List<BooksEntity> bookshelf = libraryService.displayBooks();
+	   model.addAttribute("bookshelf", bookshelf);
+		return "/home";
+        
+    }
 	
 	@GetMapping(value = "/home")
 	public String home(Model model) {
@@ -217,22 +250,38 @@ public class LibraryController {
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
 		libraryService.register(usersEntity);
 		
-		model.addAttribute("loginRequest", new LoginRequest());
-		model.addAttribute("search_box", new SearchBooksRequest());
-		
-		return "/home";
+		return "redirect:/home";
 	}
 	
 	/** @author kk */
 	@GetMapping("/confirm")
-	public String getConfirmPage(Model model) {
-		BooksEntity book = new BooksEntity();
-		book.setTitle("testBook");
-		book.setCategory("HAHA");
-		book.setImage("THIS IS IMAGE");
-		book.setLimitdate("YYYYMMDD");
+	public String getConfirmPage(@ModelAttribute BooksEntity book, Model model) {
+		// TODO: Get book id
+		System.out.println(book);
+		book.setId(book.getId());
+		book.setTitle(book.getTitle());
+		book.setCategory(book.getCategory());
+		book.setImage(book.getImage());
+		book.setLimitdate(book.getLimitdate());
 		model.addAttribute("bookEntity", book);
 		return "/confirm";
+	}
+	
+	/** 
+	 * @author kk 
+	 * 
+	 * Confirm borrowing and update transaction data.
+	 * 
+	 */
+	@RequestMapping(value="/confirm", method=RequestMethod.POST)
+	public String doBookConfirm(@ModelAttribute BooksEntity bookEntity, Model model) {
+		// TODO: Get each id from html
+		// int borrowerId = bookEntity.getId();
+		int borrowerId   = 1;
+		int lenderId   = Integer.parseInt("1");
+		int bookId     = Integer.parseInt("1");
+		libraryService.updateTransaction(bookId, lenderId, borrowerId);
+		return "redirect:/borrowlog";
 	}
 	
 	/**

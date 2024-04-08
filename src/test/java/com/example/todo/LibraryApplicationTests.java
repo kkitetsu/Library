@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.ui.Model;
 
 import com.example.todo.controller.LibraryController;
+import com.example.todo.entity.TransactionEntity;
 import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
 import com.example.todo.service.LibraryService;
@@ -40,7 +41,12 @@ class LibraryApplicationTests {
     public void cleanup() throws SQLException {
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
-            statement.executeUpdate("DELETE FROM users");
+        		statement.executeUpdate("DELETE FROM transactions");
+        		statement.executeUpdate("DELETE FROM books");
+        		statement.executeUpdate("DELETE FROM users");
+        		statement.executeUpdate("ALTER TABLE users AUTO_INCREMENT = 1;");
+        		statement.executeUpdate("ALTER TABLE transactions AUTO_INCREMENT = 1;");
+        		statement.executeUpdate("ALTER TABLE books AUTO_INCREMENT = 1;");
         }
     }
     
@@ -119,6 +125,31 @@ class LibraryApplicationTests {
 		usersEntity.setName("testName");
 		usersEntity.setPassword(libraryController.getHashedPassword("testPassword"));
 		return usersEntity;
+    }
+    
+    /** @author kk */
+    @Test
+    public void testUpdateTransaction() throws SQLException {
+    	UsersEntity usersEntity1 = createTestUserEntity();
+    	UsersEntity usersEntity2 = createTestUserEntity();
+    	libraryService.register(usersEntity1);
+    	libraryService.register(usersEntity2);
+    	try (Connection connection = dataSource.getConnection();
+                Statement statement = connection.createStatement()) {
+    		String sql = "INSERT INTO books " +
+    					 "(title, content, exhibitor_user_id, category, limitdate, image, exhibition_flag)" + 
+    					 " VALUES " +
+    					 "('Book1', 'Content of Book1', 1, 'giving', CURRENT_TIMESTAMP, 'book1.jpg', 1)";
+    		statement.executeUpdate(sql);
+    	}
+    	// Book 1, Lender: entitiy1, Borrower: entity2
+    	libraryService.updateTransaction(1, libraryService.getUsers().get(0).getId(), 
+    										libraryService.getUsers().get(1).getId());
+    	List<TransactionEntity> result = libraryService.displayLogs();
+    	assertEquals(1, result.get(0).getBookId());
+    	assertEquals(1, result.get(0).getLenderUserId());
+    	assertEquals(2, result.get(0).getBorrowerUserId());
+    	assertEquals("Book1", libraryService.displayBooks().get(0).getTitle());
     }
 
 }

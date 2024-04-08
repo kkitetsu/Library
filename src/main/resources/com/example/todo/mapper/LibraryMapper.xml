@@ -18,19 +18,29 @@
 	<select id="login" resultType="com.example.todo.entity.UsersEntity">
 		SELECT * FROM users WHERE login_id=#{login_id} AND password= #{login_pw}
 	</select>
+	<!-- 
+	@author Lee 
+	Transaction作成sql文
+	-->
 	<select id="displayLogs" resultType="com.example.todo.entity.TransactionEntity">
 		SELECT id,book_id,lender_user_id,borrower_user_id,traded_date FROM transactions;		
 	</select>
-	<!-- 他のユーザーより借りた履歴-->
-	<select id="displayBorrowLogs" resultType="com.example.todo.DTO.SearchLogsDTO">
+	<!-- 
+	@author Lee
+	他のユーザーより借りた履歴
+	-->
+	<select id="displayBorrowLogs" resultType="com.example.todo.dto.SearchLogsDTO">
 		select t.id as TransId, t.traded_date as TradedDate, b.title as BookTitle, 
 		u.name as LenderName, b.limitdate as LimitDate,
 		t.borrower_user_id as BorrowerId from transactions as t
 		inner join books as b on b.id = t.book_id
 		inner join users as u on u.id = t.lender_user_id ;	
 	</select>
-	<!-- 他のユーザーより貸した履歴-->	
-	<select id="displayLendLogs" resultType="com.example.todo.DTO.SearchLogsDTO">
+	<!-- 
+	@author Lee
+	他のユーザーに貸した履歴
+	-->	
+	<select id="displayLendLogs" resultType="com.example.todo.dto.SearchLogsDTO">
 		select t.id as TransId, t.traded_date as TradedDate, b.title as BookTitle, 
 		u.name as BorrowerName, b.limitdate as LimitDate,
 		t.lender_user_id as LenderId from transactions as t

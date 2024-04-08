@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.example.todo.DTO.SearchLogsDTO;
+import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
@@ -28,20 +28,33 @@ public class LibraryController {
 	@Autowired
 	private LibraryService libraryService;
 	
+	/**
+	 * @author Lee 
+	 * 貸しログ出力画面の表示
+	 * 今後、user idを@paramにするmethodに変える予定
+	 **/
 	@GetMapping(value = "/borrowlog")
 	public String getBorrowLogPage(Model model) {
 	    List<SearchLogsDTO> BorrowLogs = libraryService.displayBorrowLogs();
 	    model.addAttribute("BorrowLogs", BorrowLogs);
 		return "/borrowlog";
 	}
-	
+	/**
+	 * @author Lee 
+	 * 借りログ出力画面の表示
+	 * 今後、user idを@paramにするmethodに変える予定
+	 **/
 	@GetMapping(value = "/lendlog")
 	public String getLendLogPage(Model model) {
 	    List<SearchLogsDTO> LendLogs = libraryService.displayLendLogs();
 	    model.addAttribute("LendLogs", LendLogs);
 		return "/lendlog";
 		}
-	
+	/**
+	 * @author Lee 
+	 * 登録したマイブックの出力画面の表示
+	 * 今後、user idを@paramにするmethodに変える予定
+	 **/	
 	@GetMapping(value = "/mybook")
 	public String getmybookPage(Model model) {
 			return "/mybook";

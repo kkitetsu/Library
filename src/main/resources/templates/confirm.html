@@ -29,7 +29,8 @@
 			-借入確認
 		</div>
 		<div class="main_content_box">
-			 <table class="add_table" th:object="${bookEntity}">
+			 <table class="add_table">
+				 <form th:action="@{/confirm}" th:method="POST" th:object="${bookEntity}">
 					<tr class="table_row">
 						<td>本の画像</td>
 						<td><span th:text="*{image}"></span></td>
@@ -48,6 +49,7 @@
 					</tr>
 					<tr>
 						<td><input type="submit" class="btn btn-danger" value="レンタル" id="small_size"></td>
+				</form>
 						<td><a href="/home" class="btn btn-primary" id="small_size">キャンセル</a></td>
 					</tr>
 				</table>

@@ -203,6 +203,12 @@ public class LibraryController {
 		return "/confirm";
 	}
 	
+	/** @author kk */
+	@RequestMapping(value="/confirm", method=RequestMethod.POST)
+	public String doBookConfirm(@ModelAttribute BooksEntity booksEntity, Model model) {
+		return "/borrowlog";
+	}
+	
 	/**
 	 * @author kk
 	 * 

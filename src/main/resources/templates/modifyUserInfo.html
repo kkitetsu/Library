@@ -29,22 +29,22 @@
 		<!--メインー（修正可能領域）-->
 		<div class="main">
 			<!--白い箱-->
-			<div th:if="${errMsg}">
-		        <div th:text="${errMsg}" class="main_title"></div>
-		    </div>
+			<div class="main_title">
+				- 会員情報修正
+			</div>
 			<!-- メインコンテンツが入る赤色の箱-->
 			<div class="main_content_box">
 				<!--actionの行き先修正必要 -->
 				<!-- 各inputのnameはusers tableの名前をそのまま使用-->
 				<!-- 各inputに条件必要-->
-				<table class="register_table">
-					<form th:action="@{/register}" th:method="POST" th:object="${userEntity}">
+				<form action="register" method="POST">
+					<table class="register_table">
 						<tr class="table_row">
 							<td>
 								<label for="login_id"> ID</label>
 							</td>
 							<td>
-								<input th:field="*{login_id}" type="number" class="input_box" name="login_id" required>
+								<input type="text" class="input_box" name="login_id" value="0001">
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -52,7 +52,7 @@
 								<label for="password"> パスワード</label>
 							</td>
 							<td>
-								<input th:field="*{password}" type="password" class="input_box" name="password" required>
+								<input type="password" class="input_box" name="password" value="12345678">
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -60,7 +60,7 @@
 								<label for="name"> 名前 </label>
 							</td>
 							<td>
-								<input th:field="*{name}" type="text" class="input_box" name="name" required>
+								<input type="text" class="input_box" name="name" value="楽天太郎">
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -69,7 +69,7 @@
 							</td>
 							<td>
 								<!--部署別value修正必要-->
-								<select th:field="*{department}" class="input_box" name="department">
+								<select class="input_box" name="department">
 									<option value="人事総務部">人事総務部</option>
 									<option value="IT本部">IT本部</option>
 									<option value="ーケティング推進部">マーケティング推進部</option>
@@ -82,24 +82,21 @@
 								<label for="mailaddress"> メールアドレス</label>
 							</td>
 							<td>
-								<input th:field="*{mailaddress}" type="text" class="input_box" name="mailaddress" required>
+								<input type="text" class="input_box" name="mailaddress" value="rakuten-tarou@rakuten-sec.co.jp">
 							</td>
 						</tr>
-					
 						<tr>
 							<td>
 								<!-- 赤色、青色の箱はクラスを使って（赤：danger,青：primary）大きさはidで調	整します。-->
 
-								<input type="submit" class="btn btn-danger" id="small_size" value="登録">
-					</form>
+								<input type="submit" class="btn btn-danger" id="small_size" value="確認">
 							</td>
 							<td>
-								<form action="/login">
-									<input type="submit" class="btn btn-primary" id="small_size" value="戻る">
-								</form>
+								<input type="submit" class="btn btn-primary" id="small_size" value="戻る">
 							</td>
 						</tr>
-				</table>
+					</table>
+				</form>
 			</div>
 			<!-- フッター（修正禁止）-->
 

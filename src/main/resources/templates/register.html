@@ -30,8 +30,11 @@
 		<div class="main">
 			<!--白い箱-->
 			<div th:if="${errMsg}">
-		        <div th:text="${errMsg}" class="main_title"></div>
+		        <div th:text="${errMsg}" class="main_title" id="error"></div>
 		    </div>
+   			<div class="main_title">
+				- 会員登録
+			</div>
 			<!-- メインコンテンツが入る赤色の箱-->
 			<div class="main_content_box">
 				<!--actionの行き先修正必要 -->

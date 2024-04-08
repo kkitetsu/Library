@@ -39,14 +39,26 @@
 	<!-- 
 	@author Lee
 	他のユーザーに貸した履歴
-	-->	
+	-->
 	<select id="displayLendLogs" resultType="com.example.todo.dto.SearchLogsDTO">
 		select t.id as TransId, t.traded_date as TradedDate, b.title as BookTitle, 
 		u.name as BorrowerName, b.limitdate as LimitDate,
 		t.lender_user_id as LenderId from transactions as t
 		inner join books as b on b.id = t.book_id
-		inner join users as u on u.id = t.borrower_user_id;	
+		inner join users as u on u.id = t.borrower_user_id
+		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};	
 	</select>
+	
+	<!--
+	@author Lee
+	貸しログの大きさ計算
+	-->
+	<select id="getLendLogsSize">
+		SELECT COUNT(*) AS row_count FROM transactions
+	</select>
+	
+	
+	
 	<!--  @author kk -->
 	<insert id="register">
 		INSERT INTO users 

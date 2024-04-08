@@ -47,7 +47,7 @@ public class LibraryService {
 	public List<BooksEntity> searchBooks(SearchBooksRequest searchBooksRequest){
 		return  libraryMapper.searchBooks(searchBooksRequest);
 	}
-	
+	/** @author Lee **/
 	public List<SearchLogsDTO> displayBorrowLogs(){
 		return libraryMapper.displayBorrowLogs();
 	}

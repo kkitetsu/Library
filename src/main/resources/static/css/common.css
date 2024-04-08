@@ -70,7 +70,8 @@ header {
 	background-image: url("../img/backgroundimage.jpg");
 }
 
-.login_table, .register_table{
+
+.login_table, .register_table, .add_table{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -122,6 +123,7 @@ body{
 	min-width:100vh;
 }
 .input_box{
+	border:none;
 	height:95%;
 	border-radius:10px;
 	padding-left:10px;
@@ -132,10 +134,11 @@ body{
 	margin:10px 5%;
 	background-color:rgb(188,0,1);
 	color:white;
-	font-size:40px;
+	font-size:30px;
 	text-align:center;
 	border-radius:25px;
 }
+
 .search_table{
 	width:90%;
 	margin:10px 5%;
@@ -171,6 +174,14 @@ body{
 	height:100px;
 	width:100px;
 	border-radius:50px;
+}
+
+.header_table td{
+	width:50%;
+}
+
+input[type="file"] {
+	font-size: 25px;
 }
 
 .user_icon{

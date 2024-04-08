@@ -1,5 +1,4 @@
 package com.example.todo.controller;
-
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.UsersEntity;
+import com.example.todo.forms.BookAddRequest;
 import com.example.todo.forms.LoginRequest;
 import com.example.todo.forms.SearchBooksRequest;
 import com.example.todo.service.LibraryService;
@@ -25,10 +25,9 @@ import com.example.todo.utils.HashGenerator;
 
 import jakarta.servlet.http.HttpSession;
 
-
 @Controller
 public class LibraryController {
-	
+
 	@Autowired
 	private LibraryService libraryService;
 	
@@ -100,6 +99,41 @@ public class LibraryController {
         model.addAttribute("search_box", new SearchBooksRequest());
 		return "/home";
 	}
+	
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	public String search(Model model) {
+		//		String moji = model.getAttribute("search");
+		//		List<BooksEntity> bookshelf = libraryService.searchBooks();
+		return "/home";
+	}
+	
+	@GetMapping(value = "/exhibit")
+    public String displayAdd(Model model) {
+        BookAddRequest bka = new BookAddRequest();
+		model.addAttribute("bookAddRequest", bka);
+        return "/add";
+    }
+	
+    
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult result, Model model, HttpSession session) {
+        session.setAttribute("userId", 1);
+		int userId = (int) session.getAttribute("userId");
+		if (result.hasErrors()) {
+            // 入力チェックエラーの場合
+            List<String> errorList = new ArrayList<String>();
+            for (ObjectError error : result.getAllErrors()) {
+                errorList.add(error.getDefaultMessage());
+            }
+            model.addAttribute("validationError", errorList);
+            return "/exhibit";
+        }
+       model.addAttribute("search_box", new SearchBooksRequest());
+       List<BooksEntity> bookshelf = libraryService.displayBooks();
+	   model.addAttribute("bookshelf", bookshelf);
+		return "/home";
+        
+    }
 	
 	@GetMapping(value = "/home")
 	public String home(Model model) {

@@ -80,7 +80,12 @@
 			<div class="main_content_box">
 				<div class="content" th:each="book: ${bookshelf}">
 					<img src="/img/naruto_magazine.jpeg" class="book_img">
-						<form action="/confirm">
+						<form th:action="@{/confirm}" th:method="GET">
+							<input type="hidden" name="title" th:value="${book.title}" />
+        					<input type="hidden" name="content" th:value="${book.id}" />
+        					<input type="hidden" name="category" th:value="${book.category}" />
+        					<input type="hidden" name="image" th:value="${book.image}" />
+        					<input type="hidden" name="limitdate" th:value="${book.limitdate}" />
 							<button class="btn btn-danger" id="borrow_btn">借</button>
 							<button class="btn btn-primary" id="take_btn"> 貰</button>
 						</form>

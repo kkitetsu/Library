@@ -57,8 +57,8 @@
 						<th>
 							期限
 						</th>
-
 					</tr>
+					<!-- Table rows will be added dynamically here -->
 					<tr th:each="log :${BorrowLogs}">
 						<td th:text="*{log.TradedDate}" id="border-right"></td>
 						<td th:text="*{log.BookTitle}" id="border-right"></td>
@@ -66,23 +66,38 @@
 						<td th:text="*{log.LimitDate}"></td>
 					</tr>
 				</Table>
-
+				<!-- Show current page number -->
 				<table class="btn_box">
 					<tr>
 						<td>
-							<div class="btn btn-danger" id="smaller_size"> &lt </div>
+							<div class="btn btn-danger" id="smaller_size" th:if="${currentPage} > 1">
+								<a th:href="@{/borrowlog(currPage=${currentPage - 1})}">
+									&lt
+								</a>
+							</div>
 						</td>
 						<td>
-							<div id="small_size" style="text-align:center">3/5</div>
+							<div id="small_size" style="text-align:center">
+								<span th:text="${currentPage}"></span> / <span th:text="${maxPageNum}">
+							</div>
 						</td>
 						<td>
-							<div class="btn btn-danger" id="smaller_size"> &gt </div>
+							<div class="btn btn-danger" id="smaller_size" th:if="${currentPage<maxPageNum}">
+								<a th:href="@{/borrowlog(currPage=${currentPage + 1})}">
+									&gt
+								</a>
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<Td></Td>
 						<Td>
-							<div class="btn btn-primary" id="small_size"> ホーム </div>
+							<div>
+								<form th:action="@{/home}" th:method="GET">
+									<button type="submit" class="btn btn-primary" id="small_size" value="home">
+										ホーム</button>
+								</form>
+							</div>
 						</Td>
 						<td></td>
 					</tr>

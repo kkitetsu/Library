@@ -38,9 +38,20 @@ public class LibraryController {
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
 	@GetMapping(value = "/borrowlog")
-	public String getBorrowLogPage(Model model) {
-	    List<SearchLogsDTO> BorrowLogs = libraryService.displayBorrowLogs();
+	public String getBorrowLogPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
+		int LogsSize = libraryService.getBorrowLogsSize();
+		final int SUBLISTSIZE=5;
+		int maxPageNum=1;
+		int startIndex =(currPage - 1) * SUBLISTSIZE;
+	    List<SearchLogsDTO> BorrowLogs = libraryService.displayBorrowLogs(SUBLISTSIZE,startIndex);
+		if ( LogsSize%SUBLISTSIZE==0){
+			maxPageNum=(int) LogsSize/SUBLISTSIZE;
+		} else {
+			maxPageNum=(int)(LogsSize/SUBLISTSIZE)+1;
+		}
 	    model.addAttribute("BorrowLogs", BorrowLogs);
+	    model.addAttribute("currentPage", currPage);
+	    model.addAttribute("maxPageNum", maxPageNum);
 		return "/borrowlog";
 	}
 	/**
@@ -53,12 +64,16 @@ public class LibraryController {
 		int LogsSize = libraryService.getLendLogsSize();
 		final int SUBLISTSIZE=5;
 		int startIndex =(currPage - 1) * SUBLISTSIZE;
-
-		
+		int maxPageNum=1;
 	    List<SearchLogsDTO> LendLogs = libraryService.displayLendLogs(SUBLISTSIZE,startIndex);
+		if ( LogsSize%SUBLISTSIZE==0){
+			maxPageNum=(int) LogsSize/SUBLISTSIZE;
+		} else {
+			maxPageNum=(int)(LogsSize/SUBLISTSIZE)+1;
+		}
 	    model.addAttribute("LendLogs", LendLogs);
 	    model.addAttribute("currentPage", currPage);
-	    model.addAttribute("maxPageNum", (int)(Math.ceil(LogsSize/SUBLISTSIZE)));
+	    model.addAttribute("maxPageNum", maxPageNum);
 		return "/lendlog";
 		}
 	/**
@@ -67,8 +82,21 @@ public class LibraryController {
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/	
 	@GetMapping(value = "/mybook")
-	public String getmybookPage(Model model) {
-			return "/mybook";
+	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
+		int LogsSize = libraryService.getMyBookLogsSize();
+		final int SUBLISTSIZE=5;
+		int maxPageNum=1;
+		int startIndex =(currPage - 1) * SUBLISTSIZE;
+		List<BooksEntity> bookshelf = libraryService.displayMyBooks(SUBLISTSIZE,startIndex);
+		model.addAttribute("mybook", bookshelf);
+		model.addAttribute("currentPage", currPage);
+		if ( LogsSize%SUBLISTSIZE==0){
+			maxPageNum=(int) LogsSize/SUBLISTSIZE;
+		} else {
+			maxPageNum=(int)(LogsSize/SUBLISTSIZE)+1;
+		}
+		model.addAttribute("maxPageNum", maxPageNum);
+		return "/mybook";
 	}
 
 	/** @author kk */
@@ -104,8 +132,7 @@ public class LibraryController {
             return "/login";
         }
         session.setAttribute("userId", loginRequest.getLogin_id());
-        model.addAttribute("search_box", new SearchBooksRequest());
-		return "/home";
+		return "redirect:/home";
 	}
 	
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
@@ -193,20 +220,19 @@ public class LibraryController {
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
 		libraryService.register(usersEntity);
 		
-		model.addAttribute("loginRequest", new LoginRequest());
-		model.addAttribute("search_box", new SearchBooksRequest());
-		
-		return "/home";
+		return "redirect:/home";
 	}
 	
 	/** @author kk */
 	@GetMapping("/confirm")
-	public String getConfirmPage(Model model) {
-		BooksEntity book = new BooksEntity();
-		book.setTitle("testBook");
-		book.setCategory("HAHA");
-		book.setImage("THIS IS IMAGE");
-		book.setLimitdate("YYYYMMDD");
+	public String getConfirmPage(@ModelAttribute BooksEntity book, Model model) {
+		// TODO: Get book id
+		System.out.println(book);
+		book.setId(book.getId());
+		book.setTitle(book.getTitle());
+		book.setCategory(book.getCategory());
+		book.setImage(book.getImage());
+		book.setLimitdate(book.getLimitdate());
 		model.addAttribute("bookEntity", book);
 		return "/confirm";
 	}
@@ -218,13 +244,14 @@ public class LibraryController {
 	 * 
 	 */
 	@RequestMapping(value="/confirm", method=RequestMethod.POST)
-	public String doBookConfirm(@ModelAttribute BooksEntity booksEntity, Model model) {
+	public String doBookConfirm(@ModelAttribute BooksEntity bookEntity, Model model) {
 		// TODO: Get each id from html
-		int borrowerId = Integer.parseInt("65");
-		int lenderId   = Integer.parseInt("65");
-		int bookId     = Integer.parseInt("0002");
+		// int borrowerId = bookEntity.getId();
+		int borrowerId   = 1;
+		int lenderId   = Integer.parseInt("1");
+		int bookId     = Integer.parseInt("1");
 		libraryService.updateTransaction(bookId, lenderId, borrowerId);
-		return "/borrowlog";
+		return "redirect:/borrowlog";
 	}
 	
 	/**

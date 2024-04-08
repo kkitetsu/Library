@@ -62,7 +62,7 @@ class LibraryApplicationTests {
 	
 	/** @author kk */
 	@Test
-	public void testRegistration() {
+	public void testRegistrationSuccess() {
 		UsersEntity usersEntity = createTestUserEntity();
 		libraryService.register(usersEntity);
 		checkInsertedDatabase(usersEntity.getMailaddress(), usersEntity.getLogin_id());

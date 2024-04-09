@@ -281,14 +281,6 @@ public class LibraryController {
         String path = filePath.toString();
         return "/uploadImage/"+fileName;
     }
-	
-	@GetMapping(value = "/home")
-	public String home(Model model) {
-		List<BooksEntity> bookshelf = libraryService.displayBooks();
-		model.addAttribute("bookshelf", bookshelf);
-		return "/home";
-
-	}
 
 
 	@RequestMapping(value = "/home", method = RequestMethod.POST)

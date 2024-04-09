@@ -29,9 +29,9 @@
 		<!--メインー（修正可能領域）-->
 		<div class="main">
 			<!--白い箱-->
-			<div class="main_title">
-				-ログイン
-			</div>
+			<div th:if="${errMsg}">
+		        <div th:text="${errMsg}" class="main_title"></div>
+		    </div>
 			<!-- メインコンテンツが入る赤色の箱-->
 			<div class="main_content_box">
 				<!--actionの行き先修正必要 -->
@@ -43,7 +43,16 @@
 								<label for="login_id"> ID</label>
 							</td>
 							<td>
-								<input th:field="*{login_id}" type="number" class="input_box" name="login_id" required>
+								<input th:field="*{login_id}" type="number" class="input_box" name="login_id" id="login_id" required>
+								<script>
+								    window.onload = function() {
+								        // Get the input field element
+								        var loginIdInput = document.getElementById("login_id");
+								        
+								        // Clear the default value
+								        loginIdInput.value = "";
+								    };
+								</script>
 							</td>
 						</tr>
 						<tr class="table_row">

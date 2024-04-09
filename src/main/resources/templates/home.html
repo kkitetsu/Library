@@ -8,6 +8,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
 		crossorigin="anonymous"></script>
+	<script src="js/home.js"></script>
 	<link rel="stylesheet" href="css/common.css" />
 	<link rel="stylesheet" href="css/home.css" />
 	<title>R-Library: Home</title>
@@ -21,13 +22,30 @@
 			<div class="header_logo"> <a href="https://www.rakuten-sec.co.jp/"><img src="img/rakuten_logo.png"
 						alt="Rakuten_sec_mark" class="main_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
+
 			<div class="header_btn_box">
 				<table class="header_table">
-					<th>
-					<td> <img src="img/alarm_icon.png" class="alert_icon"> </td>
-					<td> <img src="img/user_img.png" alt="user_icon" class="user_icon"> </td>
-					</th>
+					<td>
+						<button type="submit" id="openModal"><img src="img/alarm_icon.png" class="alert_icon"></button>
+					</td>
+					<td>
+					<td> <img src="img/user_img.png" alt="user_icon" class="user_icon toggler"> </td>
+					</td>
 				</table>
+
+				<!-- モーダルウィンドウの内容 -->
+				<div id="myModal" class="modal">
+					<div class="modal-content">
+						<span id="closeModal">&times;</span>
+						<div th:if="${session.notification} != null">
+							<div class="notification" th:each="note:${session.notification}">
+								<span th:text="${note.BorrowerName}"></span>様から<span th:text="${note.BookTitle}"></span>
+								のレンタル要請がありました
+							</div>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</header>
 
@@ -36,6 +54,7 @@
 			<div class="main_title">
 				ーHOME
 			</div>
+
 			<!--　サイドバー -->
 			<div class="overlay"></div>
 			<nav class="nav">
@@ -43,18 +62,60 @@
 					<span id="deleteconpo" class="toggler"></span>
 				</div>
 				<div class="logo">
-					<a href="#"><img src="img/rakuten_logo.png"></a>
+					<a href="/login"><img src="img/rakuten_logo.png"></a>
 				</div>
-				<br>
-				<ul class="linkList">
-					<li><a href="#">情報修正</a></li>
-					<li><a href="#">貸出中</a></li>
-					<li><a href="#">借出中</a></li>
-					<li><a href="#">出品中</a></li>
-					<li><a href="#">ログアウト</a></li>
-				</ul>
+				<table class="linkList">
+					<tr>
+						<td>
+							<img src="img/user_img.png" alt="user_icon" class="user_icon toggler">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="user_name"> 楽天　太郎 様 </div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/edituser" method="get">
+								<input type="submit" value="会員情報修正" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/borrowlog" method="post">
+								<input type="submit" value="貸出履歴" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/lendlog" method="post">
+								<input type="submit" value="借出履歴" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/mybook" method="post">
+								<input type="submit" value="出品履歴" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/logout" method="post">
+								<input type="submit" value="ログアウト" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+				</table>
+
 			</nav>
 			<!-- サイドバー終 -->
+
 
 			<div class="search_box">
 				<form th:action="@{/home}" th:object="${search_box}" th:method="post">
@@ -80,44 +141,49 @@
 			<div class="main_content_box">
 				<div class="content" th:each="book: ${bookshelf}">
 					<img src="/img/naruto_magazine.jpeg" class="book_img">
-						<button class="btn btn-danger" id="borrow_btn">借</button>
-						<button class="btn btn-primary" id="take_btn"> 貰</button>
-
+						<form th:action="@{/confirmPage}" th:method="post">
+							<input type="hidden" name="id" th:value="${book.id}" />
+							<input type="hidden" name="title" th:value="${book.title}" />
+        					<input type="hidden" name="category" th:value="${book.category}" />
+        					<input type="hidden" name="image" th:value="${book.image}" />
+        					<input type="hidden" name="limitdate" th:value="${book.limitdate}" />
+        					<input type="hidden" name="exhibitor" th:value="${book.exhibitorUserId}" />
+							<button class="btn btn-danger" id="borrow_btn">借</button>
+							<button class="btn btn-primary" id="take_btn"> 貰</button>
+						</form>
 					<p th:text="*{book.title}"></p><br>
 					<p th:text="*{book.content}"></p><br>
 				</div>
-
 			</div>
+			<form th:action="@{/registerbook}" method="get"><button type="submit" class="add_button">+</form>
 		</div>
+
 		<footer>
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>
 	</div>
+	<script>
 
-</body>
-
-<script>
-	const toggler = document.querySelector(".toggle");
-
-	window.addEventListener("click", event => {
-		if (event.target.className == "toggle" || event.target.className == "toggle") {
-			document.body.classList.toggle("show-nav");
-			document.getElementById("deleteconpo").classList.toggle("deleteclass")
-		} else if (event.target.className == "overlay") {
-			document.body.classList.remove("show-nav");
-			document.getElementById("deleteconpo").classList.toggle("deleteclass")
+		var modal = document.getElementById("myModal");
+		var btn = document.getElementById("openModal");
+		var span = document.getElementById("closeModal");
+		// ボタンがクリックされた時にモーダルを表示
+		btn.onclick = function () {
+			modal.style.display = "block";
 		}
 
-	});
+		// ×（クローズアイコン）がクリックされた時にモーダルを非表示
+		span.onclick = function () {
+			modal.style.display = "none";
+		}
 
-	//ドロワーのメニューをクリックしたら非表示
-	const hrefLink = document.querySelectorAll('.linkList li a');
-	for (i = 0; i < hrefLink.length; i++) {
-		hrefLink[i].addEventListener("click", () => {
-			document.body.classList.remove("show-nav");
-			document.getElementById("deleteconpo").classList.toggle("deleteclass")
-		});
-	}
-</script>
+		// モーダルの外側をクリックした時にモーダルを非表示
+		window.onclick = function (event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		}
+	</script>
+</body>
 
 </html>

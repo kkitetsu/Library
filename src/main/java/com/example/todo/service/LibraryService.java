@@ -44,15 +44,28 @@ public class LibraryService {
 		libraryMapper.updateTransaction(bookId, lenderId, borrowerId);
 	}
 
+	
+	/** 
+	 * @author Lee
+	 * Userの情報修正
+	 **/
+	public void editUser(UsersEntity usersEntity) {
+		libraryMapper.editUser(usersEntity);
+	}
+	
 	/**
 	 * @author shunsukekuzawa
 	 * 
-	 * Search all books list for displaying them at /home .
+	 * Select all book-info for display.
 	 * 
 	 * @return List for books
 	 */
 	public List<BooksEntity> displayBooks() {
 		return libraryMapper.displayBooks();
+	}
+	
+	public List<SearchLogsDTO> displayNotification(int user_id){
+		return libraryMapper.displayNotification(user_id);
 	}
 
 	/** 
@@ -81,9 +94,17 @@ public class LibraryService {
 	public List<TransactionEntity> displayLogs() {
 		return libraryMapper.displayLogs();
 	}
-	
-	public List<BooksEntity> searchBooks(SearchBooksRequest searchBooksRequest) {
-		return libraryMapper.searchBooks(searchBooksRequest);
+
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Search books which meet conditions.
+	 * 
+	 * @param searchBooksRequest
+	 * @return
+	 */
+	public List<BooksEntity> searchBooks(SearchBooksRequest searchBooksRequest){
+		return  libraryMapper.searchBooks(searchBooksRequest);
 	}
 
 	/** 

@@ -13,7 +13,14 @@ import com.example.todo.forms.SearchBooksRequest;
 
 @Mapper
 public interface LibraryMapper {
-
+	
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Select all book-info for display.
+	 * 
+	 * @return List for books
+	 */
 	public List<BooksEntity> displayBooks();
 
 	/** 
@@ -25,6 +32,24 @@ public interface LibraryMapper {
 	
 	public List<UsersEntity> add(LoginRequest loginRequest);
 	
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Select notification info.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public List<SearchLogsDTO> displayNotification(int user_id);
+	
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Search books which meet conditions.
+	 * 
+	 * @param searchBooksRequest
+	 * @return
+	 */
 	public List<BooksEntity> searchBooks(SearchBooksRequest searchBooksRequest);
 	
 	/** @author kk */
@@ -57,7 +82,12 @@ public interface LibraryMapper {
 
       /** @author kk */
 	public void register(UsersEntity usersEntity);
-	
+
+	/**
+	 * @author Lee 
+	 * @return ユーザーの情報修正
+	 **/
+	public void editUser(UsersEntity usersEntity);
 	/** @author kk */
 	public void updateTransaction(int bookId, int lenderId, int borrowerId);
 	

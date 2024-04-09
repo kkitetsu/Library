@@ -1,5 +1,6 @@
 package com.example.todo.forms;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +16,7 @@ public class BookAddRequest implements Serializable {
 	
 	private String category;
 	
-	private String limitdate;
+	private LocalDate limitdate;
 	
 	private Integer userId;
 	

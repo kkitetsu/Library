@@ -205,6 +205,10 @@ public class LibraryController {
 	@GetMapping(value = "/home")
 	public String home(Model model,HttpSession session) {
 		
+		if (session.getAttribute("userId") == null) {
+			return "redirect:/login";
+		}
+		
 		int user_id = (int)session.getAttribute("userId");
 		List<SearchLogsDTO> ntf = libraryService.displayNotification(user_id);
 		//お知らせを表示
@@ -249,10 +253,10 @@ public class LibraryController {
           bookRequest.setImgPath(uploadAction(e));
         });
 	   libraryService.bookRegister(bookRequest);
-       model.addAttribute("search_box", new SearchBooksRequest());
-       List<BooksEntity> bookshelf = libraryService.displayBooks();
-	   model.addAttribute("bookshelf", bookshelf);
-	   return "/home";
+//       model.addAttribute("search_box", new SearchBooksRequest());
+//       List<BooksEntity> bookshelf = libraryService.displayBooks();
+//	   model.addAttribute("bookshelf", bookshelf);
+	   return "redirect:/home";
         
     }
 	
@@ -265,7 +269,9 @@ public class LibraryController {
         String fileName = multipartFile.getOriginalFilename();
 
         //格納先のフルパス ※事前に格納先フォルダ「UploadTest」をCドライブ直下に作成しておく
+        
         java.nio.file.Path filePath = Paths.get("C:/pleiades/2023-12/workspace/Library/src/main/resources/static/uploadImage/" + fileName);
+        //java.nio.file.Path filePath = Paths.get("/Applications/Eclipse_2022-12.app/Contents/workspace/Library/src/main/resources/static/uploadImage/" + fileName);
         
         try {
             //アップロードファイルをバイト値に変換

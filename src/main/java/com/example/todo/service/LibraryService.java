@@ -18,6 +18,11 @@ public class LibraryService {
 
 	@Autowired
 	private LibraryMapper libraryMapper;
+	
+	/** @author kk */
+	public List<UsersEntity> getUsers() {
+		return libraryMapper.getUsers();
+	}
 
 	/** @author kk */
 	public List<UsersEntity> login(LoginRequest loginRequest) {
@@ -28,7 +33,26 @@ public class LibraryService {
 	public void register(UsersEntity usersEntity) {
 		libraryMapper.register(usersEntity);
 	}
+	
+	/** 
+	 * @author kk 
+	 * @param bookId 
+	 * @param lenderId 
+	 * @param borrowerId
+	 */
+	public void updateTransaction(int bookId, int lenderId, int borrowerId) {
+		libraryMapper.updateTransaction(bookId, lenderId, borrowerId);
+	}
 
+	
+	/** 
+	 * @author Lee
+	 * Userの情報修正
+	 **/
+	public void editUser(UsersEntity usersEntity) {
+		libraryMapper.editUser(usersEntity);
+	}
+	
 	/**
 	 * @author shunsukekuzawa
 	 * 
@@ -44,6 +68,19 @@ public class LibraryService {
 		return libraryMapper.displayNotification(user_id);
 	}
 
+	/** 
+	 * @author Lee
+	 * Mybookの履歴表示
+	 * @returnList
+	 * id(book id),
+	 * title(貸し借りた本のid),
+	 * exihibitorUserId(貸し手のユーザーID)
+	 * category(レンタル・譲渡の区分)
+	 * limitedate(貸し出し期限)
+	 **/
+	public List<BooksEntity> displayMyBooks(final int SUBLISTSIZE, int startIndex) {
+		return libraryMapper.displayMyBooks(SUBLISTSIZE, startIndex);
+	}
 	/** 
 	 * @author Lee
 	 * 貸し借りの全履歴(idベース)
@@ -81,10 +118,9 @@ public class LibraryService {
 	 * LimitDate（返却期限）
 	 * BorrowerId（借り手のID）
 	 **/
-	public List<SearchLogsDTO> displayBorrowLogs() {
-		return libraryMapper.displayBorrowLogs();
+	public List<SearchLogsDTO> displayBorrowLogs(final int SUBLISTSIZE, int startIndex) {
+		return libraryMapper.displayBorrowLogs(SUBLISTSIZE, startIndex);
 	}
-
 	/** 
 	 * @author Lee
 	 * 「貸し」の全履歴
@@ -101,10 +137,17 @@ public class LibraryService {
 	}
 	/** 
 	 * @author Lee
-	 * 「貸し」の履歴数を返却
-	 * @return Logsize
+	 * 「貸し」/「借り」/Mybookの履歴数を返す
+	 * @return Lend/Borrow Logsize
 	 **/
 	public int getLendLogsSize() {
 		return libraryMapper.getLendLogsSize();
 	}
+	public int getBorrowLogsSize() {
+		return libraryMapper.getBorrowLogsSize();
+	}
+	public int getMyBookLogsSize() {
+		return libraryMapper.getMyBookLogsSize();
+	}
+
 }

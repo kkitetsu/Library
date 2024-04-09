@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="UTF-8">
 	<!-- Bootstrap利用のため、必要なコード修正禁止 -->
@@ -12,9 +11,8 @@
 	<!-- CSS共通リンク -->
 	<link rel="stylesheet" href="css/common.css" />
 	<!-- タイトルの選択-->
-	<title>R-Library: Register</title>
+	<title>R-Library: Edit User Information</title>
 </head>
-
 <body>
 	<!-- 画面全体始め（ヘッダー、メイン、フッター）-->
 
@@ -24,7 +22,14 @@
 			<div class="header_logo"> <a href="https://www.rakuten-sec.co.jp/"><img src="img/rakuten_logo.png"
 						alt="Rakuten_sec_mark" class="main_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
-			<div class="header_btn_box"> btn1 btn2 </div>
+			<div class="header_btn_box">
+				<table class="header_table">
+					<th>
+					<td> <img src="img/alarm_icon.png" class="alert_icon"> </td>
+					<td> <img src="img/user_img.png" alt="user_icon" class="user_icon"> </td>
+					</th>
+				</table>
+			</div>
 		</header>
 		<!--メインー（修正可能領域）-->
 		<div class="main">
@@ -33,15 +38,15 @@
 		        <div th:text="${errMsg}" class="main_title" id="error"></div>
 		    </div>
    			<div class="main_title">
-				- 会員登録
+				- 会員情報修正
 			</div>
 			<!-- メインコンテンツが入る赤色の箱-->
 			<div class="main_content_box">
 				<!--actionの行き先修正必要 -->
 				<!-- 各inputのnameはusers tableの名前をそのまま使用-->
 				<!-- 各inputに条件必要-->
-				<table class="register_table">
-					<form th:action="@{/register}" th:method="POST" th:object="${userEntity}">
+				<table class="edit_user_table">
+					<form th:action="@{/edituser}" th:method="POST" th:object="${userEntity}">
 						<tr class="table_row">
 							<td>
 								<label for="login_id"> ID</label>
@@ -92,7 +97,6 @@
 						<tr>
 							<td>
 								<!-- 赤色、青色の箱はクラスを使って（赤：danger,青：primary）大きさはidで調	整します。-->
-
 								<input type="submit" class="btn btn-danger" id="small_size" value="登録">
 					</form>
 							</td>
@@ -110,7 +114,5 @@
 		<footer>
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>
-
 </body>
-
 </html>

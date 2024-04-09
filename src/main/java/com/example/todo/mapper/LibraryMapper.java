@@ -22,6 +22,15 @@ public interface LibraryMapper {
 	 * @return List for books
 	 */
 	public List<BooksEntity> displayBooks();
+
+	/** 
+	 * @author Lee 
+	 * @param MYBOOK リクエストデータ 
+	 * @return MYBOOKの一覧
+	 **/
+	public List<BooksEntity> displayMyBooks(final int SUBLISTSIZE, int startIndex);
+	
+	public List<UsersEntity> add(LoginRequest loginRequest);
 	
 	/**
 	 * @author shunsukekuzawa
@@ -54,26 +63,34 @@ public interface LibraryMapper {
 	 **/
 	public List<TransactionEntity> displayLogs();
 
-	/** 
-	 * @author Lee 
-	 * @param 借りた履歴リクエストデータ(今後 ユーザーID　主キーに修正予定)
-	 * @return 借りた履歴結果
-	 **/
-	public List<SearchLogsDTO> displayBorrowLogs();
-	
 	/**
 	 * @author Lee 
-	 * @param 貸した履歴リクエストデータ(今後 ユーザーID　主キーに修正予定)
-	 * @return 貸した履歴結果
+	 * @param 貸した/借りた履歴リクエストデータ(今後 ユーザーID　主キーに修正予定)
+	 * @return 貸した/借りた履歴結果
 	 **/
 	public List<SearchLogsDTO> displayLendLogs(final int SUBLISTSIZE, int startIndex);
+	public List<SearchLogsDTO> displayBorrowLogs(final int SUBLISTSIZE, int startIndex);
+	
 	/**
 	 * @author Lee 
-	 * @param 貸した履歴リクエストデータ(今後 ユーザーID　主キーに修正予定)
-	 * @return 貸した履歴のサイズ
+	 * @param 貸した/借りた履歴/My bookリクエストデータ(今後 ユーザーID　主キーに修正予定)
+	 * @return 貸した/借りた履歴/My book のサイズ
 	 **/
      int getLendLogsSize();
+     int getBorrowLogsSize();
+     int getMyBookLogsSize();
+
+      /** @author kk */
+	public void register(UsersEntity usersEntity);
+
+	/**
+	 * @author Lee 
+	 * @return ユーザーの情報修正
+	 **/
+	public void editUser(UsersEntity usersEntity);
+	/** @author kk */
+	public void updateTransaction(int bookId, int lenderId, int borrowerId);
 	
 	/** @author kk */
-	public void register(UsersEntity usersEntity);
+	public List<UsersEntity> getUsers();
 }

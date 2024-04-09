@@ -12,6 +12,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.UsersEntity;
+import com.example.todo.forms.BookAddRequest;
 import com.example.todo.forms.LoginRequest;
 import com.example.todo.forms.SearchBooksRequest;
 import com.example.todo.service.LibraryService;
@@ -32,6 +34,7 @@ public class LibraryController {
 	@Autowired
 	private LibraryService libraryService;
 
+	
 	@GetMapping(value = "/log")
 	public String getLogPage(Model model) {
 		return "/log";
@@ -42,10 +45,23 @@ public class LibraryController {
 	 * 貸しログ出力画面の表示
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
-	@GetMapping(value = "/borrowlog")
-	public String getBorrowLogPage(Model model) {
-		List<SearchLogsDTO> BorrowLogs = libraryService.displayBorrowLogs();
+
+	@RequestMapping(value = "/borrowlog", method = RequestMethod.POST)
+	public String getBorrowLogPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
+		int LogsSize = libraryService.getBorrowLogsSize();
+		final int SUBLISTSIZE = 5;
+		int maxPageNum = 1;
+		int startIndex = (currPage - 1) * SUBLISTSIZE;
+		List<SearchLogsDTO> BorrowLogs = libraryService.displayBorrowLogs(SUBLISTSIZE, startIndex);
+		if (LogsSize % SUBLISTSIZE == 0) {
+			maxPageNum = (int) LogsSize / SUBLISTSIZE;
+		} else {
+			maxPageNum = (int) (LogsSize / SUBLISTSIZE) + 1;
+		}
 		model.addAttribute("BorrowLogs", BorrowLogs);
+		model.addAttribute("currentPage", currPage);
+		model.addAttribute("maxPageNum", maxPageNum);
+
 		return "/borrowlog";
 	}
 
@@ -54,17 +70,23 @@ public class LibraryController {
 	 * 借りログ出力画面の表示
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
-	@GetMapping(value = "/lendlog")
+	@RequestMapping(value = "/lendlog", method = RequestMethod.POST)
 	public String getLendLogPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
 		int LogsSize = libraryService.getLendLogsSize();
 		final int SUBLISTSIZE = 5;
 		int startIndex = (currPage - 1) * SUBLISTSIZE;
-
+		
+		int maxPageNum = 1;
 		List<SearchLogsDTO> LendLogs = libraryService.displayLendLogs(SUBLISTSIZE, startIndex);
+		if (LogsSize % SUBLISTSIZE == 0) {
+			maxPageNum = (int) LogsSize / SUBLISTSIZE;
+		} else {
+			maxPageNum = (int) (LogsSize / SUBLISTSIZE) + 1;
+		}
 		model.addAttribute("LendLogs", LendLogs);
 		model.addAttribute("currentPage", currPage);
-		model.addAttribute("maxPageNum", (int) (Math.ceil(LogsSize / SUBLISTSIZE)));
-		
+		model.addAttribute("maxPageNum", maxPageNum);
+
 		return "/lendlog";
 	}
 
@@ -73,9 +95,62 @@ public class LibraryController {
 	 * 登録したマイブックの出力画面の表示
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
+
 	@GetMapping(value = "/mybook")
 	public String getmybookPage(Model model) {
 		return "/mybook";
+	}
+	
+	@RequestMapping(value = "/mybook", method = RequestMethod.POST)
+	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
+		int LogsSize = libraryService.getMyBookLogsSize();
+		final int SUBLISTSIZE = 5;
+		int maxPageNum = 1;
+		int startIndex = (currPage - 1) * SUBLISTSIZE;
+		List<BooksEntity> bookshelf = libraryService.displayMyBooks(SUBLISTSIZE, startIndex);
+		model.addAttribute("mybook", bookshelf);
+		model.addAttribute("currentPage", currPage);
+		if (LogsSize % SUBLISTSIZE == 0) {
+			maxPageNum = (int) LogsSize / SUBLISTSIZE;
+		} else {
+			maxPageNum = (int) (LogsSize / SUBLISTSIZE) + 1;
+		}
+		model.addAttribute("maxPageNum", maxPageNum);
+		return "/mybook";
+	}
+
+	/**
+	 * @author Lee 
+	 * 借りログ出力画面の表示
+	 * 今後、user idを@paramにするmethodに変える予定
+	 **/
+	@GetMapping(value = "/edituser")
+	public String geteditUserPage(Model model) {
+		model.addAttribute("userEntity", new UsersEntity());
+		return "/edituserInfo";
+	}
+
+	/**
+	 * @author Lee 
+	 * ユーザーの情報を更新するmethod
+	 **/
+	@RequestMapping(value = "/edituser", method = RequestMethod.POST)
+	public String EditUserInfo(@Validated @ModelAttribute UsersEntity usersEntity,
+			BindingResult bindingResult, Model model) {
+		if (bindingResult.hasErrors()) {
+			List<String> errorList = new ArrayList<String>();
+			for (ObjectError error : bindingResult.getAllErrors()) {
+				errorList.add(error.getDefaultMessage());
+			}
+			model.addAttribute("errMsg", errorList);
+			model.addAttribute("userEntity", new UsersEntity());
+			return "/edituser";
+		}
+		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
+		libraryService.editUser(usersEntity);
+		model.addAttribute("loginRequest", new LoginRequest());
+		model.addAttribute("search_box", new SearchBooksRequest());
+		return "/login";
 	}
 
 	/** @author kk */
@@ -143,26 +218,43 @@ public class LibraryController {
 		return "/home";
 	}
 	
-	/**
-	 * @author shunsukekuzawa
-	 * 
-	 * Select books which match conditions.
-	 * 
-	 * @param model
-	 * @param searchBooksRequest
-	 * @return URL of home.html
-	 */
+	@GetMapping(value = "/exhibit")
+	public String displayAdd(Model model) {
+		BookAddRequest bka = new BookAddRequest();
+		model.addAttribute("bookAddRequest", bka);
+		return "/add";
+	}
+
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult result, Model model,
+			HttpSession session) {
+		session.setAttribute("userId", 1);
+		int userId = (int) session.getAttribute("userId");
+		if (result.hasErrors()) {
+			// 入力チェックエラーの場合
+			List<String> errorList = new ArrayList<String>();
+			for (ObjectError error : result.getAllErrors()) {
+				errorList.add(error.getDefaultMessage());
+			}
+			model.addAttribute("validationError", errorList);
+			return "/exhibit";
+		}
+		model.addAttribute("search_box", new SearchBooksRequest());
+		List<BooksEntity> bookshelf = libraryService.displayBooks();
+		model.addAttribute("bookshelf", bookshelf);
+		return "/home";
+
+	}
+
+
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
 	public String search(Model model, SearchBooksRequest searchBooksRequest) {
-		
-		//条件に合う本のリストを取得
+
 		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
 
-		//条件が入力
 		if (searchBooksRequest.getBook_name() != "") {
 			model.addAttribute("condition", searchBooksRequest.getBook_name());
 		}
-		
 		model.addAttribute("search_box", new SearchBooksRequest());
 		model.addAttribute("bookshelf", bookshelf);
 
@@ -200,19 +292,50 @@ public class LibraryController {
 		model.addAttribute("loginRequest", new LoginRequest());
 		model.addAttribute("search_box", new SearchBooksRequest());
 
-		return "/home";
+		return "redirect:/home";
 	}
 
 	/** @author kk */
 	@GetMapping("/confirm")
-	public String getConfirmPage(Model model) {
-		BooksEntity book = new BooksEntity();
-		book.setTitle("testBook");
-		book.setCategory("HAHA");
-		book.setImage("THIS IS IMAGE");
-		book.setLimitdate("YYYYMMDD");
+	public String getConfirmPage(@ModelAttribute BooksEntity book, Model model) {
+		// TODO: Get book id
+		System.out.println(book);
+		book.setId(book.getId());
+		book.setTitle(book.getTitle());
+		book.setCategory(book.getCategory());
+		book.setImage(book.getImage());
+		book.setLimitdate(book.getLimitdate());
 		model.addAttribute("bookEntity", book);
 		return "/confirm";
+	}
+
+	/** 
+	 * @author kk 
+	 * 
+	 * Confirm borrowing and update transaction data.
+	 * 
+	 */
+	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
+	public String doBookConfirm(@ModelAttribute BooksEntity bookEntity, Model model) {
+		// TODO: Get each id from html
+		// int borrowerId = bookEntity.getId();
+		int borrowerId = 1;
+		int lenderId = Integer.parseInt("1");
+		int bookId = Integer.parseInt("1");
+		libraryService.updateTransaction(bookId, lenderId, borrowerId);
+		return "redirect:/borrowlog";
+	}
+	/**
+	 * @author Lee
+	 * ログアウトしてlogin画面移戻る。
+	 * @param session
+	 * @return
+	 */
+	@PostMapping("/logout")
+	public String doLogOut( Model model, HttpSession session) {
+		session.setAttribute("userId","1001");
+		session.invalidate(); // Logout and back to home
+		return "redirect:/login";
 	}
 
 	/**
@@ -232,4 +355,5 @@ public class LibraryController {
 		}
 		return hashedPassword;
 	}
+
 }

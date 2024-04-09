@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.todo.mapper.LibraryMapper">
-	<!-- 全件検索 -->
+	
+	<!-- 
+	@auther shunsukekuzawa 
+	Search all books on display.
+	-->
 	<select id="displayBooks"
 		resultType="com.example.todo.entity.BooksEntity">
-		SELECT id,title,content FROM books;
+		SELECT * FROM books;
 	</select>
+	
+	<!-- 
+	@auther shunsukekuzawa
+	 Search books searched by user with keyword.
+	-->
 	<select id="searchBooks"
 		resultType="com.example.todo.entity.BooksEntity">
 		SELECT id,title,content FROM books
@@ -14,29 +23,55 @@
 		  AND title LIKE CONCAT('%', #{book_name},'%')
 		</if>
 	</select>
+	
+	<select id="displayNotification"
+		resultType="com.example.todo.dto.SearchLogsDTO">
+		select t.traded_date as TradedDate, b.title as BookTitle, 
+		u.name as BorrowerName
+		from transactions as t
+		inner join books as b on b.id = t.book_id
+		inner join users as u on u.id = t.lender_user_id 
+		where u.login_id = #{user_id};
+	</select>
+	
 	<!--  @author kk -->
 	<select id="login" resultType="com.example.todo.entity.UsersEntity">
-		SELECT * FROM users WHERE login_id=#{login_id} AND password= #{login_pw};
+		SELECT 
+			* 
+		FROM 
+			users 
+		WHERE 
+			login_id=#{login_id} 
+		AND 
+			password=#{login_pw};
 	</select>
-	
 	<!--  @author kk -->
 	<select id="getUsers" resultType="com.example.todo.entity.UsersEntity">
-		SELECT * FROM users;
+		SELECT 
+			* 
+		FROM 
+			users;
 	</select>
-	
 	<!-- @author Lee : Mybookのlistの為のSQL文-->
 	<select id="displayMyBooks"
-		resultType="com.example.todo.entity.BooksEntity">
-		SELECT id,title,exhibitor_user_id as exhibitorUserId,category,limitdate FROM books
-		where exhibition_flag=1
-		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};
+			resultType="com.example.todo.entity.BooksEntity">
+		SELECT 
+			id, 
+			title, 
+			exhibitor_user_id as exhibitorUserId, 
+			category, 
+			limitdate 
+		FROM 
+		 	books
+		WHERE 
+		 	exhibition_flag=1
+		LIMIT 
+		 	#{SUBLISTSIZE} OFFSET #{startIndex};
 	</select>
-	
 	<!-- @author Lee : Transaction作成sql文 -->
 	<select id="displayLogs" resultType="com.example.todo.entity.TransactionEntity">
 		SELECT id,book_id,lender_user_id,borrower_user_id,traded_date FROM transactions;		
 	</select>
-
 	<!-- @author Lee :他のユーザーに貸した/借りた履歴 -->
 	<select id="displayLendLogs" resultType="com.example.todo.dto.SearchLogsDTO">
 		select t.id as TransId, t.traded_date as TradedDate, b.title as BookTitle, 
@@ -53,8 +88,7 @@
 		inner join books as b on b.id = t.book_id
 		inner join users as u on u.id = t.lender_user_id
 		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};
-	</select>	
-	
+	</select>
 	<!-- @author Lee:貸し/借りログ/MY BOOKの大きさ計算-->
 	<select id="getLendLogsSize">
 		SELECT COUNT(*) AS row_count FROM transactions
@@ -66,17 +100,27 @@
 		SELECT COUNT(*) AS row_count FROM books
 		WHERE exhibition_flag=1;
 	</select>
-	
-	
-	
+	<!--  @author lee:ユーザーの情報アップデート -->
+	<update id="editUser">
+		UPDATE 
+			users 
+		SET 
+			name = #{name},
+			department  = #{department},
+			mailaddress = #{mailaddress}, 
+			login_id = #{loginId},
+			password = #{password},
+		    edited_date = CURRENT_TIMESTAMP
+		WHERE 
+			id = 2;
+	</update>
 	<!--  @author kk -->
 	<insert id="register">
 		INSERT INTO users 
 		(name, department, mailaddress, login_id, password, joined_date, edited_date, del_flag)
 		VALUES
-		(#{name}, #{department}, #{mailaddress}, #{login_id}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
+		(#{name}, #{department}, #{mailaddress}, #{loginId}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
 	</insert>
-	
 	<!--  @author kk -->
 	<insert id="updateTransaction">
 		INSERT INTO transactions
@@ -84,5 +128,10 @@
 		VALUES
 		(#{bookId}, #{lenderId}, #{borrowerId}, CURRENT_TIMESTAMP)
 	</insert>
-	
+	<insert id = "bookRegister">
+	INSERT INTO books
+	(title, exhibitor_user_id, category, limitdate, image)
+	VALUES
+	(#{title}, #{userId}, #{category}, #{limitdate}, #{imgPath})
+	</insert>
 </mapper>

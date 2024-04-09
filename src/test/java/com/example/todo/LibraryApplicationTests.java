@@ -309,5 +309,33 @@ class LibraryApplicationTests {
 			e.printStackTrace();
 		}
 	}
+	
+	/*************************************************************************************
+     * Integration Test
+     * 
+     * 1.  Create two users (register)
+     * 2.  Login for user1 (id=1)
+     * 3.  Add book for user1 (lender)
+     * 4.  Logout user1
+     * 5.  Login for user2 (id=2)
+     * 6.  Borrow book (user2 borrows a book from user1)
+     * 7.  Check borrowLog for user2
+     * 8.  Logout user2
+     * 9.  Login user1
+     * 10. Check lendLog for user1
+     * 
 
+    /** @author kk */
+	public void IntegrationTest() {
+		UsersEntity usersEntity1 = createTestUserEntity(0001, "testName1");
+    	libraryService.register(usersEntity1);
+    	UsersEntity usersEntity2 = createTestUserEntity(0002, "testName2");
+    	libraryService.register(usersEntity2);
+    	LoginRequest loginRequest = new LoginRequest();
+    	loginRequest.setLogin_id(usersEntity1.getLoginId());
+    	loginRequest.setLogin_pw(usersEntity1.getPassword());
+    	List<UsersEntity> loginResult = libraryService.login(loginRequest);
+    	assertEquals(1, loginResult.get(0).getId());
+		return;
+	}
 }

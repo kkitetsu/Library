@@ -8,24 +8,6 @@
 	/* Height of the footer */
 }
 
-#borrow_btn{
-	position: relative;
-	bottom: 50px;
-	right: 20px;
-	width: 120px;
-	height: 50px;
-	border: solid 2px white;
-}
-
-#take_btn{
-	position: relative;
-	bottom: 50px;
-	left: 20px;
-	width: 120px;
-	height: 50px;
-	border: solid 2px white;
-}
-
 .search_box {
 	text-align: center;
 }
@@ -286,8 +268,4 @@ span.deleteclass::after {
 	border:none;
 	background-color:rgb(188,0,1);
 }
-.trigger{
- cursor:pointer;
-}
-
 

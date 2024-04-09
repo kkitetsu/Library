@@ -270,7 +270,7 @@ public class LibraryController {
 
         //格納先のフルパス ※事前に格納先フォルダ「UploadTest」をCドライブ直下に作成しておく
         
-        java.nio.file.Path filePath = Paths.get("C:/pleiades/2023-12/workspace/Library/src/main/resources/static/uploadImage/" + fileName);
+        java.nio.file.Path filePath = Paths.get( "C:/pleiades/2022-12/workspace/RakutenLibrary/Library/src/main/resources/static/uploadImage/" + fileName);
         //java.nio.file.Path filePath = Paths.get("/Applications/Eclipse_2022-12.app/Contents/workspace/Library/src/main/resources/static/uploadImage/" + fileName);
         
         try {

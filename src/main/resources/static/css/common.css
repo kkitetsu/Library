@@ -2,9 +2,7 @@
 /* 画面構成に使うCSSです。*/
 
 .content_box {
-	width: 80%;
-	margin-right:10%;
-	margin-left:10%;
+	width: 100%;
 	padding:none;
 	min-height:100%;
 	}
@@ -174,7 +172,13 @@ body{
 	height:auto;
 	border-radius:90%;
 }
-
+.user_icon_trigger{
+	width:90%;
+	height:auto;
+	border-radius:90%;
+	background-color:white;
+	cursor:pointer;
+}
 .header_table td{
 	width:50%;
 }

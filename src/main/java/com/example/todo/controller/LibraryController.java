@@ -11,6 +11,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -224,15 +225,19 @@ public class LibraryController {
 	}
 	
 	/** @author kk */
-	@GetMapping("/confirm")
-	public String getConfirmPage(@ModelAttribute BooksEntity book, Model model) {
-		// TODO: Get book id
+	@PostMapping("/confirmPage")
+	public String getConfirmPage(@RequestParam("id") String bookId,
+            					 @RequestParam("title") String bookTitle,
+            					 @RequestParam("image") String image, 
+            					 @RequestParam("category") String category,
+            					 @RequestParam("limitdate") String limitdate, Model model) {
+		BooksEntity book = new BooksEntity();
+		book.setCategory(category);
+		book.setId(Integer.parseInt(bookId));
+		book.setImage(image);
+		book.setLimitdate(limitdate);
+		book.setTitle(bookTitle);
 		System.out.println(book);
-		book.setId(book.getId());
-		book.setTitle(book.getTitle());
-		book.setCategory(book.getCategory());
-		book.setImage(book.getImage());
-		book.setLimitdate(book.getLimitdate());
 		model.addAttribute("bookEntity", book);
 		return "/confirm";
 	}
@@ -244,12 +249,15 @@ public class LibraryController {
 	 * 
 	 */
 	@RequestMapping(value="/confirm", method=RequestMethod.POST)
-	public String doBookConfirm(@ModelAttribute BooksEntity bookEntity, Model model) {
+	public String doBookConfirm(@RequestParam("id") String id,
+												Model model, HttpSession session) {
 		// TODO: Get each id from html
 		// int borrowerId = bookEntity.getId();
-		int borrowerId   = 1;
+		System.out.println(id);
+		int borrowerId = Integer.parseInt(session.getAttribute("userId").toString());
 		int lenderId   = Integer.parseInt("1");
-		int bookId     = Integer.parseInt("1");
+		int bookId     = Integer.parseInt(id);
+		System.out.println(bookId + " " + lenderId + " " + borrowerId);
 		libraryService.updateTransaction(bookId, lenderId, borrowerId);
 		return "redirect:/borrowlog";
 	}

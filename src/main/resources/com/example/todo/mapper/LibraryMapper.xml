@@ -4,7 +4,7 @@
 	<!-- 全件検索 -->
 	<select id="displayBooks"
 		resultType="com.example.todo.entity.BooksEntity">
-		SELECT id,title,content FROM books;
+		SELECT * FROM books;
 	</select>
 	<select id="searchBooks"
 		resultType="com.example.todo.entity.BooksEntity">

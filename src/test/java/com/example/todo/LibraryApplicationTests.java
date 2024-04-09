@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.ui.Model;
 
 import com.example.todo.controller.LibraryController;
+import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.TransactionEntity;
 import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
@@ -150,6 +151,29 @@ class LibraryApplicationTests {
     	assertEquals(1, result.get(0).getLenderUserId());
     	assertEquals(2, result.get(0).getBorrowerUserId());
     	assertEquals("Book1", libraryService.displayBooks().get(0).getTitle());
+    }
+    
+    /** 
+     * @author kk 
+     * Testing Kuzawa's displayBooks
+     */
+    @Test
+    public void testDisplayBookLists() throws SQLException {
+    	UsersEntity usersEntity1 = createTestUserEntity();
+    	libraryService.register(usersEntity1);
+    	try (Connection connection = dataSource.getConnection();
+                Statement statement = connection.createStatement()) {
+    		String sql = "INSERT INTO books " +
+    					 "(title, content, exhibitor_user_id, category, limitdate, image, exhibition_flag)" + 
+    					 " VALUES " +
+    					 "('Book1', 'Content of Book1', 1, 'giving', CURRENT_TIMESTAMP, 'book1.jpg', 1)";
+    		statement.executeUpdate(sql);
+    	}
+    	List<BooksEntity> result = libraryService.displayBooks();
+    	assertEquals("Book1", result.get(0).getTitle());
+    	assertEquals(1, result.get(0).getId());
+    	assertEquals("giving", result.get(0).getCategory());
+    	assertEquals("book1.jpg", result.get(0).getImage());
     }
 
 }

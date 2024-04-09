@@ -13,6 +13,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,6 +26,22 @@ import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
 import com.example.todo.service.LibraryService;
 
+/**
+ * @author kk
+ * 
+ * This is the class for tests.
+ * It is using Junit 5.
+ * 
+ * Before and after each test, cleanup will be run and all the data will be cleared.
+ * 
+ * For each initialization, the corresponding id will be automatically incremented.
+ * For example, if three users are initialized (three userEntity),
+ * 		corresponding id will be 1, 2, and 3. 
+ *
+ * Use libraryService to check if the sql statement is correct.
+ * Use libraryController to check if the direct destination is correct.
+ * 
+ */
 @SpringBootTest
 class LibraryApplicationTests {
 	
@@ -38,6 +55,7 @@ class LibraryApplicationTests {
     private DataSource dataSource; 
     
     /** @author kk */
+    @BeforeEach
     @AfterEach
     public void cleanup() throws SQLException {
         try (Connection connection = dataSource.getConnection();
@@ -51,6 +69,9 @@ class LibraryApplicationTests {
         }
     }
     
+    /*************************************************************************************
+     * Test helper functions
+     
     /** @author kk */
     @Test
  	public void testHashing() {
@@ -58,6 +79,9 @@ class LibraryApplicationTests {
  		String hashedPassword = libraryController.getHashedPassword(inputPW);
  		assertEquals("9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08", hashedPassword);
  	}
+    
+    /*************************************************************************************
+     * Test controller functions
 	
 	/** @author kk */
 	@Test
@@ -67,25 +91,31 @@ class LibraryApplicationTests {
         assertEquals("login", viewName);
 	}
 	
+	/*************************************************************************************
+     * Test service functions
+    
+	/** @author kk */
+	@Test
+	public void testGetUsers() {
+		UsersEntity usersEntity1 = createTestUserEntity(1000, "testName1");
+		UsersEntity usersEntity2 = createTestUserEntity(1002, "testName2");
+		libraryService.register(usersEntity1);
+		libraryService.register(usersEntity2);
+		assertEquals(1, libraryService.getUsers().get(0).getId());
+		assertEquals(1000, libraryService.getUsers().get(0).getLoginId());
+		assertEquals("testName2", libraryService.getUsers().get(1).getName());
+		assertThrows(IndexOutOfBoundsException.class, () -> {
+	        // There are only two users
+			libraryService.getUsers().get(2);
+	    });
+	}
+	
 	/** @author kk */
 	@Test
 	public void testRegistrationSuccess() {
-		UsersEntity usersEntity = createTestUserEntity();
+		UsersEntity usersEntity = createTestUserEntity(0, "testName");
 		libraryService.register(usersEntity);
-		checkInsertedDatabase(usersEntity.getMailaddress(), usersEntity.getLogin_id());
-	}
- 
-	/** @author kk */
-	private void checkInsertedDatabase(String inputMailAddress, int inputLoginId) {
-		try (Connection connection = dataSource.getConnection();
-	            Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM users WHERE name='testName'");
-            assertTrue(resultSet.next());
-            assertEquals(inputMailAddress, resultSet.getString("mailaddress"));
-            assertEquals(inputLoginId,     resultSet.getInt("login_id"));
-	    } catch (SQLException e) {
-			e.printStackTrace();
-		}
+		checkInsertedDatabase(usersEntity.getMailaddress(), usersEntity.getLoginId());
 	}
     
 	/** @author kk */
@@ -93,12 +123,12 @@ class LibraryApplicationTests {
     public void testLogin() {
 		
 		// First create a dummy data
-		UsersEntity usersEntity = createTestUserEntity();
+		UsersEntity usersEntity = createTestUserEntity(0, "testName");
 		libraryService.register(usersEntity); 
         
 		// Then Prepare data needed for login
         LoginRequest loginRequest = new LoginRequest(); 
-        loginRequest.setLogin_id(usersEntity.getLogin_id());
+        loginRequest.setLogin_id(usersEntity.getLoginId());
         loginRequest.setLogin_pw(usersEntity.getPassword());
 
         // Insert test user into the database
@@ -114,25 +144,16 @@ class LibraryApplicationTests {
         assertTrue(result.isEmpty());
     }
     
-	/** @author kk */
-    private UsersEntity createTestUserEntity() {
-    	UsersEntity usersEntity = new UsersEntity();
-		usersEntity.setDel_flag(0);
-		usersEntity.setDepartment("testDepartment");
-		usersEntity.setEdited_date(LocalDate.now());
-		usersEntity.setJoined_date(LocalDate.now());
-		usersEntity.setLogin_id(0);
-		usersEntity.setMailaddress("test@example.com");
-		usersEntity.setName("testName");
-		usersEntity.setPassword(libraryController.getHashedPassword("testPassword"));
-		return usersEntity;
-    }
-    
-    /** @author kk */
+    /** 
+     * @author kk 
+     * 
+     * Test transaction.
+     * Three users and two books.
+     */
     @Test
     public void testUpdateTransaction() throws SQLException {
-    	UsersEntity usersEntity1 = createTestUserEntity();
-    	UsersEntity usersEntity2 = createTestUserEntity();
+    	UsersEntity usersEntity1 = createTestUserEntity(0, "testName");
+    	UsersEntity usersEntity2 = createTestUserEntity(2, "testName2");
     	libraryService.register(usersEntity1);
     	libraryService.register(usersEntity2);
     	try (Connection connection = dataSource.getConnection();
@@ -151,6 +172,25 @@ class LibraryApplicationTests {
     	assertEquals(1, result.get(0).getLenderUserId());
     	assertEquals(2, result.get(0).getBorrowerUserId());
     	assertEquals("Book1", libraryService.displayBooks().get(0).getTitle());
+    	
+    	try (Connection connection = dataSource.getConnection();
+                Statement statement = connection.createStatement()) {
+    		String sql = "INSERT INTO books " +
+    					 "(title, content, exhibitor_user_id, category, limitdate, image, exhibition_flag)" + 
+    					 " VALUES " +
+    					 "('Book2', 'Content of Book2', 1, 'lending', CURRENT_TIMESTAMP, 'book2.jpg', 1)";
+    		statement.executeUpdate(sql);
+    	}
+    	UsersEntity usersEntity3 = createTestUserEntity(0, "testName");
+    	libraryService.register(usersEntity3);
+    	// Book2, Lender: 1, Borrower: entity3
+    	libraryService.updateTransaction(2, libraryService.getUsers().get(0).getId(), 
+				libraryService.getUsers().get(2).getId());
+    	result = libraryService.displayLogs();
+    	assertEquals(2, result.get(1).getBookId());
+    	assertEquals(1, result.get(1).getLenderUserId());
+    	assertEquals(3, result.get(1).getBorrowerUserId());
+    	assertEquals("Book2", libraryService.displayBooks().get(1).getTitle());
     }
     
     /** 
@@ -159,7 +199,7 @@ class LibraryApplicationTests {
      */
     @Test
     public void testDisplayBookLists() throws SQLException {
-    	UsersEntity usersEntity1 = createTestUserEntity();
+    	UsersEntity usersEntity1 = createTestUserEntity(0, "testName");
     	libraryService.register(usersEntity1);
     	try (Connection connection = dataSource.getConnection();
                 Statement statement = connection.createStatement()) {
@@ -170,12 +210,41 @@ class LibraryApplicationTests {
     		statement.executeUpdate(sql);
     	}
     	List<BooksEntity> result = libraryService.displayBooks();
-    	System.out.println(result);
     	assertEquals("Book1", result.get(0).getTitle());
     	assertEquals(1, result.get(0).getId());
     	assertEquals("giving", result.get(0).getCategory());
     	assertEquals("book1.jpg", result.get(0).getImage());
     	assertEquals(1, result.get(0).getExhibitorUserId());
     }
+    
+    /*************************************************************************************
+     * Helper functions for test
+
+    /** @author kk */
+    private UsersEntity createTestUserEntity(int loginId, String name) {
+    	UsersEntity usersEntity = new UsersEntity();
+		usersEntity.setDel_flag(0);
+		usersEntity.setDepartment("testDepartment");
+		usersEntity.setEdited_date(LocalDate.now());
+		usersEntity.setJoined_date(LocalDate.now());
+		usersEntity.setLoginId(loginId);
+		usersEntity.setMailaddress("test@example.com");
+		usersEntity.setName(name);
+		usersEntity.setPassword(libraryController.getHashedPassword("testPassword"));
+		return usersEntity;
+    }
+    
+    /** @author kk */
+	private void checkInsertedDatabase(String inputMailAddress, int inputLoginId) {
+		try (Connection connection = dataSource.getConnection();
+	            Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM users WHERE name='testName'");
+            assertTrue(resultSet.next());
+            assertEquals(inputMailAddress, resultSet.getString("mailaddress"));
+            assertEquals(inputLoginId,     resultSet.getInt("login_id"));
+	    } catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 }

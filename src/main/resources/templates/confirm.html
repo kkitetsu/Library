@@ -50,7 +50,9 @@
 						<td><span th:text="*{bookEntity.limitdate}"></span></td>
 					</tr>
 					<tr>
-						<td><input type="submit" class="btn btn-danger" value="レンタル" id="small_size"></td>
+						<td><input type="submit" class="btn btn-danger" 
+								   th:value="${bookEntity.category == 'giving' ? '授与' : 'レンタル'}" 
+								   id="small_size"></td>
 				</form>
 						<td><a href="/home" class="btn btn-primary" id="small_size">キャンセル</a></td>
 					</tr>

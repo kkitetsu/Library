@@ -74,7 +74,7 @@
 		INSERT INTO users 
 		(name, department, mailaddress, login_id, password, joined_date, edited_date, del_flag)
 		VALUES
-		(#{name}, #{department}, #{mailaddress}, #{login_id}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
+		(#{name}, #{department}, #{mailaddress}, #{loginId}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
 	</insert>
 	
 	<!--  @author kk -->

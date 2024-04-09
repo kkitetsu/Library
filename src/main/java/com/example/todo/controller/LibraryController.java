@@ -201,6 +201,10 @@ public class LibraryController {
 	@GetMapping(value = "/home")
 	public String home(Model model,HttpSession session) {
 		
+		if (session.getAttribute("userId") == null) {
+			return "redirect:/login";
+		}
+		
 		int user_id = (int)session.getAttribute("userId");
 		List<SearchLogsDTO> ntf = libraryService.displayNotification(user_id);
 		//お知らせを表示

@@ -140,7 +140,7 @@
 
 			<div class="main_content_box">
 				<div class="content" th:each="book: ${bookshelf}">
-					<img src="/img/naruto_magazine.jpeg" class="book_img">
+					<img th:src="*{book.image}" class="bookImg">
 
 					<form th:action="@{/confirm}" th:method="GET">
 						<input type="hidden" name="title" th:value="${book.title}" />

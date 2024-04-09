@@ -104,7 +104,10 @@ nav.nav ul {
     border: none;
     padding: 0;
 }
-.toggle {
+#toggle_trigger{
+  cursor: pointer;	
+}
+.toggle_box{
   position: absolute;
   right: 100%;
   width: 50px;

@@ -253,10 +253,10 @@ public class LibraryController {
           bookRequest.setImgPath(uploadAction(e));
         });
 	   libraryService.bookRegister(bookRequest);
-       model.addAttribute("search_box", new SearchBooksRequest());
-       List<BooksEntity> bookshelf = libraryService.displayBooks();
-	   model.addAttribute("bookshelf", bookshelf);
-	   return "/home";
+//       model.addAttribute("search_box", new SearchBooksRequest());
+//       List<BooksEntity> bookshelf = libraryService.displayBooks();
+//	   model.addAttribute("bookshelf", bookshelf);
+	   return "redirect:/home";
         
     }
 	
@@ -269,7 +269,9 @@ public class LibraryController {
         String fileName = multipartFile.getOriginalFilename();
 
         //格納先のフルパス ※事前に格納先フォルダ「UploadTest」をCドライブ直下に作成しておく
-        java.nio.file.Path filePath = Paths.get("C:/pleiades/2023-12/workspace/Library/src/main/resources/static/uploadImage/" + fileName);
+        
+        java.nio.file.Path filePath = Paths.get( "C:/pleiades/2022-12/workspace/RakutenLibrary/Library/src/main/resources/static/uploadImage/" + fileName);
+        //java.nio.file.Path filePath = Paths.get("/Applications/Eclipse_2022-12.app/Contents/workspace/Library/src/main/resources/static/uploadImage/" + fileName);
         
         try {
             //アップロードファイルをバイト値に変換

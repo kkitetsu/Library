@@ -189,7 +189,7 @@ public class LibraryController {
 			model.addAttribute("logininfo", new LoginRequest());
 			return "/login";
 		}
-		session.setAttribute("userId", loginRequest.getLogin_id());
+		session.setAttribute("userId", user_info.get(0).getId());
 		return "redirect:/home";
 	}
 
@@ -204,6 +204,10 @@ public class LibraryController {
 
 	@GetMapping(value = "/home")
 	public String home(Model model,HttpSession session) {
+		
+		if (session.getAttribute("userId") == null) {
+			return "redirect:/login";
+		}
 		
 		int user_id = (int)session.getAttribute("userId");
 		List<SearchLogsDTO> ntf = libraryService.displayNotification(user_id);
@@ -362,10 +366,6 @@ public class LibraryController {
 	public String doBookConfirm(@RequestParam("id") String id,
 								@RequestParam("exhibitorId") String exhibitorId,
 								Model model, HttpSession session) {
-		// TODO: Get each id from html
-		// int borrowerId = bookEntity.getId();
-		System.out.println(id);
-		System.out.println(exhibitorId);
 		int borrowerId = Integer.parseInt(session.getAttribute("userId").toString());
 		int lenderId   = Integer.parseInt(exhibitorId);
 		int bookId     = Integer.parseInt(id);

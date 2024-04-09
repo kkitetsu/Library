@@ -32,6 +32,7 @@
 			 <table class="add_table">
 				 <form th:action="@{/confirm}" th:method="POST" >
 				    <input type="hidden" th:name="id" th:value="*{bookEntity.id}">
+				    <input type="hidden" th:name="exhibitorId" th:value="*{bookEntity.exhibitorUserId}">
 					<tr class="table_row">
 						<td>本の画像</td>
 						<td><span th:text="*{bookEntity.image}"></span></td>

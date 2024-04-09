@@ -230,13 +230,15 @@ public class LibraryController {
             					 @RequestParam("title") String bookTitle,
             					 @RequestParam("image") String image, 
             					 @RequestParam("category") String category,
-            					 @RequestParam("limitdate") String limitdate, Model model) {
+            					 @RequestParam("limitdate") String limitdate, 
+            					 @RequestParam("exhibitor") String exhibitor, Model model) {
 		BooksEntity book = new BooksEntity();
 		book.setCategory(category);
 		book.setId(Integer.parseInt(bookId));
 		book.setImage(image);
 		book.setLimitdate(limitdate);
 		book.setTitle(bookTitle);
+		book.setExhibitorUserId(Integer.parseInt(exhibitor));
 		System.out.println(book);
 		model.addAttribute("bookEntity", book);
 		return "/confirm";
@@ -250,12 +252,14 @@ public class LibraryController {
 	 */
 	@RequestMapping(value="/confirm", method=RequestMethod.POST)
 	public String doBookConfirm(@RequestParam("id") String id,
-												Model model, HttpSession session) {
+								@RequestParam("exhibitorId") String exhibitorId,
+								Model model, HttpSession session) {
 		// TODO: Get each id from html
 		// int borrowerId = bookEntity.getId();
 		System.out.println(id);
+		System.out.println(exhibitorId);
 		int borrowerId = Integer.parseInt(session.getAttribute("userId").toString());
-		int lenderId   = Integer.parseInt("1");
+		int lenderId   = Integer.parseInt(exhibitorId);
 		int bookId     = Integer.parseInt(id);
 		System.out.println(bookId + " " + lenderId + " " + borrowerId);
 		libraryService.updateTransaction(bookId, lenderId, borrowerId);

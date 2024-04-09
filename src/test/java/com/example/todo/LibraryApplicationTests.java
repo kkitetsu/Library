@@ -170,10 +170,12 @@ class LibraryApplicationTests {
     		statement.executeUpdate(sql);
     	}
     	List<BooksEntity> result = libraryService.displayBooks();
+    	System.out.println(result);
     	assertEquals("Book1", result.get(0).getTitle());
     	assertEquals(1, result.get(0).getId());
     	assertEquals("giving", result.get(0).getCategory());
     	assertEquals("book1.jpg", result.get(0).getImage());
+    	assertEquals(1, result.get(0).getExhibitorUserId());
     }
 
 }

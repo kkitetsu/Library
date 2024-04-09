@@ -45,8 +45,8 @@ public class LibraryController {
 	 * 貸しログ出力画面の表示
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
-
-	@RequestMapping(value = "/borrowlog", method = RequestMethod.POST)
+	// @RequestMapping(value = "/borrowlog", method = RequestMethod.POST) edited kk
+	@RequestMapping(value = "/borrowlog", method={RequestMethod.GET, RequestMethod.POST})
 	public String getBorrowLogPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
 		int LogsSize = libraryService.getBorrowLogsSize();
 		final int SUBLISTSIZE = 5;

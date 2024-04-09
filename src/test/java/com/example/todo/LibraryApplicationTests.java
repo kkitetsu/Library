@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import javax.sql.DataSource;
 
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.ui.Model;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.example.todo.controller.LibraryController;
 import com.example.todo.entity.BooksEntity;
@@ -25,6 +27,8 @@ import com.example.todo.entity.TransactionEntity;
 import com.example.todo.entity.UsersEntity;
 import com.example.todo.forms.LoginRequest;
 import com.example.todo.service.LibraryService;
+
+import jakarta.validation.ConstraintViolation;
 
 /**
  * @author kk
@@ -53,6 +57,9 @@ class LibraryApplicationTests {
     
     @Autowired
     private DataSource dataSource; 
+    
+    @Autowired
+    private LocalValidatorFactoryBean validatorFactory;
     
     /** @author kk */
     @BeforeEach
@@ -112,14 +119,6 @@ class LibraryApplicationTests {
 	
 	/** @author kk */
 	@Test
-	public void testRegistrationSuccess() {
-		UsersEntity usersEntity = createTestUserEntity(0, "testName");
-		libraryService.register(usersEntity);
-		checkInsertedDatabase(usersEntity.getMailaddress(), usersEntity.getLoginId());
-	}
-    
-	/** @author kk */
-	@Test
     public void testLogin() {
 		
 		// First create a dummy data
@@ -143,6 +142,51 @@ class LibraryApplicationTests {
         result = libraryService.login(loginRequest);
         assertTrue(result.isEmpty());
     }
+	
+	/** @author kk */
+	@Test
+	public void testRegistrationSuccess() {
+		UsersEntity usersEntity = createTestUserEntity(0, "testName");
+		libraryService.register(usersEntity);
+		checkInsertedDatabase(usersEntity.getMailaddress(), usersEntity.getLoginId());
+	}
+	
+	/** @author kk */
+	@Test
+	public void testRegisterInvalid() {
+		UsersEntity usersEntity = createTestUserEntity(0, "testName");
+		usersEntity.setMailaddress("xxx");
+		// Validate the object using the validator
+        Set<ConstraintViolation<UsersEntity>> violations = validatorFactory.validate(usersEntity);
+
+        // Assert that there is exactly one violation
+        assertEquals(2, violations.size());
+
+        // Check each violation message
+        boolean invalidEmailViolationFound = false;
+        boolean nonPositiveIdViolationFound = false;
+        for (ConstraintViolation<UsersEntity> violation : violations) {
+            if ("Invalid email address".equals(violation.getMessage())) {
+                invalidEmailViolationFound = true;
+            } else if ("ID must be a positive number".equals(violation.getMessage())) {
+                nonPositiveIdViolationFound = true;
+            }
+        }
+
+        // Assert that both violations are found
+        assertEquals(true, invalidEmailViolationFound);
+        assertEquals(true, nonPositiveIdViolationFound);
+        
+        usersEntity.setMailaddress("test@test.com");
+        usersEntity.setLoginId(-4);
+        violations = validatorFactory.validate(usersEntity);
+        
+        assertEquals(1, violations.size());
+        
+        ConstraintViolation<UsersEntity> violation = violations.iterator().next();
+        assertEquals("ID must be a positive number", violation.getMessage());
+
+	}
     
     /** 
      * @author kk 
@@ -192,6 +236,25 @@ class LibraryApplicationTests {
     	assertEquals(3, result.get(1).getBorrowerUserId());
     	assertEquals("Book2", libraryService.displayBooks().get(1).getTitle());
     }
+    
+//    /**
+//     * @author kk
+//     * Testing Lee's editUser
+//     */
+//    @Test
+//    public void testEditUser() {
+//    	UsersEntity usersEntity1 = createTestUserEntity(0002, "testName");
+//    	libraryService.register(usersEntity1);
+//    	
+//    	// Edit LoginId
+//    	usersEntity1.setLoginId(0004);
+//    	
+//    	System.out.println(usersEntity1);
+//    	
+//    	libraryService.editUser(usersEntity1);
+//    	UsersEntity result = libraryService.getUsers().get(0);
+//    	assertEquals(0004, result.getLoginId());
+//    }
     
     /** 
      * @author kk 

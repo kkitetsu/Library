@@ -36,18 +36,37 @@
 	
 	<!--  @author kk -->
 	<select id="login" resultType="com.example.todo.entity.UsersEntity">
-		SELECT * FROM users WHERE login_id=#{login_id} AND password= #{login_pw};
+		SELECT 
+			* 
+		FROM 
+			users 
+		WHERE 
+			login_id=#{login_id} 
+		AND 
+			password=#{login_pw};
 	</select>
 	<!--  @author kk -->
 	<select id="getUsers" resultType="com.example.todo.entity.UsersEntity">
-		SELECT * FROM users;
+		SELECT 
+			* 
+		FROM 
+			users;
 	</select>
 	<!-- @author Lee : Mybookのlistの為のSQL文-->
 	<select id="displayMyBooks"
-		resultType="com.example.todo.entity.BooksEntity">
-		SELECT id,title,exhibitor_user_id as exhibitorUserId,category,limitdate FROM books
-		where exhibition_flag=1
-		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};
+			resultType="com.example.todo.entity.BooksEntity">
+		SELECT 
+			id, 
+			title, 
+			exhibitor_user_id as exhibitorUserId, 
+			category, 
+			limitdate 
+		FROM 
+		 	books
+		WHERE 
+		 	exhibition_flag=1
+		LIMIT 
+		 	#{SUBLISTSIZE} OFFSET #{startIndex};
 	</select>
 	<!-- @author Lee : Transaction作成sql文 -->
 	<select id="displayLogs" resultType="com.example.todo.entity.TransactionEntity">
@@ -83,14 +102,17 @@
 	</select>
 	<!--  @author lee:ユーザーの情報アップデート -->
 	<update id="editUser">
-		UPDATE users set 
-		name = #{name},
-		department  = #{department},
-		mailaddress = #{mailaddress}, 
-		login_id = #{loginId},
-		password = #{password},
-	    edited_date = CURRENT_TIMESTAMP
-	    where id = 2;
+		UPDATE 
+			users 
+		SET 
+			name = #{name},
+			department  = #{department},
+			mailaddress = #{mailaddress}, 
+			login_id = #{loginId},
+			password = #{password},
+		    edited_date = CURRENT_TIMESTAMP
+		WHERE 
+			id = 2;
 	</update>
 	<!--  @author kk -->
 	<insert id="register">

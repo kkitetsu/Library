@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.todo.mapper.LibraryMapper">
-	<!-- 全件検索 -->
+	
+	<!-- 
+	@auther shunsukekuzawa 
+	Search all books on display.
+	-->
 	<select id="displayBooks"
 		resultType="com.example.todo.entity.BooksEntity">
-		SELECT id,title,content FROM books;
+		SELECT * FROM books;
 	</select>
+	
+	<!-- 
+	@auther shunsukekuzawa
+	 Search books searched by user with keyword.
+	-->
 	<select id="searchBooks"
 		resultType="com.example.todo.entity.BooksEntity">
 		SELECT id,title,content FROM books
@@ -14,6 +23,17 @@
 		  AND title LIKE CONCAT('%', #{book_name},'%')
 		</if>
 	</select>
+	
+	<select id="displayNotification"
+		resultType="com.example.todo.dto.SearchLogsDTO">
+		select t.traded_date as TradedDate, b.title as BookTitle, 
+		u.name as BorrowerName
+		from transactions as t
+		inner join books as b on b.id = t.book_id
+		inner join users as u on u.id = t.lender_user_id 
+		where u.login_id = #{user_id};
+	</select>
+	
 	<!--  @author kk -->
 	<select id="login" resultType="com.example.todo.entity.UsersEntity">
 		SELECT * FROM users WHERE login_id=#{login_id} AND password= #{login_pw};

@@ -34,11 +34,18 @@ public class LibraryController {
 	@Autowired
 	private LibraryService libraryService;
 
+	
+	@GetMapping(value = "/log")
+	public String getLogPage(Model model) {
+		return "/log";
+	}
+
 	/**
 	 * @author Lee 
 	 * 貸しログ出力画面の表示
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
+
 	@RequestMapping(value = "/borrowlog", method = RequestMethod.POST)
 	public String getBorrowLogPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
 		int LogsSize = libraryService.getBorrowLogsSize();
@@ -54,6 +61,7 @@ public class LibraryController {
 		model.addAttribute("BorrowLogs", BorrowLogs);
 		model.addAttribute("currentPage", currPage);
 		model.addAttribute("maxPageNum", maxPageNum);
+
 		return "/borrowlog";
 	}
 
@@ -67,6 +75,7 @@ public class LibraryController {
 		int LogsSize = libraryService.getLendLogsSize();
 		final int SUBLISTSIZE = 5;
 		int startIndex = (currPage - 1) * SUBLISTSIZE;
+		
 		int maxPageNum = 1;
 		List<SearchLogsDTO> LendLogs = libraryService.displayLendLogs(SUBLISTSIZE, startIndex);
 		if (LogsSize % SUBLISTSIZE == 0) {
@@ -77,6 +86,7 @@ public class LibraryController {
 		model.addAttribute("LendLogs", LendLogs);
 		model.addAttribute("currentPage", currPage);
 		model.addAttribute("maxPageNum", maxPageNum);
+
 		return "/lendlog";
 	}
 
@@ -85,6 +95,12 @@ public class LibraryController {
 	 * 登録したマイブックの出力画面の表示
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
+
+	@GetMapping(value = "/mybook")
+	public String getmybookPage(Model model) {
+		return "/mybook";
+	}
+	
 	@RequestMapping(value = "/mybook", method = RequestMethod.POST)
 	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
 		int LogsSize = libraryService.getMyBookLogsSize();
@@ -173,13 +189,35 @@ public class LibraryController {
 		return "redirect:/home";
 	}
 
-	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public String search(Model model) {
-		//		String moji = model.getAttribute("search");
-		//		List<BooksEntity> bookshelf = libraryService.searchBooks();
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Access home.
+	 * 
+	 * @param model
+	 * @return URL of home.html
+	 */
+
+	@GetMapping(value = "/home")
+	public String home(Model model,HttpSession session) {
+		
+		int user_id = (int)session.getAttribute("userId");
+		List<SearchLogsDTO> ntf = libraryService.displayNotification(user_id);
+		//お知らせを表示
+		session.setAttribute("notification", ntf);
+
+		//本のリストを取得
+		List<BooksEntity> bookshelf = libraryService.displayBooks();
+
+		//検索フィールド
+		model.addAttribute("search_box", new SearchBooksRequest());
+
+		//本のリストを格納
+		model.addAttribute("bookshelf", bookshelf);
+
 		return "/home";
 	}
-
+	
 	@GetMapping(value = "/exhibit")
 	public String displayAdd(Model model) {
 		BookAddRequest bka = new BookAddRequest();
@@ -208,13 +246,6 @@ public class LibraryController {
 
 	}
 
-	@GetMapping(value = "/home")
-	public String home(Model model) {
-		List<BooksEntity> bookshelf = libraryService.displayBooks();
-		model.addAttribute("search_box", new SearchBooksRequest());
-		model.addAttribute("bookshelf", bookshelf);
-		return "/home";
-	}
 
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
 	public String search(Model model, SearchBooksRequest searchBooksRequest) {
@@ -257,6 +288,9 @@ public class LibraryController {
 		}
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
 		libraryService.register(usersEntity);
+
+		model.addAttribute("loginRequest", new LoginRequest());
+		model.addAttribute("search_box", new SearchBooksRequest());
 
 		return "redirect:/home";
 	}
@@ -303,7 +337,6 @@ public class LibraryController {
 		session.invalidate(); // Logout and back to home
 		return "redirect:/login";
 	}
-
 
 	/**
 	 * @author kk

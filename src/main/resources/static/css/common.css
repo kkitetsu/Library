@@ -191,6 +191,39 @@ input[type="file"] {
 	width:50%;
 }
 
+.image-upload-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 450px; /* 画像の横幅 */
+  height: 600px; /* 画像の高さ、比率に合わせて調整 */
+  border: 2px dashed #ccc;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  margin:0 auto;
+  overflow: hidden;
+}
+
+.image-preview img {
+  width: 100%; /* コンテナの幅に合わせます */
+  height: 100%; /* コンテナの高さに合わせます */
+  object-fit: cover;
+  object-fit: contain;
+  display: none; /* 初期状態では画像を隠します */
+}
+
+/* ファイルがない状態での表示スタイル（任意） */
+.image-upload-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px; /* テキストのサイズを調整 */
+  color: rgb(0, 0, 0); /* テキストの色を調整 */
+}
+
+
 a{
 	text-decoration:none;
 	color:inherit;

@@ -8,6 +8,7 @@ import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.TransactionEntity;
 import com.example.todo.entity.UsersEntity;
+import com.example.todo.forms.BookAddRequest;
 import com.example.todo.forms.LoginRequest;
 import com.example.todo.forms.SearchBooksRequest;
 
@@ -82,6 +83,9 @@ public interface LibraryMapper {
 
       /** @author kk */
 	public void register(UsersEntity usersEntity);
+	
+	public void bookRegister(BookAddRequest bookRequest);
+//	@Param("userId")int userId
 
 	/**
 	 * @author Lee 

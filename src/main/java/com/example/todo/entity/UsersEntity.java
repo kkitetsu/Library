@@ -26,7 +26,7 @@ public class UsersEntity {
 	
 	@Digits(integer=Integer.MAX_VALUE, fraction=0, message="Login ID must be an integer")
 	@Positive(message="ID must be a positive number")
-	private Integer login_id;
+	private Integer loginId;
 	
 	private String password;
 	

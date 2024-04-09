@@ -11,7 +11,6 @@
 		crossorigin="anonymous"></script>
 	<!--CSS共通リンク-->
 	<link rel="stylesheet" href="css/common.css" />
-	<link rel="stylesheet" href="css/add.css" />
 	<!--タイトルの選択-->
 	<title>Add book</title>
 </head>
@@ -34,12 +33,18 @@
 		</div>
 
 		<div class="main_content_box">
-			<form th:action="@{/add}" th:object="${bookAddRequest}" th:method="post">
+			<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}" th:method="post">
+				<label for="imgUpload" class="image-upload-container">
+					<div class="image-upload-placeholder">
+						<strong>本の画像をアップロード</strong>
+					</div>
+					<input type="file" id="imgUpload" accept="image/*" style="display: none;" th:field="*{multipartFile}" multiple/>
+					<figure class="image-preview" id="imagePreview">
+						<img src="" alt="Image Preview" id="previewImage" />
+					</figure>
+				</label><br><br>
+
 				<table class="add_table">
-					<tr class="table_row">
-						<td>本の画像</td>
-						<td><input type="file" th:field="*{image}" /></td>
-					</tr>
 					<tr class="table_row">
 						<td><label for="title">タイトル</label></td>
 						<td><input type="text" th:field="*{title}" class="input_box"></td>
@@ -47,7 +52,7 @@
 					<tr class="table_row">
 						<td><label>区分</label></td>
 						<td>
-							<select th:field="*{category}" class = "input_box">
+							<select th:field="*{category}" class="input_box">
 								<option value="貸出">貸出</option>
 								<option value="譲渡">譲渡</option>
 						</td>
@@ -55,21 +60,21 @@
 					<tr id="limitdate" class="table_row">
 						<td>貸出期限</td>
 						<td>
-							<input type="date" th:field="*{limitdate}" class = "input_box">
+							<input type="date" th:field="*{limitdate}" class="input_box" min="${#dates.format(#dates.createToday(), 'yyyy-MM-dd')}" />
 						</td>
 					</tr>
 					<tr>
 						<td><input type="submit" class="btn btn-danger" value="登録" id="small_size"></td>
-						<td><a href="" class="btn btn-primary" id="small_size">キャンセル</a></td>
+						<td><a href="/home" class="btn btn-primary" id="small_size">キャンセル</a></td>
 
 					</tr>
 				</table>
-				</div>
-				<footer>
-					問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
-				</footer>
-				<!--JavaScriptリンク-->
-				<script type="text/javascript" th:src="@{/js/add.js}"></script>
+		</div>
+		<footer>
+			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
+		</footer>
+		<!--JavaScriptリンク-->
+		<script type="text/javascript" th:src="@{/js/add.js}"></script>
 </body>
 
 </html>

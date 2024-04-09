@@ -1,5 +1,8 @@
 package com.example.todo.controller;
-
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
@@ -45,8 +49,8 @@ public class LibraryController {
 	 * 貸しログ出力画面の表示
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
-
-	@RequestMapping(value = "/borrowlog", method = RequestMethod.POST)
+	// @RequestMapping(value = "/borrowlog", method = RequestMethod.POST) edited kk
+	@RequestMapping(value = "/borrowlog", method={RequestMethod.GET, RequestMethod.POST})
 	public String getBorrowLogPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
 		int LogsSize = libraryService.getBorrowLogsSize();
 		final int SUBLISTSIZE = 5;
@@ -222,29 +226,61 @@ public class LibraryController {
 	public String displayAdd(Model model) {
 		BookAddRequest bka = new BookAddRequest();
 		model.addAttribute("bookAddRequest", bka);
-		return "/add";
-	}
+        return "/add";
+    }
+	
+    
+	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
+    public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, Model model, HttpSession session) {
+        session.setAttribute("userId", 1);
+        bookRequest.setUserId((int)session.getAttribute("userId"));
+//		if (result.hasErrors()) {
+//            // 入力チェックエラーの場合
+//            List<String> errorList = new ArrayList<String>();
+//            for (ObjectError error : result.getAllErrors()) {
+//                errorList.add(error.getDefaultMessage());
+//            }
+//            model.addAttribute("validationError", errorList);
+//            return "/exhibit";
+//        }
+        List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
+   	    multipartFile.forEach(e -> {
+            //アップロード実行処理メソッド呼び出し
+          bookRequest.setImgPath(uploadAction(e));
+        });
+	   libraryService.bookRegister(bookRequest);
+       model.addAttribute("search_box", new SearchBooksRequest());
+       List<BooksEntity> bookshelf = libraryService.displayBooks();
+	   model.addAttribute("bookshelf", bookshelf);
+	   return "/home";
+        
+    }
+	
+	/**
+     * アップロード実行処理
+     * @param multipartFile
+     */
+    private String uploadAction(MultipartFile multipartFile) {
+        //ファイル名取得
+        String fileName = multipartFile.getOriginalFilename();
 
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult result, Model model,
-			HttpSession session) {
-		session.setAttribute("userId", 1);
-		int userId = (int) session.getAttribute("userId");
-		if (result.hasErrors()) {
-			// 入力チェックエラーの場合
-			List<String> errorList = new ArrayList<String>();
-			for (ObjectError error : result.getAllErrors()) {
-				errorList.add(error.getDefaultMessage());
-			}
-			model.addAttribute("validationError", errorList);
-			return "/exhibit";
-		}
-		model.addAttribute("search_box", new SearchBooksRequest());
-		List<BooksEntity> bookshelf = libraryService.displayBooks();
-		model.addAttribute("bookshelf", bookshelf);
-		return "/home";
+        //格納先のフルパス ※事前に格納先フォルダ「UploadTest」をCドライブ直下に作成しておく
+        java.nio.file.Path filePath = Paths.get("C:/pleiades/2023-12/workspace/Library/src/main/resources/static/uploadImage/" + fileName);
+        
+        try {
+            //アップロードファイルをバイト値に変換
+            byte[] bytes  = multipartFile.getBytes();
 
-	}
+            //バイト値を書き込む為のファイルを作成して指定したパスに格納
+            OutputStream stream = Files.newOutputStream(filePath);
+            //ファイルに書き込み
+            stream.write(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String path = filePath.toString();
+        return "/uploadImage/"+fileName;
+    }
 
 
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
@@ -276,7 +312,7 @@ public class LibraryController {
 	/** @author kk */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String doUserRegistration(@Validated @ModelAttribute UsersEntity usersEntity,
-			BindingResult bindingResult, Model model) {
+			BindingResult bindingResult, Model model, HttpSession session) {
 		if (bindingResult.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : bindingResult.getAllErrors()) {
@@ -291,20 +327,27 @@ public class LibraryController {
 
 		model.addAttribute("loginRequest", new LoginRequest());
 		model.addAttribute("search_box", new SearchBooksRequest());
+		session.setAttribute("userId", usersEntity.getLoginId());
 
 		return "redirect:/home";
 	}
 
 	/** @author kk */
-	@GetMapping("/confirm")
-	public String getConfirmPage(@ModelAttribute BooksEntity book, Model model) {
-		// TODO: Get book id
+	@PostMapping("/confirmPage")
+	public String getConfirmPage(@RequestParam("id") String bookId,
+            					 @RequestParam("title") String bookTitle,
+            					 @RequestParam("image") String image, 
+            					 @RequestParam("category") String category,
+            					 @RequestParam("limitdate") String limitdate, 
+            					 @RequestParam("exhibitor") String exhibitor, Model model) {
+		BooksEntity book = new BooksEntity();
+		book.setCategory(category);
+		book.setId(Integer.parseInt(bookId));
+		book.setImage(image);
+		book.setLimitdate(limitdate);
+		book.setTitle(bookTitle);
+		book.setExhibitorUserId(Integer.parseInt(exhibitor));
 		System.out.println(book);
-		book.setId(book.getId());
-		book.setTitle(book.getTitle());
-		book.setCategory(book.getCategory());
-		book.setImage(book.getImage());
-		book.setLimitdate(book.getLimitdate());
 		model.addAttribute("bookEntity", book);
 		return "/confirm";
 	}
@@ -315,13 +358,18 @@ public class LibraryController {
 	 * Confirm borrowing and update transaction data.
 	 * 
 	 */
-	@RequestMapping(value = "/confirm", method = RequestMethod.POST)
-	public String doBookConfirm(@ModelAttribute BooksEntity bookEntity, Model model) {
+	@RequestMapping(value="/confirm", method=RequestMethod.POST)
+	public String doBookConfirm(@RequestParam("id") String id,
+								@RequestParam("exhibitorId") String exhibitorId,
+								Model model, HttpSession session) {
 		// TODO: Get each id from html
 		// int borrowerId = bookEntity.getId();
-		int borrowerId = 1;
-		int lenderId = Integer.parseInt("1");
-		int bookId = Integer.parseInt("1");
+		System.out.println(id);
+		System.out.println(exhibitorId);
+		int borrowerId = Integer.parseInt(session.getAttribute("userId").toString());
+		int lenderId   = Integer.parseInt(exhibitorId);
+		int bookId     = Integer.parseInt(id);
+		System.out.println(bookId + " " + lenderId + " " + borrowerId);
 		libraryService.updateTransaction(bookId, lenderId, borrowerId);
 		return "redirect:/borrowlog";
 	}
@@ -355,5 +403,5 @@ public class LibraryController {
 		}
 		return hashedPassword;
 	}
-
+	
 }

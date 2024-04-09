@@ -1,15 +1,26 @@
 package com.example.todo.forms;
+import java.io.Serializable;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 
 @Data
-public class BookAddRequest {
+public class BookAddRequest implements Serializable {
 	
-	public String image;
+	private String image;
 	
-	public String title;
+	private String title;
 	
-	public String category;
+	private String category;
 	
-	public String limitdate;
+	private String limitdate;
+	
+	private Integer userId;
+	
+	private List<MultipartFile> multipartFile;
+	
+	private String imgPath;
+	
 }

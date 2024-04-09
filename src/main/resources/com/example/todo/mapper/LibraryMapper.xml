@@ -54,4 +54,10 @@
 		VALUES
 		(#{name}, #{department}, #{mailaddress}, #{login_id}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
 	</insert>
+	<insert id = "bookRegister">
+	INSERT INTO books
+	(title, exhibitor_user_id, category, limitdate, image)
+	VALUES
+	(#{title}, #{userId}, #{category}, #{limitdate}, #{imgPath})
+	</insert>
 </mapper>

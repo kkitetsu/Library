@@ -9,6 +9,7 @@ import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.TransactionEntity;
 import com.example.todo.entity.UsersEntity;
+import com.example.todo.forms.BookAddRequest;
 import com.example.todo.forms.LoginRequest;
 import com.example.todo.forms.SearchBooksRequest;
 import com.example.todo.mapper.LibraryMapper;
@@ -86,5 +87,9 @@ public class LibraryService {
 	 **/
 	public List<SearchLogsDTO> displayLendLogs() {
 		return libraryMapper.displayLendLogs();
+	}
+
+	public void bookRegister(BookAddRequest bookRequest) {
+		libraryMapper.bookRegister(bookRequest);
 	}
 }

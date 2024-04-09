@@ -12,5 +12,5 @@ public class BooksEntity {
 	private String content;
 	
 	private String image;
-	
+		
 }

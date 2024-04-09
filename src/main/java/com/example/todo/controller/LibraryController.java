@@ -1,18 +1,20 @@
 package com.example.todo.controller;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
@@ -103,29 +105,56 @@ public class LibraryController {
     }
 	
     
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult result, Model model, HttpSession session) {
+	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
+    public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, Model model, HttpSession session) {
         session.setAttribute("userId", 1);
-		int userId = (int) session.getAttribute("userId");
-		if (result.hasErrors()) {
-            // 入力チェックエラーの場合
-            List<String> errorList = new ArrayList<String>();
-            for (ObjectError error : result.getAllErrors()) {
-                errorList.add(error.getDefaultMessage());
-            }
-            model.addAttribute("validationError", errorList);
-            return "/exhibit";
-        }
+        bookRequest.setUserId((int)session.getAttribute("userId"));
+//		if (result.hasErrors()) {
+//            // 入力チェックエラーの場合
+//            List<String> errorList = new ArrayList<String>();
+//            for (ObjectError error : result.getAllErrors()) {
+//                errorList.add(error.getDefaultMessage());
+//            }
+//            model.addAttribute("validationError", errorList);
+//            return "/exhibit";
+//        }
+        List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
+   	    multipartFile.forEach(e -> {
+            //アップロード実行処理メソッド呼び出し
+          bookRequest.setImgPath(uploadAction(e));
+        });
+	   libraryService.bookRegister(bookRequest);
        model.addAttribute("search_box", new SearchBooksRequest());
        List<BooksEntity> bookshelf = libraryService.displayBooks();
 	   model.addAttribute("bookshelf", bookshelf);
-		return "/home";
+	   return "/home";
         
     }
+	
+	/**
+     * アップロード実行処理
+     * @param multipartFile
+     */
+    private String uploadAction(MultipartFile multipartFile) {
+        //ファイル名取得
+        String fileName = multipartFile.getOriginalFilename();
 
-	@GetMapping("/register")
-    public String getRegisterPage() {
-        return "/register";
+        //格納先のフルパス ※事前に格納先フォルダ「UploadTest」をCドライブ直下に作成しておく
+        java.nio.file.Path filePath = Paths.get("C:/pleiades/2023-12/workspace/Library/src/main/resources/static/uploadImage/" + fileName);
+        
+        try {
+            //アップロードファイルをバイト値に変換
+            byte[] bytes  = multipartFile.getBytes();
+
+            //バイト値を書き込む為のファイルを作成して指定したパスに格納
+            OutputStream stream = Files.newOutputStream(filePath);
+            //ファイルに書き込み
+            stream.write(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String path = filePath.toString();
+        return "/uploadImage/"+fileName;
     }
 	
 	@GetMapping(value = "/home")
@@ -193,4 +222,5 @@ public class LibraryController {
 		}
 		return hashedPassword;
 	}
+	
 }

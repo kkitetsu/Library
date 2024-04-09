@@ -87,7 +87,7 @@
 		name = #{name},
 		department  = #{department},
 		mailaddress = #{mailaddress}, 
-		login_id = #{login_id},
+		login_id = #{loginId},
 		password = #{password},
 	    edited_date = CURRENT_TIMESTAMP
 	    where id = 2;

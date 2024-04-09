@@ -276,7 +276,7 @@ public class LibraryController {
 	/** @author kk */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String doUserRegistration(@Validated @ModelAttribute UsersEntity usersEntity,
-			BindingResult bindingResult, Model model) {
+			BindingResult bindingResult, Model model, HttpSession session) {
 		if (bindingResult.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : bindingResult.getAllErrors()) {
@@ -291,6 +291,7 @@ public class LibraryController {
 
 		model.addAttribute("loginRequest", new LoginRequest());
 		model.addAttribute("search_box", new SearchBooksRequest());
+		session.setAttribute("userId", usersEntity.getLoginId());
 
 		return "redirect:/home";
 	}

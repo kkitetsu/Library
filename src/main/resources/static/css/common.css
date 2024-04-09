@@ -170,9 +170,9 @@ body{
 }
 
 .user_icon, .alert_icon{
-	height:100px;
-	width:100px;
-	border-radius:50px;
+	width:90%;
+	height:auto;
+	border-radius:90%;
 }
 
 .header_table td{
@@ -201,4 +201,12 @@ a:hover{
 
 #error{
 	color:red;
+}
+
+#side_bar_list{
+	width:80%;
+	font-size:25px;
+	font-weight:bolder;
+	border:2px black solid;
+	border-radius:25px;
 }

@@ -94,6 +94,11 @@ nav.nav {
   padding: 20px 0;
   transition: all 200ms ease-in-out;
   z-index: 199;
+  background-color:rgb(188,0,1);
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  border: black 3px solid;
+  border-right:none;
 }
 nav.nav ul {
     border: none;
@@ -144,8 +149,8 @@ span.deleteclass::after {
 
 .logo {
   text-align: center;
-  margin-bottom: 30px;
-}
+  width:100%;
+}
 .logo  a{
   text-decoration: none;
   color: #888;
@@ -177,4 +182,14 @@ span.deleteclass::after {
 .show-nav .overlay {
   opacity: 1;
   visibility: visible;
+}
+.linkList{
+	width:100%;
+	text-align:center;
+}
+.user_name{
+	text-align:Center;
+	font-size:30px;
+	font-weight:bolder;
+	color:white;
 }

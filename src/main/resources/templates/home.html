@@ -25,7 +25,7 @@
 				<table class="header_table">
 					<th>
 					<td> <img src="img/alarm_icon.png" class="alert_icon"> </td>
-					<td> <img src="img/user_img.png" alt="user_icon" class="user_icon"> </td>
+					<td> <img src="img/user_img.png" alt="user_icon" class="user_icon toggler"> </td>
 					</th>
 				</table>
 			</div>
@@ -43,16 +43,57 @@
 					<span id="deleteconpo" class="toggler"></span>
 				</div>
 				<div class="logo">
-					<a href="#"><img src="img/rakuten_logo.png"></a>
+					<a href="/login"><img src="img/rakuten_logo.png"></a>
 				</div>
-				<br>
-				<ul class="linkList">
-					<li><a href="#">情報修正</a></li>
-					<li><a href="#">貸出中</a></li>
-					<li><a href="#">借出中</a></li>
-					<li><a href="#">出品中</a></li>
-					<li><a href="#">ログアウト</a></li>
-				</ul>
+				<table class="linkList">
+					<tr>
+						<td>
+							<img src="img/user_img.png" alt="user_icon" class="user_icon toggler">
+						</td>
+					</tr>
+					<tr>
+						<td >
+							<div class="user_name">  楽天　太郎 様 </div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/edituser" method="get">
+								<input type="submit" value="会員情報修正" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/borrowlog" method="post">
+								<input type="submit" value="貸出履歴" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/lendlog" method="post">
+								<input type="submit" value="借出履歴" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/mybook" method="post">
+								<input type="submit" value="出品履歴" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/logout" method="post">
+								<input type="submit" value="ログアウト" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+				</table>
+
 			</nav>
 			<!-- サイドバー終 -->
 
@@ -81,15 +122,15 @@
 				<div class="content" th:each="book: ${bookshelf}">
 					<img src="/img/naruto_magazine.jpeg" class="book_img">
 
-						<form th:action="@{/confirm}" th:method="GET">
-							<input type="hidden" name="title" th:value="${book.title}" />
-        					<input type="hidden" name="content" th:value="${book.id}" />
-        					<input type="hidden" name="category" th:value="${book.category}" />
-        					<input type="hidden" name="image" th:value="${book.image}" />
-        					<input type="hidden" name="limitdate" th:value="${book.limitdate}" />
-							<button class="btn btn-danger" id="borrow_btn">借</button>
-							<button class="btn btn-primary" id="take_btn"> 貰</button>
-						</form>
+					<form th:action="@{/confirm}" th:method="GET">
+						<input type="hidden" name="title" th:value="${book.title}" />
+						<input type="hidden" name="content" th:value="${book.id}" />
+						<input type="hidden" name="category" th:value="${book.category}" />
+						<input type="hidden" name="image" th:value="${book.image}" />
+						<input type="hidden" name="limitdate" th:value="${book.limitdate}" />
+						<button class="btn btn-danger" id="borrow_btn">借</button>
+						<button class="btn btn-primary" id="take_btn"> 貰</button>
+					</form>
 
 					<p th:text="*{book.title}"></p><br>
 					<p th:text="*{book.content}"></p><br>
@@ -99,8 +140,8 @@
 		</div>
 
 		<form th:action="@{/registerbook}" th:method="post">
-			<div>
-				<button type="submit" id="add_btn"> + </button>
+			<div class="add_btn">
+				<button type="submit"> + </button>
 			</div>
 		</form>
 

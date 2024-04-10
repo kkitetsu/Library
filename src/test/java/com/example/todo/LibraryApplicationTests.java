@@ -328,6 +328,7 @@ class LibraryApplicationTests {
 
     /** @author kk */
 	public void IntegrationTest() {
+		
 		UsersEntity usersEntity1 = createTestUserEntity(0001, "testName1");
     	libraryService.register(usersEntity1);
     	UsersEntity usersEntity2 = createTestUserEntity(0002, "testName2");
@@ -342,7 +343,19 @@ class LibraryApplicationTests {
     	
     	BookAddRequest bookRequest = new BookAddRequest();
     	bookRequest.setImgPath("/test/path");
+    	bookRequest.setTitle("TestBook1");
+    	bookRequest.setUserId(usersEntity1.getId());
     	libraryService.bookRegister(bookRequest);
+    	assertEquals(1, libraryService.getMyBookLogsSize());
+    	
+    	loginRequest = new LoginRequest();
+    	loginRequest.setLogin_id(usersEntity2.getLoginId());
+    	loginRequest.setLogin_pw(usersEntity2.getPassword());
+    	loginResult = libraryService.login(loginRequest);
+    	usersEntity2 = loginResult.get(0);
+    	assertEquals(2, usersEntity2.getId());
+    	
+    	
 		return;
 	}
 }

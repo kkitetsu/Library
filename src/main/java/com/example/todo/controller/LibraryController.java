@@ -231,21 +231,22 @@ public class LibraryController {
 	
     
 	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
-    public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, Model model, HttpSession session) {
+    public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {
         session.setAttribute("userId", 1);
+
         bookRequest.setUserId((int)session.getAttribute("userId"));
-//		if (result.hasErrors()) {
-//            // 入力チェックエラーの場合
-//            List<String> errorList = new ArrayList<String>();
-//            for (ObjectError error : result.getAllErrors()) {
-//                errorList.add(error.getDefaultMessage());
-//            }
-//            model.addAttribute("validationError", errorList);
-//            return "/exhibit";
-//        }
+		if (bindingResult.hasErrors()) {
+            // 入力チェックエラーの場合
+            List<String> errorList = new ArrayList<String>();
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errorList.add(error.getDefaultMessage());
+            }
+            model.addAttribute("validationError", errorList);
+            model.addAttribute("bookAddRequest", new BookAddRequest());
+            return "/add";
+        }
         List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
    	    multipartFile.forEach(e -> {
-            //アップロード実行処理メソッド呼び出し
           bookRequest.setImgPath(uploadAction(e));
         });
 	   libraryService.bookRegister(bookRequest);
@@ -281,6 +282,7 @@ public class LibraryController {
         String path = filePath.toString();
         return "/uploadImage/"+fileName;
     }
+
 
 
 	@RequestMapping(value = "/home", method = RequestMethod.POST)

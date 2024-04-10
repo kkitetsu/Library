@@ -31,7 +31,9 @@
 		<div class="main_title">
 			-出品
 		</div>
-
+		<div th:if="${validationError}">
+			<div th:text="${validationError}" class="main_title"></div>
+		</div>
 		<div class="main_content_box">
 			<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}" th:method="post">
 				<label for="imgUpload" class="image-upload-container">
@@ -60,7 +62,7 @@
 					<tr id="limitdate" class="table_row">
 						<td>貸出期限</td>
 						<td>
-							<input type="date" th:field="*{limitdate}" class="input_box" min="${#dates.format(#dates.createToday(), 'yyyy-MM-dd')}" />
+							<input type="date" th:field="*{limitdate}" class="input_box"/>
 						</td>
 					</tr>
 					<tr>

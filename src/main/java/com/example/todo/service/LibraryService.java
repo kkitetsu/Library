@@ -9,6 +9,7 @@ import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.TransactionEntity;
 import com.example.todo.entity.UsersEntity;
+import com.example.todo.forms.BookAddRequest;
 import com.example.todo.forms.LoginRequest;
 import com.example.todo.forms.SearchBooksRequest;
 import com.example.todo.mapper.LibraryMapper;
@@ -44,15 +45,28 @@ public class LibraryService {
 		libraryMapper.updateTransaction(bookId, lenderId, borrowerId);
 	}
 
+	
+	/** 
+	 * @author Lee
+	 * Userの情報修正
+	 **/
+	public void editUser(UsersEntity usersEntity) {
+		libraryMapper.editUser(usersEntity);
+	}
+	
 	/**
 	 * @author shunsukekuzawa
 	 * 
-	 * Search all books list for displaying them at /home .
+	 * Select all book-info for display.
 	 * 
 	 * @return List for books
 	 */
 	public List<BooksEntity> displayBooks() {
 		return libraryMapper.displayBooks();
+	}
+	
+	public List<SearchLogsDTO> displayNotification(int user_id){
+		return libraryMapper.displayNotification(user_id);
 	}
 
 	/** 
@@ -81,9 +95,17 @@ public class LibraryService {
 	public List<TransactionEntity> displayLogs() {
 		return libraryMapper.displayLogs();
 	}
-	
-	public List<BooksEntity> searchBooks(SearchBooksRequest searchBooksRequest) {
-		return libraryMapper.searchBooks(searchBooksRequest);
+
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Search books which meet conditions.
+	 * 
+	 * @param searchBooksRequest
+	 * @return
+	 */
+	public List<BooksEntity> searchBooks(SearchBooksRequest searchBooksRequest){
+		return  libraryMapper.searchBooks(searchBooksRequest);
 	}
 
 	/** 
@@ -113,6 +135,10 @@ public class LibraryService {
 	 **/
 	public List<SearchLogsDTO> displayLendLogs(final int SUBLISTSIZE, int startIndex) {
 		return libraryMapper.displayLendLogs(SUBLISTSIZE, startIndex);
+	}
+	
+	public void bookRegister(BookAddRequest bookRequest) {
+		libraryMapper.bookRegister(bookRequest);
 	}
 	/** 
 	 * @author Lee

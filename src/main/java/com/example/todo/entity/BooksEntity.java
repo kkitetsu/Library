@@ -24,4 +24,6 @@ public class BooksEntity {
 	
 	private String limitdate;
 	
+	private Integer exhibitorUserId;
+	
 }

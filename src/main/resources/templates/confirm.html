@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="UTF-8">
 	<!-- Bootstrap利用のため、必要なコード修正禁止 -->
@@ -14,6 +15,7 @@
 	<!--タイトルの選択-->
 	<title>Confirm book</title>
 </head>
+
 <body>
 	<!--画面全体始め（ヘッダー、メイン、フッター)-->
 	<div class="content_box">
@@ -22,41 +24,56 @@
 			<div class="header_logo"> <a href="https://www.rakuten-sec.co.jp/"><img src="img/rakuten_logo.png"
 						alt="Rakuten_sec_mark" class="maing_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
-			<div class="header_btn_box"> </div>
+			<div class="header_btn_box">
+				<table class="header_table">
+					<th>
+					<td> <img src="img/alarm_icon.png" class="alert_icon"> </td>
+					<td> <img src="img/user_img.png" alt="user_icon" class="user_icon"> </td>
+					</th>
+				</table>
+
+			</div>
 		</header>
 		<!--メインー　（修正可能領域）-->
-		<div class="main_title">
-			-借入確認
-		</div>
-		<div class="main_content_box">
-			 <table class="add_table">
-				 <form th:action="@{/confirm}" th:method="POST" th:object="${bookEntity}">
-					<tr class="table_row">
-						<td>本の画像</td>
-						<td><span th:text="*{image}"></span></td>
-					</tr>
-					<tr class="table_row">
-						<td><label for="title">タイトル</label></td>
-						<td><span th:text="*{title}" class="input_box"></span></td>
-					</tr>
-					<tr class="table_row">
-						<td><label>区分</label></td>
-						<td><span th:text="*{category}"></span></td>
-					</tr>
-					<tr id="limitdate" class="table_row">
-						<td>貸出期限</td>
-						<td><span th:text="*{limitdate}"></span></td>
-					</tr>
-					<tr>
-						<td><input type="submit" class="btn btn-danger" value="レンタル" id="small_size"></td>
-				</form>
-						<td><a href="/home" class="btn btn-primary" id="small_size">キャンセル</a></td>
+		<div class="main">
+			<div class="main_title">
+				-借入確認
+			</div>
+			<div class="main_content_box">
+				<table class="add_table">
+					<form th:action="@{/confirm}" th:method="POST">
+						<input type="hidden" th:name="id" th:value="*{bookEntity.id}">
+						<input type="hidden" th:name="exhibitorId" th:value="*{bookEntity.exhibitorUserId}">
+						<tr class="table_row">
+							<td>本の画像</td>
+							<td><span th:text="*{bookEntity.image}"></span></td>
+						</tr>
+						<tr class="table_row">
+							<td><label for="title">タイトル</label></td>
+							<td><span th:text="*{bookEntity.title}" class="input_box"></span></td>
+						</tr>
+						<tr class="table_row">
+							<td><label>区分</label></td>
+							<td><span th:text="*{bookEntity.category}"></span></td>
+						</tr>
+						<tr id="limitdate" class="table_row">
+							<td>貸出期限</td>
+							<td><span th:text="*{bookEntity.limitdate}"></span></td>
+						</tr>
+						<tr>
+							<td><input type="submit" class="btn btn-danger"
+									th:value="${bookEntity.category == 'giving' ? '授与' : 'レンタル'}" id="small_size"></td>
+					</form>
+					<td><a href="/home" class="btn btn-primary" id="small_size">キャンセル</a></td>
 					</tr>
 				</table>
+			</div>
+
 		</div>
-		
-	<footer>
-		問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
-	</footer>
+
+		<footer>
+			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
+		</footer>
 </body>
+
 </html>

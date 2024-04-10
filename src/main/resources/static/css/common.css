@@ -2,9 +2,7 @@
 /* 画面構成に使うCSSです。*/
 
 .content_box {
-	width: 80%;
-	margin-right:10%;
-	margin-left:10%;
+	width: 100%;
 	padding:none;
 	min-height:100%;
 	}
@@ -70,8 +68,7 @@ header {
 	background-image: url("../img/backgroundimage.jpg");
 }
 
-
-.login_table, .register_table, .add_table{
+.login_table, .register_table, edit_table, add_table, edit_book_table{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -127,7 +124,8 @@ body{
 	height:95%;
 	border-radius:10px;
 	padding-left:10px;
-	width:100%;
+	width:80%;
+	max-width:600px;
 }
 .log_table, .my_book_table{
 	width:90%;
@@ -138,7 +136,14 @@ body{
 	text-align:center;
 	border-radius:25px;
 }
-
+.add_table, .edit_book_table{
+	width:90%;
+	margin:10px 5%;
+	color:white;
+	font-size:30px;
+	text-align:center;
+	border-radius:25px;	
+}
 .search_table{
 	width:90%;
 	margin:10px 5%;
@@ -171,11 +176,17 @@ body{
 }
 
 .user_icon, .alert_icon{
-	height:100px;
-	width:100px;
-	border-radius:50px;
+	width:90%;
+	height:auto;
+	border-radius:90%;
 }
-
+.user_icon_trigger{
+	width:90%;
+	height:auto;
+	border-radius:90%;
+	background-color:white;
+	cursor:pointer;
+}
 .header_table td{
 	width:50%;
 }
@@ -192,6 +203,39 @@ input[type="file"] {
 	width:50%;
 }
 
+.image-upload-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 450px; /* 画像の横幅 */
+  height: 600px; /* 画像の高さ、比率に合わせて調整 */
+  border: 2px dashed #ccc;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+  margin:0 auto;
+  overflow: hidden;
+}
+
+.image-preview img {
+  width: 100%; /* コンテナの幅に合わせます */
+  height: 100%; /* コンテナの高さに合わせます */
+  object-fit: cover;
+  object-fit: contain;
+  display: none; /* 初期状態では画像を隠します */
+}
+
+/* ファイルがない状態での表示スタイル（任意） */
+.image-upload-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px; /* テキストのサイズを調整 */
+  color: rgb(0, 0, 0); /* テキストの色を調整 */
+}
+
+
 a{
 	text-decoration:none;
 	color:inherit;
@@ -202,4 +246,12 @@ a:hover{
 
 #error{
 	color:red;
+}
+
+#side_bar_list{
+	width:80%;
+	font-size:25px;
+	font-weight:bolder;
+	border:2px black solid;
+	border-radius:25px;
 }

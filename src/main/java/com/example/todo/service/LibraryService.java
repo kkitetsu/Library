@@ -45,6 +45,17 @@ public class LibraryService {
 		libraryMapper.updateTransaction(bookId, lenderId, borrowerId);
 	}
 
+	/**
+	 * @author kk
+	 */
+	public String getNameBasedOnId(int id) {
+		return libraryMapper.getNameBasedOnId(id);
+	}
+	
+	/** @author kk */
+	public void updateBooksNoLongerExhibit(int bookId) {
+		libraryMapper.updateBooksNoLongerExhibit(bookId);
+	}
 	
 	/** 
 	 * @author Lee

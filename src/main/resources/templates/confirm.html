@@ -37,7 +37,7 @@
 		<!--メインー　（修正可能領域）-->
 		<div class="main">
 			<div class="main_title">
-				-借入確認
+				-<span th:text="${exhibitorName}"></span>さんの本を借入確認
 			</div>
 			<div class="main_content_box">
 				<table class="add_table">
@@ -62,7 +62,7 @@
 						</tr>
 						<tr>
 							<td><input type="submit" class="btn btn-danger"
-									th:value="${bookEntity.category == 'giving' ? '授与' : 'レンタル'}" id="small_size"></td>
+									th:value="${bookEntity.category == '譲渡' ? '授与' : 'レンタル'}" id="small_size"></td>
 					</form>
 					<td><a href="/home" class="btn btn-primary" id="small_size">キャンセル</a></td>
 					</tr>

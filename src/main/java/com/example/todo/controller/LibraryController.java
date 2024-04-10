@@ -191,7 +191,6 @@ public class LibraryController {
 			return "/login";
 		}
 		session.setAttribute("userId", user_info.get(0).getId());
-		System.out.println(user_info.get(0).getId());
 		return "redirect:/home";
 	}
 
@@ -224,6 +223,10 @@ public class LibraryController {
 
 		//本のリストを格納
 		model.addAttribute("bookshelf", bookshelf);
+		
+		// Editor: kk
+		// Record and show user's name
+		model.addAttribute("userName", libraryService.getNameBasedOnId(user_id));
 
 		return "/home";
 	}

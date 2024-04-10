@@ -163,8 +163,8 @@
 						<input type="hidden" name="image" th:value="${book.image}" />
 						<input type="hidden" name="limitdate" th:value="${book.limitdate}" />
 						<input type="hidden" name="exhibitor" th:value="${book.exhibitorUserId}" />
-						<button class="btn btn-danger" id="content_btn">借</button>
-						<button class="btn btn-primary" id="take_btn"> 貰</button>
+						<button class="btn btn-danger" id="content_btn" th:if="${book.category == '貸出'}">借</button>
+						<button class="btn btn-primary" id="take_btn" th:if="${book.category == '譲渡'}"> 貰</button>
 					</form>
 
 					<div class="book_content_title_box">

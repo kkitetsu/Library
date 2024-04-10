@@ -370,7 +370,6 @@ public class LibraryController {
 		book.setLimitdate(limitdate);
 		book.setTitle(bookTitle);
 		book.setExhibitorUserId(Integer.parseInt(exhibitor));
-		System.out.println(book);
 		model.addAttribute("bookEntity", book);
 		return "/confirm";
 	}
@@ -388,7 +387,6 @@ public class LibraryController {
 		int borrowerId = Integer.parseInt(session.getAttribute("userId").toString());
 		int lenderId   = Integer.parseInt(exhibitorId);
 		int bookId     = Integer.parseInt(id);
-		System.out.println(bookId + " " + lenderId + " " + borrowerId);
 		libraryService.updateTransaction(bookId, lenderId, borrowerId);
 		return "redirect:/borrowlog";
 	}

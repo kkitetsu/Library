@@ -355,6 +355,24 @@ class LibraryApplicationTests {
     	usersEntity2 = loginResult.get(0);
     	assertEquals(2, usersEntity2.getId());
     	
+    	libraryService.updateTransaction(bookRequest.getId(), 
+    									 usersEntity1.getId(),
+    									 usersEntity2.getId());
+    	assertEquals(1, libraryService.getBorrowLogsSize());
+    	assertEquals(1, libraryService.getLendLogsSize());
+    	assertEquals("TestBook1", libraryService.displayBorrowLogs(1, 1).get(0).getBookTitle());
+    	assertEquals(2, libraryService.displayLogs().get(0).getBorrowerUserId());
+    	assertEquals(1, libraryService.displayLogs().get(0).getLenderUserId());
+    	
+    	loginRequest = new LoginRequest();
+    	loginRequest.setLogin_id(usersEntity1.getLoginId());
+    	loginRequest.setLogin_pw(usersEntity1.getPassword());
+    	loginResult = libraryService.login(loginRequest);
+    	usersEntity1 = loginResult.get(0);
+    	assertEquals(1, usersEntity1.getId());
+    	assertEquals("TestBook1", libraryService.displayLendLogs(1, 1).get(0).getBookTitle());
+    	assertEquals("TestName2", libraryService.displayLendLogs(1, 1).get(0).getBorrowerName());
+    	
     	
 		return;
 	}

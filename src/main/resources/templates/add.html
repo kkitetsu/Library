@@ -16,9 +16,14 @@
 </head>
 
 <body>
+	<!-- Loading中の画面-->
+	<div id="loading">
+		<div class="loading_msg_box"> Loading... </div>
+		<div class="loader"> </div>
+	</div>
+
 	<!--画面全体始め（ヘッダー、メイン、フッター)-->
 	<div class="content_box">
-
 		<!--ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
 		<header>
 			<div class="header_logo"> <a href="https://www.rakuten-sec.co.jp/"><img src="img/rakuten_logo.png"
@@ -75,18 +80,18 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input type="submit" class="btn btn-danger" value="登録" id="small_size"></td>
+							<td><input type="submit" class="btn btn-danger" value="登録" id="small_size_loading"></td>
 							<td><a href="/home" class="btn btn-primary" id="small_size">キャンセル</a></td>
 						</tr>
 					</table>
 			</div>
-
 		</div>
 		<footer>
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>
 		<!--JavaScriptリンク-->
 		<script type="text/javascript" th:src="@{/js/add.js}"></script>
+		<script type="text/javascript" th:src="@{/js/loading.js}"></script>
 </body>
 
 </html>

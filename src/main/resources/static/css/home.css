@@ -18,14 +18,32 @@
 	font-size: 35px;
 }
 
-.content {
+.book_content_box {
 	text-align: center;
-	margin: 100px 30px;
-	width: 280px;
-	height: 280px;
-	border-radius: 0%;
-	border: solid 2px white;
+	margin: 10px 30px;
+	width: 300px;
+	height: 450px;
+	border-radius: 10px;
 	background-color: indianred;
+}
+.book_content_img_box{
+	margin:10px;
+	width:280px;
+	height:280px;
+	background-color: white;
+}
+.book_content_img{
+	width:100%;
+	height:auto;
+	max-width:100%;
+	max-height:100%;
+}
+.book_content_title_box, .book_content_content_box{
+	width:100%;	
+	margin-top:10px;
+	height:25px;
+	font-size:25px;
+	color:white;
 }
 
 .select_btn {
@@ -36,6 +54,12 @@
 	position: relative;
 }
 
+#content_btn, #take_btn{
+width:130px;
+height:60px;
+font-size:30px;
+font-weight:bold;
+}
 .red_btn {
 	display: inline-block;
 	margin: 10px;

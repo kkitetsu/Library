@@ -38,7 +38,6 @@ public class LibraryController {
 	@Autowired
 	private LibraryService libraryService;
 
-	
 	@GetMapping(value = "/log")
 	public String getLogPage(Model model) {
 		return "/log";
@@ -379,10 +378,6 @@ public class LibraryController {
 	public String doBookConfirm(@RequestParam("id") String id,
 								@RequestParam("exhibitorId") String exhibitorId,
 								Model model, HttpSession session) {
-		// TODO: Get each id from html
-		// int borrowerId = bookEntity.getId();
-		System.out.println(id);
-		System.out.println(exhibitorId);
 		int borrowerId = Integer.parseInt(session.getAttribute("userId").toString());
 		int lenderId   = Integer.parseInt(exhibitorId);
 		int bookId     = Integer.parseInt(id);

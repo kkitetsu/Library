@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class BookAddRequest implements Serializable {
 	
+	private Integer id;
+	
 	private String image;
 	
 	private String title;

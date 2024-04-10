@@ -37,7 +37,6 @@ public class LibraryController {
 
 	@Autowired
 	private LibraryService libraryService;
-
 	
 	@GetMapping(value = "/log")
 	public String getLogPage(Model model) {
@@ -253,6 +252,12 @@ public class LibraryController {
           bookRequest.setImgPath(uploadAction(e));
         });
 	   libraryService.bookRegister(bookRequest);
+	   
+	   try {
+			Thread.sleep(7000);
+		} catch (InterruptedException e) {
+			System.out.println("待ち時間中に割り込みが発生しました。");
+		}
 
 	   return "redirect:/home";        
     }
@@ -264,11 +269,15 @@ public class LibraryController {
     private String uploadAction(MultipartFile multipartFile) {
         //ファイル名取得
         String fileName = multipartFile.getOriginalFilename();
-
-        //格納先のフルパス ※事前に格納先フォルダ「UploadTest」をCドライブ直下に作成しておく
         
-        java.nio.file.Path filePath = Paths.get( "C:/pleiades/2022-12/workspace/RakutenLibrary/Library/src/main/resources/static/uploadImage/" + fileName);
-        //java.nio.file.Path filePath = Paths.get("/Applications/Eclipse_2022-12.app/Contents/workspace/Library/src/main/resources/static/uploadImage/" + fileName);
+    	//p1 : uploadImageフォルダへの相対パス
+		java.nio.file.Path p1 = Paths.get("src/main/resources/static/uploadImage/"); 
+		//p2 : 相対パス→絶対パスに変換
+        java.nio.file.Path p2 = p1.toAbsolutePath();
+        //filePath : fileNameをパスに追加
+        java.nio.file.Path filePath = Paths.get(p2.toString() + "/" + fileName);
+
+        System.out.println(filePath.toString()); 
         
         try {
             //アップロードファイルをバイト値に変換

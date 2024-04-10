@@ -38,7 +38,6 @@ public class LibraryController {
 	@Autowired
 	private LibraryService libraryService;
 
-	
 	@GetMapping(value = "/log")
 	public String getLogPage(Model model) {
 		return "/log";

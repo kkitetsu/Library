@@ -25,6 +25,7 @@ import com.example.todo.controller.LibraryController;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.TransactionEntity;
 import com.example.todo.entity.UsersEntity;
+import com.example.todo.forms.BookAddRequest;
 import com.example.todo.forms.LoginRequest;
 import com.example.todo.service.LibraryService;
 
@@ -331,11 +332,17 @@ class LibraryApplicationTests {
     	libraryService.register(usersEntity1);
     	UsersEntity usersEntity2 = createTestUserEntity(0002, "testName2");
     	libraryService.register(usersEntity2);
+    	
     	LoginRequest loginRequest = new LoginRequest();
     	loginRequest.setLogin_id(usersEntity1.getLoginId());
     	loginRequest.setLogin_pw(usersEntity1.getPassword());
     	List<UsersEntity> loginResult = libraryService.login(loginRequest);
-    	assertEquals(1, loginResult.get(0).getId());
+    	usersEntity1 = loginResult.get(0);
+    	assertEquals(1, usersEntity1.getId());
+    	
+    	BookAddRequest bookRequest = new BookAddRequest();
+    	bookRequest.setImgPath("/test/path");
+    	libraryService.bookRegister(bookRequest);
 		return;
 	}
 }

@@ -28,4 +28,6 @@ public class BookAddRequest implements Serializable {
 	
 	private String imgPath;
 	
+	
 }
+

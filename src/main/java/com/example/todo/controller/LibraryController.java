@@ -37,7 +37,6 @@ public class LibraryController {
 
 	@Autowired
 	private LibraryService libraryService;
-
 	
 	@GetMapping(value = "/log")
 	public String getLogPage(Model model) {
@@ -205,6 +204,10 @@ public class LibraryController {
 	@GetMapping(value = "/home")
 	public String home(Model model,HttpSession session) {
 		
+		if (session.getAttribute("userId") == null) {
+			return "redirect:/login";
+		}
+		
 		int user_id = (int)session.getAttribute("userId");
 		List<SearchLogsDTO> ntf = libraryService.displayNotification(user_id);
 		//お知らせを表示
@@ -249,12 +252,21 @@ public class LibraryController {
    	    multipartFile.forEach(e -> {
           bookRequest.setImgPath(uploadAction(e));
         });
+   	    if (bookRequest.getLimitdate() == null) {
+   	    	// do something
+   	    	String errorMsg = "やってくれたな";
+   	    	model.addAttribute("errorMsg", errorMsg);
+   	    	return "/add";
+   	    }
 	   libraryService.bookRegister(bookRequest);
-       model.addAttribute("search_box", new SearchBooksRequest());
-       List<BooksEntity> bookshelf = libraryService.displayBooks();
-	   model.addAttribute("bookshelf", bookshelf);
-	   return "/home";
-        
+	   
+	   try {
+			Thread.sleep(7000);
+		} catch (InterruptedException e) {
+			System.out.println("待ち時間中に割り込みが発生しました。");
+		}
+
+	   return "redirect:/home";        
     }
 	
 	/**
@@ -264,9 +276,15 @@ public class LibraryController {
     private String uploadAction(MultipartFile multipartFile) {
         //ファイル名取得
         String fileName = multipartFile.getOriginalFilename();
+        
+    	//p1 : uploadImageフォルダへの相対パス
+		java.nio.file.Path p1 = Paths.get("src/main/resources/static/uploadImage/"); 
+		//p2 : 相対パス→絶対パスに変換
+        java.nio.file.Path p2 = p1.toAbsolutePath();
+        //filePath : fileNameをパスに追加
+        java.nio.file.Path filePath = Paths.get(p2.toString() + "/" + fileName);
 
-        //格納先のフルパス ※事前に格納先フォルダ「UploadTest」をCドライブ直下に作成しておく
-        java.nio.file.Path filePath = Paths.get("C:/pleiades/2023-12/workspace/Library/src/main/resources/static/uploadImage/" + fileName);
+        System.out.println(filePath.toString()); 
         
         try {
             //アップロードファイルをバイト値に変換

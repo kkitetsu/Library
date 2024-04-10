@@ -11,7 +11,19 @@
 		SELECT 
 			* 
 		FROM 
-			books;
+			books
+		WHERE
+			exhibition_flag=1;
+	</select>
+	
+	<!-- @author kk -->
+	<select id="getNameBasedOnId" resultType="java.lang.String">
+		SELECT 
+			name
+		FROM
+			users
+		WHERE
+			id=#{id};
 	</select>
 	
 	<!-- 
@@ -152,7 +164,7 @@
 			password = #{password},
 		    edited_date = CURRENT_TIMESTAMP
 		WHERE 
-			id = 2;
+			id = #{id};
 	</update>
 	<!--  @author kk -->
 	<insert id="register">
@@ -166,8 +178,19 @@
 		INSERT INTO transactions
 			(book_id, lender_user_id, borrower_user_id, traded_date)
 		VALUES
-			(#{bookId}, #{lenderId}, #{borrowerId}, CURRENT_TIMESTAMP)
+			(#{bookId}, #{lenderId}, #{borrowerId}, CURRENT_TIMESTAMP);
 	</insert>
+	
+	<update id="updateBooksNoLongerExhibit">
+		UPDATE
+			books
+		SET 
+			exhibition_flag=0
+		WHERE
+			id=#{bookId};
+	</update>
+	
+	
 	<insert id = "bookRegister">
 	INSERT INTO books
 		(title, exhibitor_user_id, category, limitdate, image)

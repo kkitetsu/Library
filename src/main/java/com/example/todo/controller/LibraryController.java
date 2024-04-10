@@ -271,4 +271,11 @@ public class LibraryController {
 		}
 		return hashedPassword;
 	}
+	
+	/** @author kawabe */
+	@GetMapping("/kawabe")
+	public String loadingSample(Model model) {
+		// TODO: Get book id
+		return "kawabeSample";
+	}
 }

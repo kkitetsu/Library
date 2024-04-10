@@ -57,18 +57,16 @@
 			<!-- サイドバー終 -->
 
 			<div class="search_box">
-				<form th:action="@{/home}" th:object="${search_box}" th:method="post">
 					<table class="search_table">
 						<tr>
 							<td colspan="2">
-								<input type="text" th:field="*{book_name}" class="input_box">
+								<input type="text" id="book_name" class="input_box" placeholder="キーワードを入力">
 							</td>
 							<td>
-								<button type="submit" class="btn btn-danger" id="small_size">検索</button>
+								<button class="btn btn-danger" id="small_size">検索</button>
 							</td>
 						</tr>
 					</table>
-				</form>
 			</div>
 
 			<div th:if="${bookshelf}">
@@ -79,7 +77,7 @@
 
 			<div class="main_content_box">
 				<div class="content" th:each="book: ${bookshelf}">
-					<img src="/img/naruto_magazine.jpeg" class="book_img">
+					<img src="/img/naruto_magazine.jpeg" class="book_img" id = "book_img">
 						<form th:action="@{/confirm}" th:method="GET">
 							<input type="hidden" name="title" th:value="${book.title}" />
         					<input type="hidden" name="content" th:value="${book.id}" />
@@ -100,10 +98,13 @@
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>
 	</div>
-
+	<!--JavaScriptリンク-->
+	<script type="text/javascript" th:src="@{/js/home.js}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </body>
 
 <script>
+	
 	const toggler = document.querySelector(".toggle");
 
 	window.addEventListener("click", event => {

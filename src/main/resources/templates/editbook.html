@@ -41,12 +41,13 @@
 				-本修正
 			</div>
 			<div class="main_content_box">
-				<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}"
+				<form th:action="@{/editbook}" enctype="multipart/form-data" th:object="${bookAddRequest}"
 					th:method="post">
 					<label for="imgUpload" class="image-upload-container">
 						<div class="image-upload-placeholder">
 							<strong>本の画像をアップロード</strong>
 						</div>
+						<image src="*{image}"></image>
 						<input type="file" id="imgUpload" accept="image/*" style="display: none;"
 							th:field="*{multipartFile}" multiple />
 						<figure class="image-preview" id="imagePreview">
@@ -90,6 +91,7 @@
 
 						</tr>
 					</table>
+					<input type="hidden" th:value="*{id}" th:name="id">
 			</div>
 
 		</div>

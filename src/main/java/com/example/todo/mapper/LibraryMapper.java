@@ -100,4 +100,7 @@ public interface LibraryMapper {
 	
 	/** @author kk */
 	public String getNameBasedOnId(int id);
+	
+	/** @author kk */
+	public void updateBooksNoLongerExhibit(int bookId);
 }

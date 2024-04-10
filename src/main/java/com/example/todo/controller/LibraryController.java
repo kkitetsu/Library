@@ -411,6 +411,7 @@ public class LibraryController {
 		int borrowerId = Integer.parseInt(session.getAttribute("userId").toString());
 		System.out.println(bookId + " " + lenderId + " " + borrowerId);
 		libraryService.updateTransaction(bookId, lenderId, borrowerId);
+		libraryService.updateBooksNoLongerExhibit(bookId);
 		return "redirect:/borrowlog";
 	}
 	/**

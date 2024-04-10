@@ -52,6 +52,11 @@ public class LibraryService {
 		return libraryMapper.getNameBasedOnId(id);
 	}
 	
+	/** @author kk */
+	public void updateBooksNoLongerExhibit(int bookId) {
+		libraryMapper.updateBooksNoLongerExhibit(bookId);
+	}
+	
 	/** 
 	 * @author Lee
 	 * Userの情報修正

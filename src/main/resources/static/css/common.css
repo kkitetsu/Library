@@ -68,7 +68,7 @@ header {
 	background-image: url("../img/backgroundimage.jpg");
 }
 
-.login_table, .register_table, edit_table, add_table{
+.login_table, .register_table, edit_table, add_table, edit_book_table{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -124,7 +124,8 @@ body{
 	height:95%;
 	border-radius:10px;
 	padding-left:10px;
-	width:100%;
+	width:80%;
+	max-width:600px;
 }
 .log_table, .my_book_table{
 	width:90%;
@@ -135,7 +136,14 @@ body{
 	text-align:center;
 	border-radius:25px;
 }
-
+.add_table, .edit_book_table{
+	width:90%;
+	margin:10px 5%;
+	color:white;
+	font-size:30px;
+	text-align:center;
+	border-radius:25px;	
+}
 .search_table{
 	width:90%;
 	margin:10px 5%;

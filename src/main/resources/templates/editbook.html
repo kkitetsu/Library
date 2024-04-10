@@ -38,7 +38,7 @@
 		<div class="main">
 			<!--白い箱-->
 			<div class="main_title">
-				-出品
+				-本修正
 			</div>
 			<div class="main_content_box">
 				<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}"
@@ -54,7 +54,7 @@
 						</figure>
 					</label><br><br>
 
-					<table class="add_table">
+					<table class="edit_book_table">
 						<tr class="table_row">
 							<td><label for="title">タイトル</label></td>
 							<td><input type="text" th:field="*{title}" class="input_box"></td>
@@ -74,9 +74,20 @@
 									min="${#dates.format(#dates.createToday(), 'yyyy-MM-dd')}" />
 							</td>
 						</tr>
+					</table>
+					<table class="edit_book_table">
 						<tr>
-							<td><input type="submit" class="btn btn-danger" value="登録" id="small_size"></td>
-							<td><a href="/home" class="btn btn-primary" id="small_size">キャンセル</a></td>
+							<td>
+								<input type="submit" class="btn btn-primary" value="削除" id="small_size">
+							</td>
+							<td>
+								<input type="submit" class="btn btn-danger" value="修正" id="small_size">
+							</td>
+							<td>
+								<a href="/home" class="btn btn-primary" id="small_size">キャンセル</a>
+							</td>
+						</tr>
+
 						</tr>
 					</table>
 			</div>

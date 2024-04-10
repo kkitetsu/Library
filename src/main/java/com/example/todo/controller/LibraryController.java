@@ -189,7 +189,7 @@ public class LibraryController {
 			model.addAttribute("logininfo", new LoginRequest());
 			return "/login";
 		}
-		session.setAttribute("userId", loginRequest.getLogin_id());
+		session.setAttribute("userId", user_info.get(0).getId());
 		return "redirect:/home";
 	}
 
@@ -232,8 +232,19 @@ public class LibraryController {
 		model.addAttribute("bookAddRequest", bka);
         return "/add";
     }
+	/**
+	 * @author Lee 
+	 * 本の修正への遷移経路
+	 **/
+	@GetMapping(value = "/editbook")
+	public String displayeditbook(Model model) {
+		BookAddRequest bka = new BookAddRequest();
+		model.addAttribute("bookAddRequest", bka);
+        return "/editbook";
+    }
+
 	
-    
+	
 	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
     public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, Model model, HttpSession session) {
         session.setAttribute("userId", 1);
@@ -387,7 +398,6 @@ public class LibraryController {
 	 */
 	@PostMapping("/logout")
 	public String doLogOut( Model model, HttpSession session) {
-		session.setAttribute("userId","1001");
 		session.invalidate(); // Logout and back to home
 		return "redirect:/login";
 	}

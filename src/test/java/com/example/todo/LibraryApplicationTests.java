@@ -373,7 +373,6 @@ class LibraryApplicationTests {
     	assertEquals("TestBook1", libraryService.displayLendLogs(1, 1).get(0).getBookTitle());
     	assertEquals("TestName2", libraryService.displayLendLogs(1, 1).get(0).getBorrowerName());
     	
-    	
 		return;
 	}
 }

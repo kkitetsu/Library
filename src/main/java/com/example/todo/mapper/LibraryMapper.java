@@ -97,4 +97,7 @@ public interface LibraryMapper {
 	
 	/** @author kk */
 	public List<UsersEntity> getUsers();
+	
+	/** @author kk */
+	public String getNameBasedOnId(int id);
 }

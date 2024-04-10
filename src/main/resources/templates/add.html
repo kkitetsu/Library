@@ -16,9 +16,14 @@
 </head>
 
 <body>
+	<!-- Loading中の画面-->
+	<div id="loading">
+		<div class="loading_msg_box"> Loading... </div>
+		<div class="loader"> </div>
+	</div>
+
 	<!--画面全体始め（ヘッダー、メイン、フッター)-->
 	<div class="content_box">
-
 		<!--ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
 		<header>
 			<div class="header_logo"> <a href="https://www.rakuten-sec.co.jp/"><img src="img/rakuten_logo.png"
@@ -50,12 +55,12 @@
 					<div class="image-upload-placeholder">
 						<strong>本の画像をアップロード</strong>
 					</div>
-					<input type="file" id="imgUpload" accept="image/*" style="display: none;" th:field="*{multipartFile}" multiple/>
+					<input type="file" id="imgUpload" accept="image/*" style="display: none;"
+						th:field="*{multipartFile}" multiple />
 					<figure class="image-preview" id="imagePreview">
 						<img src="" alt="Image Preview" id="previewImage" />
 					</figure>
 				</label><br><br>
-
 				<table class="add_table">
 					<tr class="table_row">
 						<td><label for="title">タイトル</label></td>
@@ -72,13 +77,12 @@
 					<tr id="limitdate" class="table_row">
 						<td>貸出期限</td>
 						<td>
-							<input type="date" th:field="*{limitdate}" class="input_box" required/>
+							<input type="date" th:field="*{limitdate}" class="input_box" required />
 						</td>
 					</tr>
 					<tr>
-						<td><input type="submit" class="btn btn-danger" value="登録" id="small_size"></td>
+						<td><input type="submit" class="btn btn-danger" value="登録" id="small_size_loading"></td>
 						<td><a href="/home" class="btn btn-primary" id="small_size">キャンセル</a></td>
-
 					</tr>
 				</table>
 		</div>
@@ -87,6 +91,7 @@
 		</footer>
 		<!--JavaScriptリンク-->
 		<script type="text/javascript" th:src="@{/js/add.js}"></script>
+		<script type="text/javascript" th:src="@{/js/loading.js}"></script>
 </body>
 
 </html>

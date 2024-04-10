@@ -253,11 +253,8 @@ public class LibraryController {
           bookRequest.setImgPath(uploadAction(e));
         });
 	   libraryService.bookRegister(bookRequest);
-//       model.addAttribute("search_box", new SearchBooksRequest());
-//       List<BooksEntity> bookshelf = libraryService.displayBooks();
-//	   model.addAttribute("bookshelf", bookshelf);
-	   return "redirect:/home";
-        
+
+	   return "redirect:/home";        
     }
 	
 	/**

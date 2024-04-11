@@ -223,7 +223,7 @@ public class LibraryController {
 		
 		// Editor: kk
 		// Record and show user's name
-		model.addAttribute("userName", libraryService.getNameBasedOnId(user_id));
+		model.addAttribute("userName", session.getAttribute("userName"));
 
 		return "/home";
 	}
@@ -312,6 +312,10 @@ public class LibraryController {
 		} catch (InterruptedException e) {
 			System.out.println("待ち時間中に割り込みが発生しました。");
 		}
+	   
+	   System.out.println(session.getAttribute("userId"));
+	   System.out.println(session.getAttribute("userName"));
+	   
 
 	   return "redirect:/home";        
     }
@@ -351,7 +355,7 @@ public class LibraryController {
 
 
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
-	public String search(Model model, SearchBooksRequest searchBooksRequest) {
+	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session) {
 
 		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
 
@@ -360,6 +364,10 @@ public class LibraryController {
 		}
 		model.addAttribute("search_box", new SearchBooksRequest());
 		model.addAttribute("bookshelf", bookshelf);
+		
+		// Editor: kk
+		// Record and show user's name
+		model.addAttribute("userName", session.getAttribute("userName"));
 
 		return "/home";
 	}

@@ -105,12 +105,13 @@ public class LibraryController {
 
 	
 	@RequestMapping(value = "/mybook", method = {RequestMethod.GET, RequestMethod.POST})
-	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
+	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
+		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		int LogsSize = libraryService.getMyBookLogsSize();
 		final int SUBLISTSIZE = 5;
 		int maxPageNum = 1;
 		int startIndex = (currPage - 1) * SUBLISTSIZE;
-		List<BooksEntity> bookshelf = libraryService.displayMyBooks(SUBLISTSIZE, startIndex);
+		List<BooksEntity> bookshelf = libraryService.displayMyBooks(SUBLISTSIZE, startIndex, userId);
 		model.addAttribute("mybook", bookshelf);
 		model.addAttribute("currentPage", currPage);
 		if (LogsSize % SUBLISTSIZE == 0) {
@@ -227,7 +228,7 @@ public class LibraryController {
 		
 		// Editor: kk
 		// Record and show user's name
-		model.addAttribute("userName", libraryService.getNameBasedOnId(user_id));
+		model.addAttribute("userName", session.getAttribute("userName"));
 
 		return "/home";
 	}
@@ -255,38 +256,60 @@ public class LibraryController {
 
 	
 	
-	@RequestMapping(value = "/editbook", method = RequestMethod.POST)
+	@RequestMapping(value = "/editbook", params= "update", method = RequestMethod.POST)
     public String editBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {		
-		if (bindingResult.hasErrors()) {
-            // 入力チェックエラーの場合
-            List<String> errorList = new ArrayList<String>();
-            for (ObjectError error : bindingResult.getAllErrors()) {
-                errorList.add(error.getDefaultMessage());
-            }
-            model.addAttribute("validationError", errorList);
-            model.addAttribute("bookAddRequest", new BookAddRequest());
-            return "/editbook";
-        }
-        List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
-   	    multipartFile.forEach(e -> {
-          bookRequest.setImgPath(uploadAction(e));
-        });
-   	    if (bookRequest.getLimitdate() == null) {
-   	    	// do something
-   	    	String errorMsg = "やってくれたな";
-   	    	model.addAttribute("errorMsg", errorMsg);
-   	    	return "/editbook";
-   	    }
-	   libraryService.bookEditer(bookRequest);
-
+			if (bindingResult.hasErrors()) {
+            		List<String> errorList = new ArrayList<String>();
+            		for (ObjectError error : bindingResult.getAllErrors()) {
+            			errorList.add(error.getDefaultMessage());
+            		}
+            		model.addAttribute("validationError", errorList);
+            		model.addAttribute("bookAddRequest", new BookAddRequest());
+            		return "/editbook";
+			}
+			List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
+			multipartFile.forEach(e -> {
+				bookRequest.setImgPath(uploadAction(e));
+			});
+			if (bookRequest.getLimitdate() == null) {
+				String errorMsg = "やってくれたな";
+				model.addAttribute("errorMsg", errorMsg);
+				return "/editbook";
+			}
+			libraryService.bookEditer(bookRequest);
 	   return "redirect:/home";        
     }
 	
 	
+	@RequestMapping(value = "/editbook", params= "delete", method = RequestMethod.POST)
+    public String deleteBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {		
+			if (bindingResult.hasErrors()) {
+            		List<String> errorList = new ArrayList<String>();
+            		for (ObjectError error : bindingResult.getAllErrors()) {
+            			errorList.add(error.getDefaultMessage());
+            		}
+            		model.addAttribute("validationError", errorList);
+            		model.addAttribute("bookAddRequest", new BookAddRequest());
+            		return "/editbook";
+			}
+			List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
+			multipartFile.forEach(e -> {
+				bookRequest.setImgPath(uploadAction(e));
+			});
+			if (bookRequest.getLimitdate() == null) {
+				String errorMsg = "やってくれたな";
+				model.addAttribute("errorMsg", errorMsg);
+				return "/editbook";
+			}
+			libraryService.bookDeliter(bookRequest);
+		
+	   return "redirect:/home";        
+    }
+	
 	
 	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
     public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {
-        session.setAttribute("userId", 1);
+        System.out.println("session is: " + session.getAttribute("userId"));
         bookRequest.setUserId((int)session.getAttribute("userId"));
 		if (bindingResult.hasErrors()) {
             // 入力チェックエラーの場合
@@ -315,6 +338,10 @@ public class LibraryController {
 		} catch (InterruptedException e) {
 			System.out.println("待ち時間中に割り込みが発生しました。");
 		}
+	   
+	   System.out.println(session.getAttribute("userId"));
+	   System.out.println(session.getAttribute("userName"));
+	   
 
 	   return "redirect:/home";        
     }
@@ -354,7 +381,7 @@ public class LibraryController {
 
 
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
-	public String search(Model model, SearchBooksRequest searchBooksRequest) {
+	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session) {
 
 		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
 
@@ -363,6 +390,10 @@ public class LibraryController {
 		}
 		model.addAttribute("search_box", new SearchBooksRequest());
 		model.addAttribute("bookshelf", bookshelf);
+		
+		// Editor: kk
+		// Record and show user's name
+		model.addAttribute("userName", session.getAttribute("userName"));
 
 		return "/home";
 	}
@@ -397,7 +428,8 @@ public class LibraryController {
 
 		model.addAttribute("loginRequest", new LoginRequest());
 		model.addAttribute("search_box", new SearchBooksRequest());
-		session.setAttribute("userId", usersEntity.getLoginId());
+		session.setAttribute("userId", libraryService.getLastIdInUsers());
+		session.setAttribute("userName", usersEntity.getName());
 
 		return "redirect:/home";
 	}

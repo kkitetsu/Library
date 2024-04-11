@@ -30,6 +30,7 @@ public class BookAddRequest implements Serializable {
 	
 	private String imgPath;
 	
+	private int exhibition_flag;
 	
 }
 

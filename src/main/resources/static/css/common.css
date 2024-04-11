@@ -432,3 +432,9 @@ a:hover {
 	height: 200px;
 	object-fit: cover;
 }
+
+/* edited by kk. Used to avoid unfocusable issue when input box is hidden and limitdate */
+.input_box.hidden-input {
+    position: absolute;
+    left: -9999px;
+}

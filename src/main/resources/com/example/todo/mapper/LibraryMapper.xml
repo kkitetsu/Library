@@ -26,6 +26,18 @@
 			id=#{id};
 	</select>
 	
+	<!--  @author kk -->
+	<select id="getLastIdInUsers" resultType="int">
+		SELECT 
+			id
+		FROM 
+			users
+		ORDER BY 
+			id DESC
+		LIMIT 
+			1;
+	</select>
+	
 	<!-- 
 	@auther shunsukekuzawa
 	 Search books searched by user with keyword.
@@ -85,13 +97,13 @@
 		SELECT 
 			id, 
 			title, 
-			exhibitor_user_id as exhibitorUserId, 
+			exhibitor_user_id, 
 			category, 
 			limitdate 
 		FROM 
 		 	books
 		WHERE 
-		 	exhibition_flag=1
+		 	exhibition_flag=1 AND exhibitor_user_id=#{userId}
 		LIMIT 
 		 	#{SUBLISTSIZE} OFFSET #{startIndex};
 	</select>
@@ -208,7 +220,6 @@
 			id=#{bookId};
 	</update>
 	
-	
 	<insert id = "bookRegister">
 	INSERT INTO books
 		(title, exhibitor_user_id, category, limitdate, image)
@@ -223,6 +234,14 @@
 			category= #{category},
 			limitdate= #{limitdate},
 			image= #{imgPath}
+		WHERE
+			id= #{id};
+	</update>
+	<update id="bookDeliter">
+		UPDATE
+			books
+		SET
+			exhibition_flag = 0
 		WHERE
 			id= #{id};
 	</update>

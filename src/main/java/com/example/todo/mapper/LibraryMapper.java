@@ -29,7 +29,7 @@ public interface LibraryMapper {
 	 * @param MYBOOK リクエストデータ 
 	 * @return MYBOOKの一覧
 	 **/
-	public List<BooksEntity> displayMyBooks(final int SUBLISTSIZE, int startIndex);
+	public List<BooksEntity> displayMyBooks(final int SUBLISTSIZE, int startIndex, int userId);
 	
 	public List<UsersEntity> add(LoginRequest loginRequest);
 	
@@ -89,6 +89,8 @@ public interface LibraryMapper {
 	
 	public void bookEditer(BookAddRequest bookRequest);
 	
+	public void bookDeliter(BookAddRequest bookRequest);
+	
 	/**
 	 * @author Lee 
 	 * @return ユーザーの情報修正
@@ -105,4 +107,7 @@ public interface LibraryMapper {
 	
 	/** @author kk */
 	public void updateBooksNoLongerExhibit(int bookId);
+	
+	/** @author kk */
+	public int getLastIdInUsers();
 }

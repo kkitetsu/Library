@@ -282,7 +282,8 @@ public class LibraryController {
 	
 	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
     public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {
-        session.setAttribute("userId", 1);
+        System.out.println("Here");
+		session.setAttribute("userId", 1);
         bookRequest.setUserId((int)session.getAttribute("userId"));
 		if (bindingResult.hasErrors()) {
             // 入力チェックエラーの場合

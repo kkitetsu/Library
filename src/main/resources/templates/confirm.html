@@ -46,7 +46,13 @@
 						<input type="hidden" th:name="exhibitorId" th:value="*{bookEntity.exhibitorUserId}">
 						<tr class="table_row">
 							<td>本の画像</td>
+							<!--
 							<td><span th:text="*{bookEntity.image}"></span></td>
+							-->
+							<td>
+								<img th:src="*{bookEntity.image}" onerror="this.src='/img/default_book_img.jpg'"
+															class="book_content_img">
+							</td>
 						</tr>
 						<tr class="table_row">
 							<td><label for="title">タイトル</label></td>

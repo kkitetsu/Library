@@ -50,12 +50,13 @@ public class LibraryController {
 	 **/
 	// @RequestMapping(value = "/borrowlog", method = RequestMethod.POST) edited kk
 	@RequestMapping(value = "/borrowlog", method={RequestMethod.GET, RequestMethod.POST})
-	public String getBorrowLogPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
-		int LogsSize = libraryService.getBorrowLogsSize();
+	public String getBorrowLogPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
+		int userId= Integer.parseInt(session.getAttribute("userId").toString());
+		int LogsSize = libraryService.getBorrowLogsSize(userId);
 		final int SUBLISTSIZE = 5;
 		int maxPageNum = 1;
 		int startIndex = (currPage - 1) * SUBLISTSIZE;
-		List<SearchLogsDTO> BorrowLogs = libraryService.displayBorrowLogs(SUBLISTSIZE, startIndex);
+		List<SearchLogsDTO> BorrowLogs = libraryService.displayBorrowLogs(SUBLISTSIZE, startIndex, userId);
 		if (LogsSize % SUBLISTSIZE == 0) {
 			maxPageNum = (int) LogsSize / SUBLISTSIZE;
 		} else {
@@ -64,7 +65,9 @@ public class LibraryController {
 		model.addAttribute("BorrowLogs", BorrowLogs);
 		model.addAttribute("currentPage", currPage);
 		model.addAttribute("maxPageNum", maxPageNum);
-
+		
+		
+		
 		return "/borrowlog";
 	}
 
@@ -74,13 +77,14 @@ public class LibraryController {
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
 	@RequestMapping(value = "/lendlog", method = {RequestMethod.GET, RequestMethod.POST})
-	public String getLendLogPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
-		int LogsSize = libraryService.getLendLogsSize();
+	public String getLendLogPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
+		int userId =Integer.parseInt(session.getAttribute("userId").toString());
+		int LogsSize = libraryService.getLendLogsSize(userId);
 		final int SUBLISTSIZE = 5;
 		int startIndex = (currPage - 1) * SUBLISTSIZE;
 		
 		int maxPageNum = 1;
-		List<SearchLogsDTO> LendLogs = libraryService.displayLendLogs(SUBLISTSIZE, startIndex);
+		List<SearchLogsDTO> LendLogs = libraryService.displayLendLogs(SUBLISTSIZE, startIndex,userId);
 		if (LogsSize % SUBLISTSIZE == 0) {
 			maxPageNum = (int) LogsSize / SUBLISTSIZE;
 		} else {
@@ -103,7 +107,7 @@ public class LibraryController {
 	@RequestMapping(value = "/mybook", method = {RequestMethod.GET, RequestMethod.POST})
 	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
 		int userId = Integer.parseInt(session.getAttribute("userId").toString());
-		int LogsSize = libraryService.getMyBookLogsSize();
+		int LogsSize = libraryService.getMyBookLogsSize(userId);
 		final int SUBLISTSIZE = 5;
 		int maxPageNum = 1;
 		int startIndex = (currPage - 1) * SUBLISTSIZE;
@@ -276,30 +280,20 @@ public class LibraryController {
 	   return "redirect:/home";        
     }
 	
-	
+	/**
+	 * @author Aru
+	 * 
+	 * Delete a book (Remove from book list, change exhibition flag to 0)
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value = "/editbook", params= "delete", method = RequestMethod.POST)
-    public String deleteBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {		
-			if (bindingResult.hasErrors()) {
-            		List<String> errorList = new ArrayList<String>();
-            		for (ObjectError error : bindingResult.getAllErrors()) {
-            			errorList.add(error.getDefaultMessage());
-            		}
-            		model.addAttribute("validationError", errorList);
-            		model.addAttribute("bookAddRequest", new BookAddRequest());
-            		return "/editbook";
-			}
-			List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
-			multipartFile.forEach(e -> {
-				bookRequest.setImgPath(uploadAction(e));
-			});
-			if (bookRequest.getLimitdate() == null) {
-				String errorMsg = "やってくれたな";
-				model.addAttribute("errorMsg", errorMsg);
-				return "/editbook";
-			}
-			libraryService.bookDeliter(bookRequest);
+    public String deleteBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, 
+    											Model model, HttpSession session) {		
+
+		libraryService.bookDeliter(bookRequest);
 		
-	   return "redirect:/home";        
+		return "redirect:/home";        
     }
 	
 	

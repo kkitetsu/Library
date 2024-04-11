@@ -69,17 +69,17 @@ public interface LibraryMapper {
 	 * @param 貸した/借りた履歴リクエストデータ(今後 ユーザーID　主キーに修正予定)
 	 * @return 貸した/借りた履歴結果
 	 **/
-	public List<SearchLogsDTO> displayLendLogs(final int SUBLISTSIZE, int startIndex);
-	public List<SearchLogsDTO> displayBorrowLogs(final int SUBLISTSIZE, int startIndex);
+	public List<SearchLogsDTO> displayLendLogs(final int SUBLISTSIZE, int startIndex, int userId);
+	public List<SearchLogsDTO> displayBorrowLogs(final int SUBLISTSIZE, int startIndex, int userId);
 	
 	/**
 	 * @author Lee 
 	 * @param 貸した/借りた履歴/My bookリクエストデータ(今後 ユーザーID　主キーに修正予定)
 	 * @return 貸した/借りた履歴/My book のサイズ
 	 **/
-     int getLendLogsSize();
-     int getBorrowLogsSize();
-     int getMyBookLogsSize();
+     int getLendLogsSize(int userId);
+     int getBorrowLogsSize(int userId);
+     int getMyBookLogsSize(int userId);
 
       /** @author kk */
 	public void register(UsersEntity usersEntity);

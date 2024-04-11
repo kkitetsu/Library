@@ -118,7 +118,8 @@
 		FROM 
 			transactions;		
 	</select>
-	<!-- @author Lee :他のユーザーに貸した/借りた履歴 -->
+	
+	<!-- @author Lee :他のユーザーに貸した(LEND)/借りた(BORROW)履歴 -->
 	<select id="displayLendLogs" resultType="com.example.todo.dto.SearchLogsDTO">
 		SELECT 
 			t.id AS TransId, 
@@ -133,14 +134,27 @@
 			books AS b on b.id = t.book_id
 		INNER JOIN 
 			users AS u on u.id = t.borrower_user_id
+		WHERE
+			t.Lender_user_id = #{userId}
 		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};	
 	</select>
+	
 	<select id="displayBorrowLogs" resultType="com.example.todo.dto.SearchLogsDTO">
-		select t.id as TransId, t.traded_date as TradedDate, b.title as BookTitle, 
-		u.name as LenderName, b.limitdate as LimitDate,
-		t.borrower_user_id as BorrowerId from transactions as t
-		inner join books as b on b.id = t.book_id
-		inner join users as u on u.id = t.lender_user_id
+		SELECT
+			t.id as TransId,
+			t.traded_date as TradedDate,
+			b.title as BookTitle, 
+			u.name as LenderName, 
+			b.limitdate as LimitDate,
+			t.borrower_user_id as BorrowerId 
+		From
+			 transactions as t
+		INNER JOIN
+			books AS b on b.id = t.book_id
+		INNER JOIN 
+			users as u on u.id = t.lender_user_id
+		WHERE 
+			t.borrower_user_id = #{userId}
 		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};
 	</select>
 	<!-- @author Lee:貸し/借りログ/MY BOOKの大きさ計算-->
@@ -149,12 +163,16 @@
 			COUNT(*) AS row_count 
 		FROM 
 			transactions
+		WHERE
+		Lender_user_id =#{userId}
 	</select>
 	<select id="getBorrowLogsSize">
 		SELECT 
 			COUNT(*) AS row_count 
 		FROM 
 			transactions
+		WHERE
+		borrower_user_id =#{userId}
 	</select>
 	<select id="getMyBookLogsSize">
 		SELECT 
@@ -162,7 +180,9 @@
 		FROM 
 			books
 		WHERE 
-			exhibition_flag=1;
+			exhibition_flag=1 
+		AND 
+			exhibitor_user_id=#{userId};
 	</select>
 	<!--  @author lee:ユーザーの情報アップデート -->
 	<update id="editUser">

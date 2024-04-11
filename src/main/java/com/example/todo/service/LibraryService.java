@@ -132,8 +132,8 @@ public class LibraryService {
 	 * LimitDate（返却期限）
 	 * BorrowerId（借り手のID）
 	 **/
-	public List<SearchLogsDTO> displayBorrowLogs(final int SUBLISTSIZE, int startIndex) {
-		return libraryMapper.displayBorrowLogs(SUBLISTSIZE, startIndex);
+	public List<SearchLogsDTO> displayBorrowLogs(final int SUBLISTSIZE, int startIndex, int userId) {
+		return libraryMapper.displayBorrowLogs(SUBLISTSIZE, startIndex, userId);
 	}
 	/** 
 	 * @author Lee
@@ -169,8 +169,8 @@ public class LibraryService {
 	public int getLendLogsSize() {
 		return libraryMapper.getLendLogsSize();
 	}
-	public int getBorrowLogsSize() {
-		return libraryMapper.getBorrowLogsSize();
+	public int getBorrowLogsSize(int userId) {
+		return libraryMapper.getBorrowLogsSize(userId);
 	}
 	public int getMyBookLogsSize() {
 		return libraryMapper.getMyBookLogsSize();

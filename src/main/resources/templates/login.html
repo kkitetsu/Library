@@ -29,9 +29,12 @@
 		<!--メインー（修正可能領域）-->
 		<div class="main">
 			<!--白い箱-->
+			<div class="main_title">
+				- ログイン
+			</div>
 			<div th:if="${errMsg}">
-		        <div th:text="${errMsg}" class="main_title"></div>
-		    </div>
+				<div th:text="${errMsg}" class="main_title"></div>
+			</div>
 			<!-- メインコンテンツが入る赤色の箱-->
 			<div class="main_content_box">
 				<!--actionの行き先修正必要 -->
@@ -43,15 +46,16 @@
 								<label for="login_id"> ID</label>
 							</td>
 							<td>
-								<input th:field="*{login_id}" type="number" class="input_box" name="login_id" id="login_id" required>
+								<input th:field="*{login_id}" type="number" class="input_box" name="login_id"
+									id="login_id" required>
 								<script>
-								    window.onload = function() {
-								        // Get the input field element
-								        var loginIdInput = document.getElementById("login_id");
-								        
-								        // Clear the default value
-								        loginIdInput.value = "";
-								    };
+									window.onload = function () {
+										// Get the input field element
+										var loginIdInput = document.getElementById("login_id");
+
+										// Clear the default value
+										loginIdInput.value = "";
+									};
 								</script>
 							</td>
 						</tr>
@@ -60,7 +64,8 @@
 								<label for="password"> パスワード</label>
 							</td>
 							<td>
-								<input th:field="*{login_pw}" type="password" class="input_box" name="password" required>
+								<input th:field="*{login_pw}" type="password" class="input_box" name="password"
+									required>
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -70,14 +75,14 @@
 								<input type="submit" class="btn btn-danger" id="small_size" value="ログイン">
 							</td>
 				</form>
-							<td>
-								<form action="/register">
-  									<button type="submit" class="btn btn-primary" id="small_size" value="会員登録">会員登録</button>
-								</form>
-							</td>
-						</tr>
-					</table>
-				
+				<td>
+					<form action="/register">
+						<button type="submit" class="btn btn-primary" id="small_size" value="会員登録">会員登録</button>
+					</form>
+				</td>
+				</tr>
+				</table>
+
 			</div>
 
 		</div>

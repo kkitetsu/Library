@@ -73,7 +73,7 @@ public class LibraryController {
 	 * 借りログ出力画面の表示
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
-	@RequestMapping(value = "/lendlog", method = RequestMethod.POST)
+	@RequestMapping(value = "/lendlog", method = {RequestMethod.GET, RequestMethod.POST})
 	public String getLendLogPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
 		int LogsSize = libraryService.getLendLogsSize();
 		final int SUBLISTSIZE = 5;
@@ -99,12 +99,8 @@ public class LibraryController {
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
 
-	@GetMapping(value = "/mybook")
-	public String getmybookPage(Model model) {
-		return "/mybook";
-	}
 	
-	@RequestMapping(value = "/mybook", method = RequestMethod.POST)
+	@RequestMapping(value = "/mybook", method = {RequestMethod.GET, RequestMethod.POST})
 	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
 		int LogsSize = libraryService.getMyBookLogsSize();
 		final int SUBLISTSIZE = 5;
@@ -191,6 +187,7 @@ public class LibraryController {
 			return "/login";
 		}
 		session.setAttribute("userId", user_info.get(0).getId());
+		session.setAttribute("userName", user_info.get(0).getName());
 		return "redirect:/home";
 	}
 

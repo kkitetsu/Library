@@ -101,12 +101,13 @@ public class LibraryController {
 
 	
 	@RequestMapping(value = "/mybook", method = {RequestMethod.GET, RequestMethod.POST})
-	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
+	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
+		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		int LogsSize = libraryService.getMyBookLogsSize();
 		final int SUBLISTSIZE = 5;
 		int maxPageNum = 1;
 		int startIndex = (currPage - 1) * SUBLISTSIZE;
-		List<BooksEntity> bookshelf = libraryService.displayMyBooks(SUBLISTSIZE, startIndex);
+		List<BooksEntity> bookshelf = libraryService.displayMyBooks(SUBLISTSIZE, startIndex, userId);
 		model.addAttribute("mybook", bookshelf);
 		model.addAttribute("currentPage", currPage);
 		if (LogsSize % SUBLISTSIZE == 0) {
@@ -304,8 +305,7 @@ public class LibraryController {
 	
 	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
     public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {
-        System.out.println("Here");
-		session.setAttribute("userId", 1);
+        System.out.println("session is: " + session.getAttribute("userId"));
         bookRequest.setUserId((int)session.getAttribute("userId"));
 		if (bindingResult.hasErrors()) {
             // 入力チェックエラーの場合
@@ -424,7 +424,8 @@ public class LibraryController {
 
 		model.addAttribute("loginRequest", new LoginRequest());
 		model.addAttribute("search_box", new SearchBooksRequest());
-		session.setAttribute("userId", usersEntity.getLoginId());
+		session.setAttribute("userId", libraryService.getLastIdInUsers());
+		session.setAttribute("userName", usersEntity.getName());
 
 		return "redirect:/home";
 	}

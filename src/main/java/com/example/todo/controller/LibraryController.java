@@ -242,21 +242,47 @@ public class LibraryController {
 	 * 本の修正への遷移経路
 	 **/
 	@GetMapping(value = "/editbook")
-	public String displayeditbook(Model model, HttpSession session) {
-		if (session.getAttribute("userId") == null) {
-			return "redirect:/login";
-		}
+	public String displayeditbook(Model model, @RequestParam("id") int id) {
 		BookAddRequest bka = new BookAddRequest();
+		bka.setId(id);
 		model.addAttribute("bookAddRequest", bka);
         return "/editbook";
     }
 
 	
 	
+	@RequestMapping(value = "/editbook", method = RequestMethod.POST)
+    public String editBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {		
+		if (bindingResult.hasErrors()) {
+            // 入力チェックエラーの場合
+            List<String> errorList = new ArrayList<String>();
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errorList.add(error.getDefaultMessage());
+            }
+            model.addAttribute("validationError", errorList);
+            model.addAttribute("bookAddRequest", new BookAddRequest());
+            return "/editbook";
+        }
+        List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
+   	    multipartFile.forEach(e -> {
+          bookRequest.setImgPath(uploadAction(e));
+        });
+   	    if (bookRequest.getLimitdate() == null) {
+   	    	// do something
+   	    	String errorMsg = "やってくれたな";
+   	    	model.addAttribute("errorMsg", errorMsg);
+   	    	return "/editbook";
+   	    }
+	   libraryService.bookEditer(bookRequest);
+
+	   return "redirect:/home";        
+    }
+	
+	
+	
 	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
     public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {
         session.setAttribute("userId", 1);
-
         bookRequest.setUserId((int)session.getAttribute("userId"));
 		if (bindingResult.hasErrors()) {
             // 入力チェックエラーの場合

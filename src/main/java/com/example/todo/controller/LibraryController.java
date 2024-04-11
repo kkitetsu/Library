@@ -77,13 +77,14 @@ public class LibraryController {
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
 	@RequestMapping(value = "/lendlog", method = {RequestMethod.GET, RequestMethod.POST})
-	public String getLendLogPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
-		int LogsSize = libraryService.getLendLogsSize();
+	public String getLendLogPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
+		int userId =Integer.parseInt(session.getAttribute("userId").toString());
+		int LogsSize = libraryService.getLendLogsSize(userId);
 		final int SUBLISTSIZE = 5;
 		int startIndex = (currPage - 1) * SUBLISTSIZE;
 		
 		int maxPageNum = 1;
-		List<SearchLogsDTO> LendLogs = libraryService.displayLendLogs(SUBLISTSIZE, startIndex);
+		List<SearchLogsDTO> LendLogs = libraryService.displayLendLogs(SUBLISTSIZE, startIndex,userId);
 		if (LogsSize % SUBLISTSIZE == 0) {
 			maxPageNum = (int) LogsSize / SUBLISTSIZE;
 		} else {
@@ -106,7 +107,7 @@ public class LibraryController {
 	@RequestMapping(value = "/mybook", method = {RequestMethod.GET, RequestMethod.POST})
 	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
 		int userId = Integer.parseInt(session.getAttribute("userId").toString());
-		int LogsSize = libraryService.getMyBookLogsSize();
+		int LogsSize = libraryService.getMyBookLogsSize(userId);
 		final int SUBLISTSIZE = 5;
 		int maxPageNum = 1;
 		int startIndex = (currPage - 1) * SUBLISTSIZE;

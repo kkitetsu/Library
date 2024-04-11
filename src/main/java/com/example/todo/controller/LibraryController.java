@@ -50,12 +50,13 @@ public class LibraryController {
 	 **/
 	// @RequestMapping(value = "/borrowlog", method = RequestMethod.POST) edited kk
 	@RequestMapping(value = "/borrowlog", method={RequestMethod.GET, RequestMethod.POST})
-	public String getBorrowLogPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
-		int LogsSize = libraryService.getBorrowLogsSize();
+	public String getBorrowLogPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
+		int userId= Integer.parseInt(session.getAttribute("userId").toString());
+		int LogsSize = libraryService.getBorrowLogsSize(userId);
 		final int SUBLISTSIZE = 5;
 		int maxPageNum = 1;
 		int startIndex = (currPage - 1) * SUBLISTSIZE;
-		List<SearchLogsDTO> BorrowLogs = libraryService.displayBorrowLogs(SUBLISTSIZE, startIndex);
+		List<SearchLogsDTO> BorrowLogs = libraryService.displayBorrowLogs(SUBLISTSIZE, startIndex, userId);
 		if (LogsSize % SUBLISTSIZE == 0) {
 			maxPageNum = (int) LogsSize / SUBLISTSIZE;
 		} else {
@@ -64,7 +65,9 @@ public class LibraryController {
 		model.addAttribute("BorrowLogs", BorrowLogs);
 		model.addAttribute("currentPage", currPage);
 		model.addAttribute("maxPageNum", maxPageNum);
-
+		
+		
+		
 		return "/borrowlog";
 	}
 

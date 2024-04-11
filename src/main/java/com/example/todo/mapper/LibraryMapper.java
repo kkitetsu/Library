@@ -70,7 +70,7 @@ public interface LibraryMapper {
 	 * @return 貸した/借りた履歴結果
 	 **/
 	public List<SearchLogsDTO> displayLendLogs(final int SUBLISTSIZE, int startIndex);
-	public List<SearchLogsDTO> displayBorrowLogs(final int SUBLISTSIZE, int startIndex);
+	public List<SearchLogsDTO> displayBorrowLogs(final int SUBLISTSIZE, int startIndex, int userId);
 	
 	/**
 	 * @author Lee 
@@ -78,7 +78,7 @@ public interface LibraryMapper {
 	 * @return 貸した/借りた履歴/My book のサイズ
 	 **/
      int getLendLogsSize();
-     int getBorrowLogsSize();
+     int getBorrowLogsSize(int userId);
      int getMyBookLogsSize();
 
       /** @author kk */

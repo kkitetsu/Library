@@ -1,12 +1,4 @@
-.main_content_box {
-	display: flex;
-	flex-direction: row;
-	justify-content: left;
-	align-items: center;
-	flex-wrap: wrap;
-	padding-bottom: 60px;
-	/* Height of the footer */
-}
+
 
 .search_box {
 	text-align: center;
@@ -25,6 +17,7 @@
 	height: 450px;
 	border-radius: 10px;
 	background-color: indianred;
+	display:inline-block;
 }
 .book_content_img_box{
 	margin:10px;
@@ -55,7 +48,8 @@
 }
 
 #content_btn, #take_btn{
-width:130px;
+width:90%;
+margin:0 5%;
 height:60px;
 font-size:30px;
 font-weight:bold;

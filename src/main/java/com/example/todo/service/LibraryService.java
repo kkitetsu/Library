@@ -89,9 +89,11 @@ public class LibraryService {
 	 * exihibitorUserId(貸し手のユーザーID)
 	 * category(レンタル・譲渡の区分)
 	 * limitedate(貸し出し期限)
+	 * 
+	 * @param userId added by kk
 	 **/
-	public List<BooksEntity> displayMyBooks(final int SUBLISTSIZE, int startIndex) {
-		return libraryMapper.displayMyBooks(SUBLISTSIZE, startIndex);
+	public List<BooksEntity> displayMyBooks(final int SUBLISTSIZE, int startIndex, int userId) {
+		return libraryMapper.displayMyBooks(SUBLISTSIZE, startIndex, userId);
 	}
 	/** 
 	 * @author Lee
@@ -172,6 +174,11 @@ public class LibraryService {
 	}
 	public int getMyBookLogsSize() {
 		return libraryMapper.getMyBookLogsSize();
+	}
+	
+	/** @author kk */
+	public int getLastIdInUsers() {
+		return libraryMapper.getLastIdInUsers();
 	}
 
 }

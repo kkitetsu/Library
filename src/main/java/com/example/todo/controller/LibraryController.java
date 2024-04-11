@@ -107,7 +107,7 @@ public class LibraryController {
 	@RequestMapping(value = "/mybook", method = {RequestMethod.GET, RequestMethod.POST})
 	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
 		int userId = Integer.parseInt(session.getAttribute("userId").toString());
-		int LogsSize = libraryService.getMyBookLogsSize();
+		int LogsSize = libraryService.getMyBookLogsSize(userId);
 		final int SUBLISTSIZE = 5;
 		int maxPageNum = 1;
 		int startIndex = (currPage - 1) * SUBLISTSIZE;

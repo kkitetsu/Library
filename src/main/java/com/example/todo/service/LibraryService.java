@@ -172,8 +172,8 @@ public class LibraryService {
 	public int getBorrowLogsSize(int userId) {
 		return libraryMapper.getBorrowLogsSize(userId);
 	}
-	public int getMyBookLogsSize() {
-		return libraryMapper.getMyBookLogsSize();
+	public int getMyBookLogsSize(int userId) {
+		return libraryMapper.getMyBookLogsSize(userId);
 	}
 	
 	/** @author kk */

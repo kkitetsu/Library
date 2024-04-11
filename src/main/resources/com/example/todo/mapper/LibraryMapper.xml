@@ -180,7 +180,9 @@
 		FROM 
 			books
 		WHERE 
-			exhibition_flag=1;
+			exhibition_flag=1 
+		AND 
+			exhibitor_user_id=#{userId};
 	</select>
 	<!--  @author lee:ユーザーの情報アップデート -->
 	<update id="editUser">

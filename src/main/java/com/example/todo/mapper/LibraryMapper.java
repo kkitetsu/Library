@@ -79,7 +79,7 @@ public interface LibraryMapper {
 	 **/
      int getLendLogsSize(int userId);
      int getBorrowLogsSize(int userId);
-     int getMyBookLogsSize();
+     int getMyBookLogsSize(int userId);
 
       /** @author kk */
 	public void register(UsersEntity usersEntity);

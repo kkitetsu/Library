@@ -40,51 +40,56 @@
 		</header>
 
 		<!--メインー　（修正可能領域）-->
-		<div class="main_title">
-			-出品
-		</div>
-		<div th:if="${validationError}">
-			<div th:text="${validationError}" class="main_title"></div>
-		</div>
-		<div th:if="${errorMsg}">
-			<div th:text="${errorMsg}" class="main_title"></div>
-		</div>
-		<div class="main_content_box">
-			<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}" th:method="post">
-				<label for="imgUpload" class="image-upload-container">
-					<div class="image-upload-placeholder">
-						<strong>本の画像をアップロード</strong>
-					</div>
-					<input type="file" id="imgUpload" accept="image/*" style="display: none;"
-						th:field="*{multipartFile}" multiple />
-					<figure class="image-preview" id="imagePreview">
-						<img src="" alt="Image Preview" id="previewImage" />
-					</figure>
-				</label><br><br>
-				<table class="add_table">
-					<tr class="table_row">
-						<td><label for="title">タイトル</label></td>
-						<td><input type="text" th:field="*{title}" class="input_box"></td>
-					</tr>
-					<tr class="table_row">
-						<td><label>区分</label></td>
-						<td>
-							<select th:field="*{category}" class="input_box">
-								<option value="貸出">貸出</option>
-								<option value="譲渡">譲渡</option>
-						</td>
-					</tr>
-					<tr id="limitdate" class="table_row">
-						<td>貸出期限</td>
-						<td>
-							<input type="date" th:field="*{limitdate}" class="input_box" required />
-						</td>
-					</tr>
-					<tr>
-						<td><input type="submit" class="btn btn-danger" value="登録" id="small_size_loading"></td>
-						<td><a href="/home" class="btn btn-primary" id="small_size">キャンセル</a></td>
-					</tr>
-				</table>
+		<div class="main">
+			<!--白い箱-->
+			<div class="main_title">
+				-出品
+			</div>
+			<div th:if="${validationError}">
+				<div th:text="${validationError}" class="main_title"></div>
+			</div>
+			<div th:if="${errorMsg}">
+				<div th:text="${errorMsg}" class="main_title"></div>
+			</div>
+			<div class="main_content_box">
+				<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}"
+					th:method="post">
+					<label for="imgUpload" class="image-upload-container">
+						<div class="image-upload-placeholder">
+							<strong>本の画像をアップロード</strong>
+						</div>
+						<input type="file" id="imgUpload" accept="image/*" style="display: none;"
+							th:field="*{multipartFile}" multiple />
+						<figure class="image-preview" id="imagePreview">
+							<img src="" alt="Image Preview" id="previewImage" />
+						</figure>
+					</label><br><br>
+					<table class="add_table">
+						<tr class="table_row">
+							<td><label for="title">タイトル</label></td>
+							<td><input type="text" th:field="*{title}" class="input_box"></td>
+						</tr>
+						<tr class="table_row">
+							<td><label>区分</label></td>
+							<td>
+								<select th:field="*{category}" class="input_box">
+									<option value="貸出">貸出</option>
+									<option value="譲渡">譲渡</option>
+							</td>
+						</tr>
+						<tr id="limitdate" class="table_row">
+							<td>貸出期限</td>
+							<td>
+								<input type="date" th:field="*{limitdate}" class="input_box" required />
+							</td>
+						</tr>
+						<tr>
+							<td><input type="submit" class="btn btn-danger" value="登録" id="small_size_loading"></td>
+							<td><a href="/home" class="btn btn-primary" id="small_size">キャンセル</a></td>
+						</tr>
+					</table>
+			</div>
+
 		</div>
 		<footer>
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp

@@ -8,7 +8,12 @@
 	-->
 	<select id="displayBooks"
 		resultType="com.example.todo.entity.BooksEntity">
-		SELECT * FROM books;
+		SELECT
+		 	* 
+		 FROM 
+		 	books
+		WHERE 
+		 	exhibition_flag=1 
 	</select>
 	
 	<!-- 

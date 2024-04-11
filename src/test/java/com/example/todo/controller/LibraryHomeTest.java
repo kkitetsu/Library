@@ -152,7 +152,8 @@ class LibraryHomeTest {
 	public void testHomeSearchController() throws SQLException {
 		Model model = mock(Model.class);
 		SearchBooksRequest searchBooksRequest = new SearchBooksRequest();
-		assertEquals("/home", libraryController.search(model, searchBooksRequest));
+		MockHttpSession session = new MockHttpSession();
+		assertEquals("/home", libraryController.search(model, searchBooksRequest,session));
 	}
 
 	@Test

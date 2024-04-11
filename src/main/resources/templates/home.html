@@ -70,7 +70,7 @@
 			<div class="overlay"></div>
 			<nav class="nav">
 				<div class="logo">
-					<a href="/login"><img src="img/rakuten_logo.png"></a>
+					<a href="/home"><img src="img/rakuten_logo.png"></a>
 				</div>
 				<table class="linkList">
 					<Tr>
@@ -83,7 +83,7 @@
 					</Tr>
 					<tr>
 						<td>
-							<div class="user_name"> 楽天 太郎 様 </div>
+							<div class="user_name"> <span th:text="${userName}"></span> 様 </div>
 
 						</td>
 					</tr>
@@ -151,21 +151,28 @@
 			</div>
 
 			<div class="main_content_box">
-				<div class="content" th:each="book: ${bookshelf}">
-					<img th:src="*{book.image}" class="bookImg">
-						<form th:action="@{/confirmPage}" th:method="post">
-							<input type="hidden" name="id" th:value="${book.id}" />
-							<input type="hidden" name="title" th:value="${book.title}" />
-        					<input type="hidden" name="category" th:value="${book.category}" />
-        					<input type="hidden" name="image" th:value="${book.image}" />
-        					<input type="hidden" name="limitdate" th:value="${book.limitdate}" />
-        					<input type="hidden" name="exhibitor" th:value="${book.exhibitorUserId}" />
-							<button class="btn btn-danger" id="borrow_btn">借</button>
-							<button class="btn btn-primary" id="take_btn"> 貰</button>
-						</form>
+				<div class="book_content_box" th:each="book: ${bookshelf}">
+					<div class="book_content_img_box">
+						<img th:src="*{book.image}" onerror="this.src='/img/default_book_img.jpg'"
+							class="book_content_img">
+					</div>
+					<form th:action="@{/confirmPage}" th:method="post">
+						<input type="hidden" name="id" th:value="${book.id}" />
+						<input type="hidden" name="title" th:value="${book.title}" />
+						<input type="hidden" name="category" th:value="${book.category}" />
+						<input type="hidden" name="image" th:value="${book.image}" />
+						<input type="hidden" name="limitdate" th:value="${book.limitdate}" />
+						<input type="hidden" name="exhibitor" th:value="${book.exhibitorUserId}" />
+						<button class="btn btn-danger" id="content_btn" th:if="${book.category == '貸出'}">借</button>
+						<button class="btn btn-primary" id="take_btn" th:if="${book.category == '譲渡'}"> 貰</button>
+					</form>
 
-					<p th:text="*{book.title}"></p><br>
-					<p th:text="*{book.content}"></p><br>
+					<div class="book_content_title_box">
+						&lt <span th:text="*{book.title}"></span> &gt
+					</div>
+					<div th:text="*{book.content}" class="book_content_content_box">
+
+					</div>
 				</div>
 			</div>
 			<form th:action="@{/exhibit}"><button type="submit" class="add_button">+</form>
@@ -196,8 +203,8 @@
 				modal.style.display = "none";
 			}
 		}
-		
-		
+
+
 	</script>
 </body>
 

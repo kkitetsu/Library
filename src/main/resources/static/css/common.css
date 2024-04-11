@@ -3,247 +3,406 @@
 
 .content_box {
 	width: 100%;
-	padding:none;
-	min-height:100%;
-	}
+	padding: none;
+	min-height: 100%;
+}
+
 header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    height: 150px;
-    margin-bottom: 20px;
-    min-height:15%vh;
-    background-color:rgb(188,0,1);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	height: 150px;
+	margin-bottom: 20px;
+	min-height: 15%vh;
+	background-color: rgb(188, 0, 1);
 }
 
 .header_logo,
 .header_title,
 .header_btn_box {
-    height: 100%;
+	height: 100%;
 }
 
 .header_logo {
-    flex: 0 0 auto;
+	flex: 0 0 auto;
 }
 
 .header_title {
-    flex: 1;
-    color: white;
-    font-size: 5em ;
-    text-align: center;
-    font-weight: bold;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+	flex: 1;
+	color: white;
+	font-size: 5em;
+	text-align: center;
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .header_btn_box {
-    width:250px;
+	width: 250px;
 }
-#small_size{
-	font-weight:bolder;
-	width:350px;
-	height:auto;
-	font-size:60px;
-	margin:10px;
-	padding:10px;
-	border-radius:30px;
+
+#small_size, #small_size_loading{
+	font-weight: bolder;
+	width: 350px;
+	height: auto;
+	font-size: 60px;
+	margin: 10px;
+	padding: 10px;
+	border-radius: 30px;
 }
-#smaller_size{
-	font-weight:bolder;
-	width:200px;
-	height:auto;
-	font-size:60px;
-	margin:10px;
-	padding:10px;
-	border-radius:30px;
+
+#smaller_size {
+	font-weight: bolder;
+	width: 200px;
+	height: auto;
+	font-size: 60px;
+	margin: 10px;
+	padding: 10px;
+	border-radius: 30px;
 }
+
 .main_logo {
-    height: 100%;
-        display: inline-block;
-    vertical-align: middle;
+	height: 100%;
+	display: inline-block;
+	vertical-align: middle;
 }
+
 .content_box {
 	background-image: url("../img/backgroundimage.jpg");
 }
 
-.login_table, .register_table, edit_table, add_table{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.login_table,
+.register_table,
+edit_table,
+add_table,
+edit_book_table {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
-.table_row{
-	color:white;
+
+.table_row {
+	color: white;
 	/*	display: flex;*/
-    justify-content: center; 
-    align-items: center; 
-	font-size:40px;
+	justify-content: center;
+	align-items: center;
+	font-size: 40px;
 }
+
 .main {
-	background-color:white;
-	width:80%;
-	margin:0 10%;
-	padding:20px;
+	background-color: white;
+	width: 80%;
+	margin: 0 10%;
+	padding: 20px;
 	background: rgba(255, 255, 255, 0.4);
-	border-radius:20px;
-	font-weight:bolder;
-	min-height:70vh;
+	border-radius: 20px;
+	font-weight: bolder;
+	min-height: 70vh;
 }
-td{
-	margin:10px;
-	padding:10px;
-	text-align:center;
+
+td {
+	margin: 10px;
+	padding: 10px;
+	text-align: center;
 }
-.main_title{
-	margin-left:50px;
-	color:aliceblue;
-	font-size:50px;
-	}
-.main_content_box{
+
+.main_title {
+	margin-left: 50px;
+	color: aliceblue;
+	font-size: 50px;
+}
+
+.main_content_box {
 	background: rgba(216, 112, 147, 0.9);
 	padding: 20px 20px;
-	border-radius:10px;
-	width:90%;
-	margin:20px 5%;
+	border-radius: 10px;
+	width: 90%;
+	margin: 20px 5%;
 }
+
 footer {
 	text-align: center;
 	font-size: 40px;
-	font-weight:bold;
-    background-color:rgb(188,0,1);
-	color:white;
-	margin-top:15px;
-	min-height:15%;
-}
-body{
-	min-width:100vh;
-}
-.input_box{
-	border:none;
-	height:95%;
-	border-radius:10px;
-	padding-left:10px;
-	width:100%;
-}
-.log_table, .my_book_table{
-	width:90%;
-	margin:10px 5%;
-	background-color:rgb(188,0,1);
-	color:white;
-	font-size:30px;
-	text-align:center;
-	border-radius:25px;
+	font-weight: bold;
+	background-color: rgb(188, 0, 1);
+	color: white;
+	margin-top: 15px;
+	min-height: 15%;
 }
 
-.search_table{
-	width:90%;
-	margin:10px 5%;
-	color:white;
-	font-size:50px;
-	text-align:center;
-	border-radius:25px;
+body {
+	min-width: 100vh;
 }
 
-.log_table td, .my_book_table td{
-	border-top:white solid;
-	}
-#border-right{
-	border-right:white solid;
-}
-.btn_box{
-	width:90%;
-	margin:0 5%;
-}
-.btn_box td{
-	width:33%;
-}
-#edit{
-	font-size:30px;
-	font-weight:bold;
+.input_box {
+	border: none;
+	height: 95%;
+	border-radius: 10px;
+	padding-left: 10px;
+	width: 80%;
+	max-width: 600px;
 }
 
-.header_table{
-	height:100%;
+.log_table,
+.my_book_table {
+	width: 90%;
+	margin: 10px 5%;
+	background-color: rgb(188, 0, 1);
+	color: white;
+	font-size: 30px;
+	text-align: center;
+	border-radius: 25px;
 }
 
-.user_icon, .alert_icon{
-	width:90%;
-	height:auto;
-	border-radius:90%;
+.add_table,
+.edit_book_table {
+	width: 90%;
+	margin: 10px 5%;
+	color: white;
+	font-size: 30px;
+	text-align: center;
+	border-radius: 25px;
 }
-.user_icon_trigger{
-	width:90%;
-	height:auto;
-	border-radius:90%;
-	background-color:white;
-	cursor:pointer;
+
+.search_table {
+	width: 90%;
+	margin: 10px 5%;
+	color: white;
+	font-size: 50px;
+	text-align: center;
+	border-radius: 25px;
 }
-.header_table td{
-	width:50%;
+
+.log_table td,
+.my_book_table td {
+	border-top: white solid;
+}
+
+#border-right {
+	border-right: white solid;
+}
+
+.btn_box {
+	width: 90%;
+	margin: 0 5%;
+}
+
+.btn_box td {
+	width: 33%;
+}
+
+#edit {
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.header_table {
+	height: 100%;
+}
+
+.user_icon,
+.alert_icon {
+	width: 90%;
+	height: auto;
+	border-radius: 90%;
+}
+
+.user_icon_trigger {
+	width: 90%;
+	height: auto;
+	border-radius: 90%;
+	background-color: white;
+	cursor: pointer;
+}
+
+.header_table td {
+	width: 50%;
 }
 
 input[type="file"] {
 	font-size: 25px;
 }
 
-.user_icon{
+.user_icon {
 	background-color: white;
 }
 
-.header_table td{
-	width:50%;
+.header_table td {
+	width: 50%;
 }
 
 .image-upload-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 450px; /* 画像の横幅 */
-  height: 600px; /* 画像の高さ、比率に合わせて調整 */
-  border: 2px dashed #ccc;
-  cursor: pointer;
-  background-size: cover;
-  background-position: center center;
-  position: relative;
-  margin:0 auto;
-  overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 450px;
+	/* 画像の横幅 */
+	height: 600px;
+	/* 画像の高さ、比率に合わせて調整 */
+	border: 2px dashed #ccc;
+	cursor: pointer;
+	background-size: cover;
+	background-position: center center;
+	position: relative;
+	margin: 0 auto;
+	overflow: hidden;
 }
 
 .image-preview img {
-  width: 100%; /* コンテナの幅に合わせます */
-  height: 100%; /* コンテナの高さに合わせます */
-  object-fit: cover;
-  object-fit: contain;
-  display: none; /* 初期状態では画像を隠します */
+	width: 100%;
+	/* コンテナの幅に合わせます */
+	height: 100%;
+	/* コンテナの高さに合わせます */
+	object-fit: cover;
+	object-fit: contain;
+	display: none;
+	/* 初期状態では画像を隠します */
 }
 
 /* ファイルがない状態での表示スタイル（任意） */
 .image-upload-placeholder {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 30px; /* テキストのサイズを調整 */
-  color: rgb(0, 0, 0); /* テキストの色を調整 */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 30px;
+	/* テキストのサイズを調整 */
+	color: rgb(0, 0, 0);
+	/* テキストの色を調整 */
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+a:hover {
+	color: black;
+}
+
+#error {
+	color: red;
+}
+
+#side_bar_list {
+	width: 80%;
+	font-size: 25px;
+	font-weight: bolder;
+	border: 2px black solid;
+	border-radius: 25px;
+}
+
+/*以下ローディング画面(id="loading")用CSS*/
+#loading {
+	width: 100vw;
+	height: 100vh;
+	transition: all 1s;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgb(255, 255, 255, 0.6);
+	z-index: -9999;
+}
+
+.loading_msg_box {
+	width: 100%;
+	margin:10% 0 10% 0;
+	font-size:100px;
+	text-align: center;
+	color: black;
+	font-weight:bold;
+	font-family:cursive;
+}
+
+.loader,
+.loader:before,
+.loader:after {
+  border-radius:30px;
+  background: black;
+  -webkit-animation: load1 1s infinite ease-in-out;
+  animation: load1 1s infinite ease-in-out;
+  width: 2em;
+  height: 8em;
+}
+.loader {
+  color: black;
+  text-indent: -9999em;
+  margin: 88px auto;
+  position: relative;
+  font-size: 55px;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+.loader:before,
+.loader:after {
+  position: absolute;
+  top: 0;
+  content: '';
+}
+.loader:before {
+  left: -3.0em;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+.loader:after {
+  left: 3.0em;
+}
+@-webkit-keyframes load1 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em;
+    height: 5em;
+  }
+}
+@keyframes load1 {
+  0%,
+  80%,
+  100% {
+    box-shadow: 0 0;
+    height: 4em;
+  }
+  40% {
+    box-shadow: 0 -2em;
+    height: 5em;
+  }
 }
 
 
-a{
-	text-decoration:none;
-	color:inherit;
-}
-a:hover{
-	color:black;
+
+@keyframes sk-scaleout {
+	0% {
+		transition: scale(0);
+	}
+
+	100% {
+		transition: scale(1.0);
+		opacity: 0;
+	}
 }
 
-#error{
-	color:red;
+.gallery {
+	display: grid;
+	gap: .5rem;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
-#side_bar_list{
-	width:80%;
-	font-size:25px;
-	font-weight:bolder;
-	border:2px black solid;
-	border-radius:25px;
+.loading_img {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+}
+
+/* edited by kk. Used to avoid unfocusable issue when input box is hidden and limitdate */
+.input_box.hidden-input {
+    position: absolute;
+    left: -9999px;
 }

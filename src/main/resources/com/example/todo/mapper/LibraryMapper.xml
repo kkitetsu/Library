@@ -8,12 +8,34 @@
 	-->
 	<select id="displayBooks"
 		resultType="com.example.todo.entity.BooksEntity">
-		SELECT
-		 	* 
-		 FROM 
-		 	books
-		WHERE 
-		 	exhibition_flag=1 
+		SELECT 
+			* 
+		FROM 
+			books
+		WHERE
+			exhibition_flag=1;
+	</select>
+
+	<!-- @author kk -->
+	<select id="getNameBasedOnId" resultType="java.lang.String">
+		SELECT 
+			name
+		FROM
+			users
+		WHERE
+			id=#{id};
+	</select>
+	
+	<!--  @author kk -->
+	<select id="getLastIdInUsers" resultType="int">
+		SELECT 
+			id
+		FROM 
+			users
+		ORDER BY 
+			id DESC
+		LIMIT 
+			1;
 	</select>
 	
 	<!-- 
@@ -22,8 +44,14 @@
 	-->
 	<select id="searchBooks"
 		resultType="com.example.todo.entity.BooksEntity">
-		SELECT id,title,content FROM books
-		WHERE exhibition_flag = 1
+		SELECT 
+			id,
+			title,
+			content 
+		FROM 
+			books
+		WHERE 
+			exhibition_flag = 1
 		<if test="book_name != null">
 		  AND title LIKE CONCAT('%', #{book_name},'%')
 		</if>
@@ -31,12 +59,18 @@
 	
 	<select id="displayNotification"
 		resultType="com.example.todo.dto.SearchLogsDTO">
-		select t.traded_date as TradedDate, b.title as BookTitle, 
-		u.name as BorrowerName
-		from transactions as t
-		inner join books as b on b.id = t.book_id
-		inner join users as u on u.id = t.lender_user_id 
-		where u.login_id = #{user_id};
+		SELECT 
+			t.traded_date AS TradedDate, 
+			b.title AS BookTitle, 
+			u.name AS BorrowerName
+		FROM 
+			transactions AS t
+		INNER JOIN 
+			books AS b on b.id = t.book_id
+		INNER JOIN 
+			users AS u on u.id = t.lender_user_id 
+		WHERE 
+			u.login_id = #{user_id};
 	</select>
 	
 	<!--  @author kk -->
@@ -63,27 +97,42 @@
 		SELECT 
 			id, 
 			title, 
-			exhibitor_user_id as exhibitorUserId, 
+			exhibitor_user_id, 
 			category, 
 			limitdate 
 		FROM 
 		 	books
 		WHERE 
-		 	exhibition_flag=1
+		 	exhibition_flag=1 AND exhibitor_user_id=#{userId}
 		LIMIT 
 		 	#{SUBLISTSIZE} OFFSET #{startIndex};
 	</select>
 	<!-- @author Lee : Transaction作成sql文 -->
 	<select id="displayLogs" resultType="com.example.todo.entity.TransactionEntity">
-		SELECT id,book_id,lender_user_id,borrower_user_id,traded_date FROM transactions;		
+		SELECT 
+			id,
+			book_id,
+			lender_user_id,
+			borrower_user_id,
+			traded_date 
+		FROM 
+			transactions;		
 	</select>
 	<!-- @author Lee :他のユーザーに貸した/借りた履歴 -->
 	<select id="displayLendLogs" resultType="com.example.todo.dto.SearchLogsDTO">
-		select t.id as TransId, t.traded_date as TradedDate, b.title as BookTitle, 
-		u.name as BorrowerName, b.limitdate as LimitDate,
-		t.lender_user_id as LenderId from transactions as t
-		inner join books as b on b.id = t.book_id
-		inner join users as u on u.id = t.borrower_user_id
+		SELECT 
+			t.id AS TransId, 
+			t.traded_date AS TradedDate, 
+			b.title AS BookTitle, 
+			u.name AS BorrowerName, 
+			b.limitdate AS LimitDate,
+			t.lender_user_id AS LenderId 
+		FROM 
+			transactions AS t
+		INNER JOIN 
+			books AS b on b.id = t.book_id
+		INNER JOIN 
+			users AS u on u.id = t.borrower_user_id
 		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};	
 	</select>
 	<select id="displayBorrowLogs" resultType="com.example.todo.dto.SearchLogsDTO">
@@ -96,14 +145,24 @@
 	</select>
 	<!-- @author Lee:貸し/借りログ/MY BOOKの大きさ計算-->
 	<select id="getLendLogsSize">
-		SELECT COUNT(*) AS row_count FROM transactions
+		SELECT 
+			COUNT(*) AS row_count 
+		FROM 
+			transactions
 	</select>
 	<select id="getBorrowLogsSize">
-		SELECT COUNT(*) AS row_count FROM transactions
+		SELECT 
+			COUNT(*) AS row_count 
+		FROM 
+			transactions
 	</select>
 	<select id="getMyBookLogsSize">
-		SELECT COUNT(*) AS row_count FROM books
-		WHERE exhibition_flag=1;
+		SELECT 
+			COUNT(*) AS row_count 
+		FROM 
+			books
+		WHERE 
+			exhibition_flag=1;
 	</select>
 	<!--  @author lee:ユーザーの情報アップデート -->
 	<update id="editUser">
@@ -117,26 +176,55 @@
 			password = #{password},
 		    edited_date = CURRENT_TIMESTAMP
 		WHERE 
-			id = 2;
+			id = #{id};
 	</update>
 	<!--  @author kk -->
 	<insert id="register">
 		INSERT INTO users 
-		(name, department, mailaddress, login_id, password, joined_date, edited_date, del_flag)
+			(name, department, mailaddress, login_id, password, joined_date, edited_date, del_flag)
 		VALUES
-		(#{name}, #{department}, #{mailaddress}, #{loginId}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
+			(#{name}, #{department}, #{mailaddress}, #{loginId}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
 	</insert>
 	<!--  @author kk -->
 	<insert id="updateTransaction">
 		INSERT INTO transactions
-		(book_id, lender_user_id, borrower_user_id, traded_date)
+			(book_id, lender_user_id, borrower_user_id, traded_date)
 		VALUES
-		(#{bookId}, #{lenderId}, #{borrowerId}, CURRENT_TIMESTAMP)
+			(#{bookId}, #{lenderId}, #{borrowerId}, CURRENT_TIMESTAMP);
 	</insert>
+	
+	<update id="updateBooksNoLongerExhibit">
+		UPDATE
+			books
+		SET 
+			exhibition_flag=0
+		WHERE
+			id=#{bookId};
+	</update>
+	
 	<insert id = "bookRegister">
 	INSERT INTO books
-	(title, exhibitor_user_id, category, limitdate, image)
+		(title, exhibitor_user_id, category, limitdate, image)
 	VALUES
-	(#{title}, #{userId}, #{category}, #{limitdate}, #{imgPath})
+		(#{title}, #{userId}, #{category}, #{limitdate}, #{imgPath})
 	</insert>
+	<update id="bookEditer">
+		UPDATE
+			books
+		SET
+			title= #{title},
+			category= #{category},
+			limitdate= #{limitdate},
+			image= #{imgPath}
+		WHERE
+			id= #{id};
+	</update>
+	<update id="bookDeliter">
+		UPDATE
+			books
+		SET
+			exhibition_flag = 0
+		WHERE
+			id= #{id};
+	</update>
 </mapper>

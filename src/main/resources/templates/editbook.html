@@ -12,15 +12,11 @@
 	<!--CSS共通リンク-->
 	<link rel="stylesheet" href="css/common.css" />
 	<!--タイトルの選択-->
-	<title>Add book</title>
+	<title>Edit Book</title>
 </head>
 
 <body>
-	<!-- Loading中の画面-->
-	<div id="loading">
-		<div class="loading_msg_box"> Loading... </div>
-		<div class="loader"> </div>
-	</div>
+
 
 	<!--画面全体始め（ヘッダー、メイン、フッター)-->
 	<div class="content_box">
@@ -43,28 +39,24 @@
 		<div class="main">
 			<!--白い箱-->
 			<div class="main_title">
-				-出品
-			</div>
-			<div th:if="${validationError}">
-				<div th:text="${validationError}" class="main_title"></div>
-			</div>
-			<div th:if="${errorMsg}">
-				<div th:text="${errorMsg}" class="main_title"></div>
+				-本修正
 			</div>
 			<div class="main_content_box">
-				<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}"
+				<form th:action="@{/editbook}" enctype="multipart/form-data" th:object="${bookAddRequest}"
 					th:method="post">
 					<label for="imgUpload" class="image-upload-container">
 						<div class="image-upload-placeholder">
 							<strong>本の画像をアップロード</strong>
 						</div>
+						<image src="*{image}"></image>
 						<input type="file" id="imgUpload" accept="image/*" style="display: none;"
 							th:field="*{multipartFile}" multiple />
 						<figure class="image-preview" id="imagePreview">
 							<img src="" alt="Image Preview" id="previewImage" />
 						</figure>
 					</label><br><br>
-					<table class="add_table">
+
+					<table class="edit_book_table">
 						<tr class="table_row">
 							<td><label for="title">タイトル</label></td>
 							<td><input type="text" th:field="*{title}" class="input_box"></td>
@@ -80,23 +72,37 @@
 						<tr id="limitdate" class="table_row">
 							<td>貸出期限</td>
 							<td>
-								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box " required />
+								<input type="date" th:field="*{limitdate}" class="input_box" />
 							</td>
 						</tr>
+					</table>
+					<table class="edit_book_table">
 						<tr>
-							<td><input type="submit" class="btn btn-danger" value="登録" id="small_size_loading"></td>
-							<td><a href="/home" class="btn btn-primary" id="small_size">キャンセル</a></td>
+							<td>
+								<input type="submit" class="btn btn-primary" value="削除" name="delete" id="small_size">
+							</td>
+							<td>
+								<input type="submit" class="btn btn-danger" value="修正" name="update" id="small_size">
+							</td>
+							<td>
+								<a href="/home" class="btn btn-primary" id="small_size">キャンセル</a>
+							</td>
+						</tr>
+
 						</tr>
 					</table>
+					<input type="hidden" th:value="*{id}" th:name="id">
 			</div>
-
 		</div>
+		</form>
 		<footer>
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>
 		<!--JavaScriptリンク-->
 		<script type="text/javascript" th:src="@{/js/add.js}"></script>
-		<script type="text/javascript" th:src="@{/js/loading.js}"></script>
+		
+
+
 </body>
 
 </html>

@@ -73,7 +73,7 @@ public class LibraryController {
 	 * 借りログ出力画面の表示
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
-	@RequestMapping(value = "/lendlog", method = RequestMethod.POST)
+	@RequestMapping(value = "/lendlog", method = {RequestMethod.GET, RequestMethod.POST})
 	public String getLendLogPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
 		int LogsSize = libraryService.getLendLogsSize();
 		final int SUBLISTSIZE = 5;
@@ -99,18 +99,15 @@ public class LibraryController {
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
 
-	@GetMapping(value = "/mybook")
-	public String getmybookPage(Model model) {
-		return "/mybook";
-	}
 	
-	@RequestMapping(value = "/mybook", method = RequestMethod.POST)
-	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model) {
+	@RequestMapping(value = "/mybook", method = {RequestMethod.GET, RequestMethod.POST})
+	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
+		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		int LogsSize = libraryService.getMyBookLogsSize();
 		final int SUBLISTSIZE = 5;
 		int maxPageNum = 1;
 		int startIndex = (currPage - 1) * SUBLISTSIZE;
-		List<BooksEntity> bookshelf = libraryService.displayMyBooks(SUBLISTSIZE, startIndex);
+		List<BooksEntity> bookshelf = libraryService.displayMyBooks(SUBLISTSIZE, startIndex, userId);
 		model.addAttribute("mybook", bookshelf);
 		model.addAttribute("currentPage", currPage);
 		if (LogsSize % SUBLISTSIZE == 0) {
@@ -139,7 +136,7 @@ public class LibraryController {
 	 **/
 	@RequestMapping(value = "/edituser", method = RequestMethod.POST)
 	public String EditUserInfo(@Validated @ModelAttribute UsersEntity usersEntity,
-			BindingResult bindingResult, Model model) {
+			BindingResult bindingResult, Model model, HttpSession session) {
 		if (bindingResult.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : bindingResult.getAllErrors()) {
@@ -147,9 +144,11 @@ public class LibraryController {
 			}
 			model.addAttribute("errMsg", errorList);
 			model.addAttribute("userEntity", new UsersEntity());
-			return "/edituser";
+			return "/edituserInfo";
 		}
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
+		usersEntity.setId(Integer.parseInt(session.getAttribute("userId").toString()));
+		System.out.println(usersEntity);
 		libraryService.editUser(usersEntity);
 		model.addAttribute("loginRequest", new LoginRequest());
 		model.addAttribute("search_box", new SearchBooksRequest());
@@ -188,7 +187,8 @@ public class LibraryController {
 			model.addAttribute("logininfo", new LoginRequest());
 			return "/login";
 		}
-		session.setAttribute("userId", loginRequest.getLogin_id());
+		session.setAttribute("userId", user_info.get(0).getId());
+		session.setAttribute("userName", user_info.get(0).getName());
 		return "redirect:/home";
 	}
 
@@ -221,36 +221,112 @@ public class LibraryController {
 
 		//本のリストを格納
 		model.addAttribute("bookshelf", bookshelf);
+		
+		// Editor: kk
+		// Record and show user's name
+		model.addAttribute("userName", session.getAttribute("userName"));
 
 		return "/home";
 	}
 	
 	@GetMapping(value = "/exhibit")
-	public String displayAdd(Model model) {
+	public String displayAdd(Model model, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			return "redirect:/login";
+		}
 		BookAddRequest bka = new BookAddRequest();
 		model.addAttribute("bookAddRequest", bka);
         return "/add";
     }
+	/**
+	 * @author Lee 
+	 * 本の修正への遷移経路
+	 **/
+	@GetMapping(value = "/editbook")
+	public String displayeditbook(Model model, @RequestParam("id") int id) {
+		BookAddRequest bka = new BookAddRequest();
+		bka.setId(id);
+		model.addAttribute("bookAddRequest", bka);
+        return "/editbook";
+    }
+
 	
-    
+	
+	@RequestMapping(value = "/editbook", params= "update", method = RequestMethod.POST)
+    public String editBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {		
+			if (bindingResult.hasErrors()) {
+            		List<String> errorList = new ArrayList<String>();
+            		for (ObjectError error : bindingResult.getAllErrors()) {
+            			errorList.add(error.getDefaultMessage());
+            		}
+            		model.addAttribute("validationError", errorList);
+            		model.addAttribute("bookAddRequest", new BookAddRequest());
+            		return "/editbook";
+			}
+			List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
+			multipartFile.forEach(e -> {
+				bookRequest.setImgPath(uploadAction(e));
+			});
+			if (bookRequest.getLimitdate() == null) {
+				String errorMsg = "やってくれたな";
+				model.addAttribute("errorMsg", errorMsg);
+				return "/editbook";
+			}
+			libraryService.bookEditer(bookRequest);
+	   return "redirect:/home";        
+    }
+	
+	
+	@RequestMapping(value = "/editbook", params= "delete", method = RequestMethod.POST)
+    public String deleteBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {		
+			if (bindingResult.hasErrors()) {
+            		List<String> errorList = new ArrayList<String>();
+            		for (ObjectError error : bindingResult.getAllErrors()) {
+            			errorList.add(error.getDefaultMessage());
+            		}
+            		model.addAttribute("validationError", errorList);
+            		model.addAttribute("bookAddRequest", new BookAddRequest());
+            		return "/editbook";
+			}
+			List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
+			multipartFile.forEach(e -> {
+				bookRequest.setImgPath(uploadAction(e));
+			});
+			if (bookRequest.getLimitdate() == null) {
+				String errorMsg = "やってくれたな";
+				model.addAttribute("errorMsg", errorMsg);
+				return "/editbook";
+			}
+			libraryService.bookDeliter(bookRequest);
+		
+	   return "redirect:/home";        
+    }
+	
+	
 	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
-    public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, Model model, HttpSession session) {
-        session.setAttribute("userId", 1);
+    public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {
+        System.out.println("session is: " + session.getAttribute("userId"));
         bookRequest.setUserId((int)session.getAttribute("userId"));
-//		if (result.hasErrors()) {
-//            // 入力チェックエラーの場合
-//            List<String> errorList = new ArrayList<String>();
-//            for (ObjectError error : result.getAllErrors()) {
-//                errorList.add(error.getDefaultMessage());
-//            }
-//            model.addAttribute("validationError", errorList);
-//            return "/exhibit";
-//        }
+		if (bindingResult.hasErrors()) {
+            // 入力チェックエラーの場合
+            List<String> errorList = new ArrayList<String>();
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errorList.add(error.getDefaultMessage());
+            }
+            model.addAttribute("validationError", errorList);
+            model.addAttribute("bookAddRequest", new BookAddRequest());
+            return "/add";
+        }
         List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
    	    multipartFile.forEach(e -> {
-            //アップロード実行処理メソッド呼び出し
           bookRequest.setImgPath(uploadAction(e));
         });
+   	    if (bookRequest.getLimitdate() == null) {
+   	    	// do something
+   	    	String errorMsg = "やってくれたな";
+   	    	model.addAttribute("errorMsg", errorMsg);
+   	    	return "/add";
+   	    }
 	   libraryService.bookRegister(bookRequest);
 	   
 	   try {
@@ -258,6 +334,10 @@ public class LibraryController {
 		} catch (InterruptedException e) {
 			System.out.println("待ち時間中に割り込みが発生しました。");
 		}
+	   
+	   System.out.println(session.getAttribute("userId"));
+	   System.out.println(session.getAttribute("userName"));
+	   
 
 	   return "redirect:/home";        
     }
@@ -295,8 +375,9 @@ public class LibraryController {
     }
 
 
+
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
-	public String search(Model model, SearchBooksRequest searchBooksRequest) {
+	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session) {
 
 		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
 
@@ -305,6 +386,10 @@ public class LibraryController {
 		}
 		model.addAttribute("search_box", new SearchBooksRequest());
 		model.addAttribute("bookshelf", bookshelf);
+		
+		// Editor: kk
+		// Record and show user's name
+		model.addAttribute("userName", session.getAttribute("userName"));
 
 		return "/home";
 	}
@@ -339,7 +424,8 @@ public class LibraryController {
 
 		model.addAttribute("loginRequest", new LoginRequest());
 		model.addAttribute("search_box", new SearchBooksRequest());
-		session.setAttribute("userId", usersEntity.getLoginId());
+		session.setAttribute("userId", libraryService.getLastIdInUsers());
+		session.setAttribute("userName", usersEntity.getName());
 
 		return "redirect:/home";
 	}
@@ -359,8 +445,9 @@ public class LibraryController {
 		book.setLimitdate(limitdate);
 		book.setTitle(bookTitle);
 		book.setExhibitorUserId(Integer.parseInt(exhibitor));
-		System.out.println(book);
 		model.addAttribute("bookEntity", book);
+		String exhibitorName = libraryService.getNameBasedOnId(book.getExhibitorUserId());
+		model.addAttribute("exhibitorName", exhibitorName);
 		return "/confirm";
 	}
 
@@ -374,15 +461,12 @@ public class LibraryController {
 	public String doBookConfirm(@RequestParam("id") String id,
 								@RequestParam("exhibitorId") String exhibitorId,
 								Model model, HttpSession session) {
-		// TODO: Get each id from html
-		// int borrowerId = bookEntity.getId();
-		System.out.println(id);
-		System.out.println(exhibitorId);
-		int borrowerId = Integer.parseInt(session.getAttribute("userId").toString());
-		int lenderId   = Integer.parseInt(exhibitorId);
 		int bookId     = Integer.parseInt(id);
+		int lenderId   = Integer.parseInt(exhibitorId);
+		int borrowerId = Integer.parseInt(session.getAttribute("userId").toString());
 		System.out.println(bookId + " " + lenderId + " " + borrowerId);
 		libraryService.updateTransaction(bookId, lenderId, borrowerId);
+		libraryService.updateBooksNoLongerExhibit(bookId);
 		return "redirect:/borrowlog";
 	}
 	/**
@@ -393,7 +477,6 @@ public class LibraryController {
 	 */
 	@PostMapping("/logout")
 	public String doLogOut( Model model, HttpSession session) {
-		session.setAttribute("userId","1001");
 		session.invalidate(); // Logout and back to home
 		return "redirect:/login";
 	}

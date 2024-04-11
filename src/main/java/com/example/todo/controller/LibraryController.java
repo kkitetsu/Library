@@ -280,30 +280,20 @@ public class LibraryController {
 	   return "redirect:/home";        
     }
 	
-	
+	/**
+	 * @author Aru
+	 * 
+	 * Delete a book (Remove from book list, change exhibition flag to 0)
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value = "/editbook", params= "delete", method = RequestMethod.POST)
-    public String deleteBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {		
-			if (bindingResult.hasErrors()) {
-            		List<String> errorList = new ArrayList<String>();
-            		for (ObjectError error : bindingResult.getAllErrors()) {
-            			errorList.add(error.getDefaultMessage());
-            		}
-            		model.addAttribute("validationError", errorList);
-            		model.addAttribute("bookAddRequest", new BookAddRequest());
-            		return "/editbook";
-			}
-			List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
-			multipartFile.forEach(e -> {
-				bookRequest.setImgPath(uploadAction(e));
-			});
-			if (bookRequest.getLimitdate() == null) {
-				String errorMsg = "やってくれたな";
-				model.addAttribute("errorMsg", errorMsg);
-				return "/editbook";
-			}
-			libraryService.bookDeliter(bookRequest);
+    public String deleteBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, 
+    											Model model, HttpSession session) {		
+
+		libraryService.bookDeliter(bookRequest);
 		
-	   return "redirect:/home";        
+		return "redirect:/home";        
     }
 	
 	

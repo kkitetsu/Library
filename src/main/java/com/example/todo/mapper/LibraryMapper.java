@@ -89,6 +89,8 @@ public interface LibraryMapper {
 	
 	public void bookEditer(BookAddRequest bookRequest);
 	
+	public void bookDeliter(BookAddRequest bookRequest);
+	
 	/**
 	 * @author Lee 
 	 * @return ユーザーの情報修正

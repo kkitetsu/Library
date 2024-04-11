@@ -144,6 +144,10 @@ public class LibraryService {
 	public void bookEditer(BookAddRequest bookRequest) {
 		libraryMapper.bookEditer(bookRequest);
 	}
+	
+	public void bookDeliter(BookAddRequest bookRequest) {
+		libraryMapper.bookDeliter(bookRequest);
+	}
 	/** 
 	 * @author Lee
 	 * 「貸し」/「借り」/Mybookの履歴数を返す

@@ -12,7 +12,7 @@
 	<!--CSS共通リンク-->
 	<link rel="stylesheet" href="css/common.css" />
 	<!--タイトルの選択-->
-	<title>Add book</title>
+	<title>Edit book</title>
 </head>
 
 <body>
@@ -71,18 +71,17 @@
 						<tr id="limitdate" class="table_row">
 							<td>貸出期限</td>
 							<td>
-								<input type="date" th:field="*{limitdate}" class="input_box"
-									min="${#dates.format(#dates.createToday(), 'yyyy-MM-dd')}" />
+								<input type="date" th:field="*{limitdate}" class="input_box" />
 							</td>
 						</tr>
 					</table>
 					<table class="edit_book_table">
 						<tr>
 							<td>
-								<input type="submit" class="btn btn-primary" value="削除" id="small_size">
+								<input type="submit" class="btn btn-primary" value="削除" name="delete" id="small_size">
 							</td>
 							<td>
-								<input type="submit" class="btn btn-danger" value="修正" id="small_size">
+								<input type="submit" class="btn btn-danger" value="修正" name="update" id="small_size">
 							</td>
 							<td>
 								<a href="/home" class="btn btn-primary" id="small_size">キャンセル</a>
@@ -93,8 +92,8 @@
 					</table>
 					<input type="hidden" th:value="*{id}" th:name="id">
 			</div>
-
 		</div>
+		</form>
 		<footer>
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>

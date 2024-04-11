@@ -68,9 +68,9 @@
 		INNER JOIN 
 			books AS b on b.id = t.book_id
 		INNER JOIN 
-			users AS u on u.id = t.lender_user_id 
+			users AS u on u.id = t.borrower_user_id 
 		WHERE 
-			u.login_id = #{user_id};
+			t.lender_user_id = #{user_id};
 	</select>
 	
 	<!--  @author kk -->

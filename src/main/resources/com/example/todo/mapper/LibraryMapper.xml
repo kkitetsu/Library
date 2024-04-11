@@ -122,6 +122,8 @@
 			books AS b on b.id = t.book_id
 		INNER JOIN 
 			users AS u on u.id = t.borrower_user_id
+		WHERE
+			t.Lender_user_id = #{userId}
 		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};	
 	</select>
 	
@@ -149,6 +151,8 @@
 			COUNT(*) AS row_count 
 		FROM 
 			transactions
+		WHERE
+		Lender_user_id =#{userId}
 	</select>
 	<select id="getBorrowLogsSize">
 		SELECT 

@@ -144,8 +144,8 @@ public class LibraryService {
 	 * LimitDate（返却期限）
 	 * LenderId（貸し手のID）
 	 **/
-	public List<SearchLogsDTO> displayLendLogs(final int SUBLISTSIZE, int startIndex) {
-		return libraryMapper.displayLendLogs(SUBLISTSIZE, startIndex);
+	public List<SearchLogsDTO> displayLendLogs(final int SUBLISTSIZE, int startIndex, int userId) {
+		return libraryMapper.displayLendLogs(SUBLISTSIZE, startIndex, userId);
 	}
 	
 	public void bookRegister(BookAddRequest bookRequest) {
@@ -160,8 +160,8 @@ public class LibraryService {
 	 * 「貸し」/「借り」/Mybookの履歴数を返す
 	 * @return Lend/Borrow Logsize
 	 **/
-	public int getLendLogsSize() {
-		return libraryMapper.getLendLogsSize();
+	public int getLendLogsSize(int userId) {
+		return libraryMapper.getLendLogsSize(userId);
 	}
 	public int getBorrowLogsSize(int userId) {
 		return libraryMapper.getBorrowLogsSize(userId);

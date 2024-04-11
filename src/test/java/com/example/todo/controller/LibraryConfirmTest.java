@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -67,7 +68,7 @@ class LibraryConfirmTest {
 			statement.executeUpdate("ALTER TABLE books AUTO_INCREMENT = 1;");
 		}
 	}
-	
+
 	public void InsertData() throws SQLException {
 		try (Connection connection = dataSource.getConnection();
 				Statement statement = connection.createStatement()) {
@@ -90,7 +91,6 @@ class LibraryConfirmTest {
 			statement.executeUpdate(sqlBooks);
 		}
 	}
-
 
 	//************************************************************************************
 	// Controller Test
@@ -147,14 +147,26 @@ class LibraryConfirmTest {
 		InsertData();
 
 		String exhibitorName = libraryService.getNameBasedOnId(1);
-		
+
 		assertEquals("User 1", exhibitorName);
-		
+
 		int bookId = 1;
-		int lenderId = 1;
-		int borrowerId =2;
-		
+		int lenderId = 2;
+		int borrowerId = 3;
+
 		libraryService.updateTransaction(bookId, lenderId, borrowerId);
+		try (Connection connection = dataSource.getConnection();
+				Statement statement = connection.createStatement()) {
+			//exhibition_flagを0で追加
+			String sqlBooks = "Select * From transactions WHERE book_id =" + bookId + ";";
+			ResultSet rs = statement.executeQuery(sqlBooks);
+			while (rs.next()) {
+                // 列名を指定してデータを取得する例
+				assertEquals(1,rs.getInt("book_id"));
+				assertEquals(2,rs.getInt("lender_user_id"));
+				assertEquals(3,rs.getInt("borrower_user_id"));
+            }
+		}
 	}
 
 }

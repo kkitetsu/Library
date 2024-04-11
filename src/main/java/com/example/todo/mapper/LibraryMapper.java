@@ -86,7 +86,9 @@ public interface LibraryMapper {
 	
 	public void bookRegister(BookAddRequest bookRequest);
 //	@Param("userId")int userId
-
+	
+	public void bookEditer(BookAddRequest bookRequest);
+	
 	/**
 	 * @author Lee 
 	 * @return ユーザーの情報修正

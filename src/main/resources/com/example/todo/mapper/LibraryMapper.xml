@@ -197,4 +197,15 @@
 	VALUES
 		(#{title}, #{userId}, #{category}, #{limitdate}, #{imgPath})
 	</insert>
+	<update id="bookEditer">
+		UPDATE
+			books
+		SET
+			title= #{title},
+			category= #{category},
+			limitdate= #{limitdate},
+			image= #{imgPath}
+		WHERE
+			id= #{id};
+	</update>
 </mapper>

@@ -208,4 +208,12 @@
 		WHERE
 			id= #{id};
 	</update>
+	<update id="bookDeliter">
+		UPDATE
+			books
+		SET
+			exhibition_flag = 0
+		WHERE
+			id= #{id};
+	</update>
 </mapper>

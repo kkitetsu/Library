@@ -45,9 +45,7 @@
 	<select id="searchBooks"
 		resultType="com.example.todo.entity.BooksEntity">
 		SELECT 
-			id,
-			title,
-			content 
+			*
 		FROM 
 			books
 		WHERE 

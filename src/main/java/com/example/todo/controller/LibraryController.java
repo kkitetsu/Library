@@ -206,7 +206,6 @@ public class LibraryController {
 	@GetMapping(value = "/home")
 	public String home(Model model, @ModelAttribute("alertMessage") String alertMessage, HttpSession session) {
 		
-		System.out.println(model.getAttribute("alertMessage"));
 		model.addAttribute("condition", model.getAttribute("alertMessage"));
 		
 		if (session.getAttribute("userId") == null) {
@@ -381,6 +380,8 @@ public class LibraryController {
 	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session) {
 
 		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
+		
+		System.out.println(bookshelf);
 		
 		if (bookshelf.isEmpty()) {
 			// Added by kk. If serach result is empty, display "no search result"

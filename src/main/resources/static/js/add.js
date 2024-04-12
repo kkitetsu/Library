@@ -41,3 +41,10 @@ document.getElementById('imgUpload').addEventListener('change', function() {
 		reader.readAsDataURL(file);
 	}
 });
+
+
+document.getElementById('imgUpload').addEventListener('change', function(event) {
+  	if(event.target.files.length > 0) {
+    	document.getElementById('existingImage').style.display = 'none';
+  	}
+});

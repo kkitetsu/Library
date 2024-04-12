@@ -43,7 +43,7 @@ header {
 	width: 250px;
 }
 
-#small_size, #small_size_loading{
+#small_size, #small_size_loading, #small_size2{
 	font-weight: bolder;
 	width: 350px;
 	height: auto;

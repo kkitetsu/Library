@@ -16,7 +16,11 @@
 </head>
 
 <body>
-
+	<!-- Loading中の画面-->
+	<div id="loading">
+		<div class="loading_msg_box"> Loading... </div>
+		<div class="loader"> </div>
+	</div>
 
 	<!--画面全体始め（ヘッダー、メイン、フッター)-->
 	<div class="content_box">
@@ -42,20 +46,21 @@
 				-本修正
 			</div>
 			<div class="main_content_box">
+
 				<form th:action="@{/editbook}" enctype="multipart/form-data" th:object="${bookAddRequest}"
 					th:method="post">
 					<label for="imgUpload" class="image-upload-container">
 						<div class="image-upload-placeholder">
 							<strong>本の画像をアップロード</strong>
 						</div>
-						<image src="*{image}"></image>
+						<image th:src="*{image}" id="existingImage"></image>
 						<input type="file" id="imgUpload" accept="image/*" style="display: none;"
 							th:field="*{multipartFile}" multiple />
 						<figure class="image-preview" id="imagePreview">
-							<img src="" alt="Image Preview" id="previewImage" />
+							<img th:src="*{image}" alt="Image Preview" id="previewImage" />
 						</figure>
 					</label><br><br>
-
+						<input type="hidden" th:field="*{image}" value="*{image}">
 					<table class="edit_book_table">
 						<tr class="table_row">
 							<td><label for="title">タイトル</label></td>
@@ -72,7 +77,7 @@
 						<tr id="limitdate" class="table_row">
 							<td>貸出期限</td>
 							<td>
-								<input type="date" th:field="*{limitdate}" class="input_box" />
+								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box"/>
 							</td>
 						</tr>
 					</table>
@@ -82,10 +87,10 @@
 								<input type="submit" class="btn btn-primary" value="削除" name="delete" id="small_size">
 							</td>
 							<td>
-								<input type="submit" class="btn btn-danger" value="修正" name="update" id="small_size">
+								<input type="submit" class="btn btn-danger" value="修正" name="update" id="small_size_loading">
 							</td>
 							<td>
-								<a href="/home" class="btn btn-primary" id="small_size">キャンセル</a>
+								<a href="/mybook" class="btn btn-primary" id="small_size2">キャンセル</a>
 							</td>
 						</tr>
 
@@ -100,8 +105,7 @@
 		</footer>
 		<!--JavaScriptリンク-->
 		<script type="text/javascript" th:src="@{/js/add.js}"></script>
-		
-
+		<script type="text/javascript" th:src="@{/js/loading.js}"></script>
 
 </body>
 

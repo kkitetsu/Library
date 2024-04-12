@@ -63,6 +63,7 @@
 							</td>
 							<td>
 								<input th:field="*{password}" type="password" class="input_box" name="password" required>
+								<span id="passwordError" style="color: red; display: none;">パスワードは4文字以上必要です</span>
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -135,15 +136,28 @@
 			// Get references to the password and confirm password fields
 			var passwordField = document.getElementById("password");
 			var confirmPasswordField = document.getElementById("confirm_password");
-			var passwordError = document.getElementById("password_error");
+			var password_error = document.getElementById("password_error");
+			var passwordError = document.getElementById('passwordError');
+			
+			passwordField.addEventListener('input', function() {
+			    var passwordValue = passwordField.value.trim();
+			    
+			    if (passwordValue.length < 4) {
+			        passwordError.style.display = "block";
+			        passwordField.classList.add('error-border');
+			    } else {
+			        passwordError.style.display = "none";
+			        passwordField.classList.remove('error-border');
+			    }
+			});
 			
 			// Attach event listener to the confirm password field
 			confirmPasswordField.addEventListener("input", function() {
 			    // Check if passwords match
 			    if (passwordField.value !== confirmPasswordField.value) {
-			        passwordError.style.display = "block";
+			        password_error.style.display = "block";
 			    } else {
-			        passwordError.style.display = "none";
+			        password_error.style.display = "none";
 			    }
 			});
 			
@@ -162,6 +176,7 @@
 			        emailInput.classList.remove('error-border');
 			    }
 			});
+			
 		</script>
 
 </body>

@@ -110,4 +110,7 @@ public interface LibraryMapper {
 	
 	/** @author kk */
 	public int getLastIdInUsers();
+	
+	/** @author kk */
+	public Integer getLoginIdBasedOnId(int id);
 }

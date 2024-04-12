@@ -128,8 +128,11 @@ public class LibraryController {
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
 	@GetMapping(value = "/edituser")
-	public String geteditUserPage(Model model) {
-		model.addAttribute("userEntity", new UsersEntity());
+	public String geteditUserPage(Model model, HttpSession session) {
+		// Edited by kk. Display user ID on the page
+		UsersEntity user = new UsersEntity();
+		user.setLoginId(libraryService.getLoginIdBasedOnId(Integer.parseInt(session.getAttribute("userId").toString())));
+		model.addAttribute("userEntity", user);
 		return "/edituserInfo";
 	}
 

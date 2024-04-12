@@ -5,3 +5,7 @@
     color: red;
     margin-left: 5px; 
 }
+
+.error-border {
+    border: 3px solid red;
+}

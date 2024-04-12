@@ -426,7 +426,7 @@ public class LibraryController {
 		
 		List<UsersEntity> users = libraryService.getUsers();
 		for (UsersEntity eachUser : users) {
-			if (eachUser.getLoginId().equals(eachUser.getLoginId())) {
+			if (eachUser.getLoginId().equals(usersEntity.getLoginId())) {
 				model.addAttribute("errMsg", "このIDはすでに存在しています");
 				model.addAttribute("userEntity", new UsersEntity());
 				return "/register";

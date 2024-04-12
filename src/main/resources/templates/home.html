@@ -134,7 +134,7 @@
 					<table class="search_table">
 						<tr>
 							<td colspan="2">
-								<input type="text" th:field="*{book_name}" class="input_box">
+								<input type="text" th:field="*{book_name}" class="input_box" th:value="${search_box.book_name}">
 							</td>
 							<td>
 								<button type="submit" class="btn btn-danger" id="small_size">検索</button>

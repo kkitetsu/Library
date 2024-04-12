@@ -66,8 +66,6 @@ public class LibraryController {
 		model.addAttribute("currentPage", currPage);
 		model.addAttribute("maxPageNum", maxPageNum);
 		
-		
-		
 		return "/borrowlog";
 	}
 
@@ -368,17 +366,30 @@ public class LibraryController {
         return "/uploadImage/"+fileName;
     }
 
-
-
+    /**
+     * @author kuzawa
+     * @param model
+     * @param searchBooksRequest
+     * @param session
+     * @return
+     */
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
 	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session) {
 
 		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
-
-		if (searchBooksRequest.getBook_name() != "") {
+		
+		if (bookshelf.isEmpty()) {
+			// Added by kk. If serach result is empty, display "no search result"
+			model.addAttribute("condition", "検索結果がありません");
+		} else if (searchBooksRequest.getBook_name() != "") {
 			model.addAttribute("condition", searchBooksRequest.getBook_name());
 		}
-		model.addAttribute("search_box", new SearchBooksRequest());
+		
+		// Added by kk. Used to store the search history
+		SearchBooksRequest newBookRequest = new SearchBooksRequest();
+		newBookRequest.setBook_name(searchBooksRequest.getBook_name());
+		
+		model.addAttribute("search_box", newBookRequest);
 		model.addAttribute("bookshelf", bookshelf);
 		
 		// Editor: kk

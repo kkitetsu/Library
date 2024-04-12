@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
@@ -150,7 +151,6 @@ public class LibraryController {
 		}
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
 		usersEntity.setId(Integer.parseInt(session.getAttribute("userId").toString()));
-		System.out.println(usersEntity);
 		libraryService.editUser(usersEntity);
 		model.addAttribute("loginRequest", new LoginRequest());
 		model.addAttribute("search_box", new SearchBooksRequest());
@@ -204,7 +204,10 @@ public class LibraryController {
 	 */
 
 	@GetMapping(value = "/home")
-	public String home(Model model,HttpSession session) {
+	public String home(Model model, @ModelAttribute("alertMessage") String alertMessage, HttpSession session) {
+		
+		System.out.println(model.getAttribute("alertMessage"));
+		model.addAttribute("condition", model.getAttribute("alertMessage"));
 		
 		if (session.getAttribute("userId") == null) {
 			return "redirect:/login";
@@ -240,6 +243,7 @@ public class LibraryController {
 		model.addAttribute("bookAddRequest", bka);
         return "/add";
     }
+	
 	/**
 	 * @author Lee 
 	 * 本の修正への遷移経路
@@ -297,7 +301,7 @@ public class LibraryController {
 	
 	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
     public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {
-        System.out.println("session is: " + session.getAttribute("userId"));
+        
         bookRequest.setUserId((int)session.getAttribute("userId"));
 		if (bindingResult.hasErrors()) {
             // 入力チェックエラーの場合
@@ -442,14 +446,21 @@ public class LibraryController {
             					 @RequestParam("image") String image, 
             					 @RequestParam("category") String category,
             					 @RequestParam("limitdate") String limitdate, 
-            					 @RequestParam("exhibitor") String exhibitor, Model model) {
+            					 @RequestParam("exhibitorId") String exhibitorId, 
+            					 Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+		
+		if (exhibitorId.equals(session.getAttribute("userId").toString())) {
+			// User cannot borrow his or her own book
+			redirectAttributes.addFlashAttribute("alertMessage", "自分の本は借りる・もらうことができません");
+			return "redirect:/home";
+		}
 		BooksEntity book = new BooksEntity();
 		book.setCategory(category);
 		book.setId(Integer.parseInt(bookId));
 		book.setImage(image);
 		book.setLimitdate(limitdate);
 		book.setTitle(bookTitle);
-		book.setExhibitorUserId(Integer.parseInt(exhibitor));
+		book.setExhibitorUserId(Integer.parseInt(exhibitorId));
 		model.addAttribute("bookEntity", book);
 		String exhibitorName = libraryService.getNameBasedOnId(book.getExhibitorUserId());
 		model.addAttribute("exhibitorName", exhibitorName);
@@ -469,7 +480,6 @@ public class LibraryController {
 		int bookId     = Integer.parseInt(id);
 		int lenderId   = Integer.parseInt(exhibitorId);
 		int borrowerId = Integer.parseInt(session.getAttribute("userId").toString());
-		System.out.println(bookId + " " + lenderId + " " + borrowerId);
 		libraryService.updateTransaction(bookId, lenderId, borrowerId);
 		libraryService.updateBooksNoLongerExhibit(bookId);
 		return "redirect:/borrowlog";

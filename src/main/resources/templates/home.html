@@ -128,7 +128,6 @@
 			</nav>
 			<!-- サイドバー終 -->
 
-
 			<div class="search_box">
 				<form th:action="@{/home}" th:object="${search_box}" th:method="post">
 					<table class="search_table">
@@ -162,7 +161,7 @@
 						<input type="hidden" name="category" th:value="${book.category}" />
 						<input type="hidden" name="image" th:value="${book.image}" />
 						<input type="hidden" name="limitdate" th:value="${book.limitdate}" />
-						<input type="hidden" name="exhibitor" th:value="${book.exhibitorUserId}" />
+						<input type="hidden" name="exhibitorId" th:value="${book.exhibitorUserId}" />
 						<button class="btn btn-danger" id="content_btn" th:if="${book.category == '貸出'}">借</button>
 						<button class="btn btn-primary" id="take_btn" th:if="${book.category == '譲渡'}"> 貰</button>
 					</form>

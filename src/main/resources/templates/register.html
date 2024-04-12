@@ -11,6 +11,10 @@
 		crossorigin="anonymous"></script>
 	<!-- CSS共通リンク -->
 	<link rel="stylesheet" href="css/common.css" />
+	
+	<!-- also use register.css -->
+	<link rel="stylesheet" href="css/register.css">
+	
 	<!-- タイトルの選択-->
 	<title>R-Library: Register</title>
 </head>
@@ -45,6 +49,7 @@
 						<tr class="table_row">
 							<td>
 								<label for="login_id"> ID</label>
+								<span class="required">*</span>
 							</td>
 							<td>
 								<input th:field="*{loginId}" type="number" class="input_box" name="login_id" required>
@@ -53,14 +58,26 @@
 						<tr class="table_row">
 							<td>
 								<label for="password"> パスワード</label>
+								<span class="required">*</span>
 							</td>
 							<td>
 								<input th:field="*{password}" type="password" class="input_box" name="password" required>
 							</td>
 						</tr>
 						<tr class="table_row">
+				            <td>
+				                <label for="confirm_password"> パスワード再入力</label>
+								<span class="required">*</span>
+				            </td>
+				            <td>
+				                <input id="confirm_password" type="password" class="input_box" name="confirm_password" required>
+				                <span id="password_error" style="color: red; display: none;">パスワードが上のと違います</span>
+				            </td>
+				       	</tr>
+						<tr class="table_row">
 							<td>
 								<label for="name"> 名前 </label>
+								<span class="required">*</span>
 							</td>
 							<td>
 								<input th:field="*{name}" type="text" class="input_box" name="name" required>
@@ -69,6 +86,7 @@
 						<tr class="table_row">
 							<td>
 								<label for="department"> 部署</label>
+								<span class="required">*</span>
 							</td>
 							<td>
 								<!--部署別value修正必要-->
@@ -83,6 +101,7 @@
 						<tr class="table_row">
 							<td>
 								<label for="mailaddress"> メールアドレス</label>
+								<span class="required">*</span>
 							</td>
 							<td>
 								<input th:field="*{mailaddress}" type="text" class="input_box" name="mailaddress" required>
@@ -92,7 +111,6 @@
 						<tr>
 							<td>
 								<!-- 赤色、青色の箱はクラスを使って（赤：danger,青：primary）大きさはidで調	整します。-->
-
 								<input type="submit" class="btn btn-danger" id="small_size" value="登録">
 					</form>
 							</td>
@@ -110,6 +128,23 @@
 		<footer>
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>
+		
+		<script>
+			// Get references to the password and confirm password fields
+			var passwordField = document.getElementById("password");
+			var confirmPasswordField = document.getElementById("confirm_password");
+			var passwordError = document.getElementById("password_error");
+			
+			// Attach event listener to the confirm password field
+			confirmPasswordField.addEventListener("input", function() {
+			    // Check if passwords match
+			    if (passwordField.value !== confirmPasswordField.value) {
+			        passwordError.style.display = "block";
+			    } else {
+			        passwordError.style.display = "none";
+			    }
+			});
+		</script>
 
 </body>
 

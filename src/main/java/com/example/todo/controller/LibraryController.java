@@ -420,6 +420,16 @@ public class LibraryController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String doUserRegistration(@Validated @ModelAttribute UsersEntity usersEntity,
 			BindingResult bindingResult, Model model, HttpSession session) {
+		
+		List<UsersEntity> users = libraryService.getUsers();
+		for (UsersEntity eachUser : users) {
+			if (eachUser.getLoginId().equals(eachUser.getLoginId())) {
+				model.addAttribute("errMsg", "このIDはすでに存在しています");
+				model.addAttribute("userEntity", new UsersEntity());
+				return "/register";
+			}
+		}
+		
 		if (bindingResult.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : bindingResult.getAllErrors()) {

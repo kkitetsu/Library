@@ -214,6 +214,15 @@ public class LibraryController {
 		
 		int user_id = (int)session.getAttribute("userId");
 		List<SearchLogsDTO> ntf = libraryService.displayNotification(user_id);
+		
+		
+		
+		if(ntf.size() == 0) {
+			SearchLogsDTO none_message = new SearchLogsDTO();
+			none_message.setComment("現在、お知らせはありません");
+			ntf.add(none_message);
+		}
+		
 		//お知らせを表示
 		session.setAttribute("notification", ntf);
 

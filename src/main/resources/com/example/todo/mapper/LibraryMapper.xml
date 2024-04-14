@@ -60,17 +60,15 @@
 	<select id="displayNotification"
 		resultType="com.example.todo.dto.SearchLogsDTO">
 		SELECT 
-			t.traded_date AS TradedDate, 
-			b.title AS BookTitle, 
-			u.name AS BorrowerName
+			*
 		FROM 
 			transactions AS t
-		INNER JOIN 
+		LEFT JOIN 
 			books AS b on b.id = t.book_id
-		INNER JOIN 
+		LEFT JOIN 
 			users AS u on u.id = t.borrower_user_id 
 		WHERE 
-			t.lender_user_id = #{user_id};
+			t.lender_user_id = #{user_id} OR t.borrower_user_id = #{user_id}
 	</select>
 	
 	<!--  @author kk -->

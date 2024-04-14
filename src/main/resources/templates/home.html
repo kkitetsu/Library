@@ -47,9 +47,7 @@
 							<div class="contentBoxMordal">
 								<div th:if="${session.notification} != null">
 									<div class="notification" th:each="note:${session.notification}">
-										- <span th:text="${note.BorrowerName}"></span>様から<span
-											th:text="${note.BookTitle}"></span>
-										のレンタル要請がありました
+										- <span th:text="${note.Comment}"></span>
 									</div>
 								</div>
 

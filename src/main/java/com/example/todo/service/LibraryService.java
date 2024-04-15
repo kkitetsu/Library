@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.todo.dto.NotificationDTO;
 import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.TransactionEntity;
@@ -57,6 +58,11 @@ public class LibraryService {
 		libraryMapper.updateBooksNoLongerExhibit(bookId);
 	}
 	
+	/** @author kk */
+	public Integer getLoginIdBasedOnId(int id) {
+		return libraryMapper.getLoginIdBasedOnId(id);
+	}
+	
 	/** 
 	 * @author Lee
 	 * Userの情報修正
@@ -76,8 +82,20 @@ public class LibraryService {
 		return libraryMapper.displayBooks();
 	}
 	
-	public List<SearchLogsDTO> displayNotification(int user_id){
-		return libraryMapper.displayNotification(user_id);
+	public List<NotificationDTO> LendNotification(int user_id){
+		return libraryMapper.LendNotification(user_id);
+	}
+	
+	public List<NotificationDTO> LimitNotification(int user_id){
+		return libraryMapper.LimitNotification(user_id);
+	}
+	
+	public void confirmBorrowerNotification(int note,int user_id) {
+		libraryMapper.confirmBorrowerNotification(note, user_id);
+	}
+	
+	public void confirmLenderNotification(int note,int user_id) {
+		libraryMapper.confirmLenderNotification(note, user_id);
 	}
 
 	/** 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.todo.dto.NotificationDTO;
 import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.TransactionEntity;
@@ -41,7 +42,37 @@ public interface LibraryMapper {
 	 * @param id
 	 * @return
 	 */
-	public List<SearchLogsDTO> displayNotification(int user_id);
+	public List<NotificationDTO> LendNotification(int user_id);
+	
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Select notification info.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public List<NotificationDTO> LimitNotification(int user_id);
+	
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Select notification info.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public void confirmBorrowerNotification(int note,int user_id) ;
+	
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Select notification info.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public void confirmLenderNotification(int note,int user_id) ;
 	
 	/**
 	 * @author shunsukekuzawa
@@ -110,4 +141,7 @@ public interface LibraryMapper {
 	
 	/** @author kk */
 	public int getLastIdInUsers();
+	
+	/** @author kk */
+	public Integer getLoginIdBasedOnId(int id);
 }

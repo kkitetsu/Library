@@ -19,8 +19,8 @@
 	<div class="content_box">
 		<!-- ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
 		<header>
-			<div class="header_logo"> <a href="/home"><img src="img/rakuten_logo.png"
-						alt="Rakuten_sec_mark" class="main_logo"> </a></div>
+			<div class="header_logo"> <a href="/home"><img src="img/rakuten_logo.png" alt="Rakuten_sec_mark"
+						class="main_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
 
 			<div class="header_btn_box">
@@ -45,14 +45,19 @@
 							<div id="closeModal">&times;</span>
 							</div>
 							<div class="contentBoxMordal">
-								<div th:if="${session.notification} != null">
-									<div class="notification" th:each="note:${session.notification}">
-										- <span th:text="${note.BorrowerName}"></span>様から<span
-											th:text="${note.BookTitle}"></span>
-										のレンタル要請がありました
+								<form th:action="@{/home}" th:method="post">
+									<div th:if="${session.notification} != null">
+										<div class="notification" th:each="note:${session.notification}">
+											<input type="checkbox" name="note" th:value="${note.TransId}"> <span
+												th:text="${note.message}"></span>
+										</div>
 									</div>
-								</div>
+									<div th:if="${session.notification} == null">
+										<div class="notification">現在、お知らせはありません</div>
+									</div>
 
+									<button type="submit" name="note" class="blue_btn">確認</button>
+								</form>
 							</div>
 						</div>
 					</div>
@@ -128,36 +133,38 @@
 			</nav>
 			<!-- サイドバー終 -->
 
-
 			<div class="search_box">
 				<form th:action="@{/home}" th:object="${search_box}" th:method="post">
 					<table class="search_table">
 						<tr>
 							<td>
-								<select class="search_input_box">
+								<select class="search_input_box" name="category">
 									<option value="title">タイトル</option>
 									<option value="content">コンテンツ</option>
-									<option value="lenduser">所有者</option>option>
+									<option value="lenduser">所有者</option>
+								</select>
 							</td>
-							<td>
-								<input type="text" th:field="*{book_name}" class="search_input_box">
+							<td colspan="2">
+								<input type="text" th:field="*{book_name}" class="input_box"
+									th:value="${book_name}">
 							</td>
+
 							<td>
-								<button type="submit" class="btn btn-danger" id="search_btn">検索</button>
+								<button type="submit" class="btn btn-danger" id="search_btn" name="search">検索</button>
 							</td>
 						</tr>
 					</table>
 				</form>
 			</div>
 
-			<div th:if="${bookshelf}">
-				<div class="condition" th:if="${condition}">
-					<lable>検索条件：</lable><span th:text="${condition}"></span>
+			<div th:if="${session.bookshelf}">
+				<div class="condition" th:if="${session.condition}">
+					<lable>検索条件：</lable><span th:text="${session.condition}"></span>
 				</div>
 			</div>
 
 			<div class="main_content_box_home" id="main_content_box">
-				<div class="book_content_box" th:each="book: ${bookshelf}" id="book_content_box">
+				<div class="book_content_box" th:each="book: ${session.bookshelf}" id="book_content_box">
 					<div class="book_content_img_box">
 						<img th:src="*{book.image}" onerror="this.src='/img/default_book_img.jpg'"
 							class="book_content_img">
@@ -168,7 +175,7 @@
 						<input type="hidden" name="category" th:value="${book.category}" />
 						<input type="hidden" name="image" th:value="${book.image}" />
 						<input type="hidden" name="limitdate" th:value="${book.limitdate}" />
-						<input type="hidden" name="exhibitor" th:value="${book.exhibitorUserId}" />
+						<input type="hidden" name="exhibitorId" th:value="${book.exhibitorUserId}" />
 						<button class="btn btn-danger" id="content_btn" th:if="${book.category == '貸出'}">借</button>
 						<button class="btn btn-primary" id="take_btn" th:if="${book.category == '譲渡'}"> 貰</button>
 					</form>
@@ -188,7 +195,7 @@
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>
 	</div>
-		<script type="text/javascript" th:src="@{/js/setting_for_home.js}"></script>
+	<script type="text/javascript" th:src="@{/js/setting_for_home.js}"></script>
 </body>
 
 </html>

@@ -1,6 +1,7 @@
 let categorySelect = document.getElementById("category");
-let limitSwitch = document.getElementById("limitdate");
+let limitSwitch    = document.getElementById("limitdate");
 let limitDateInput = document.getElementById("limitDateInput");
+let limitdateLabel = document.getElementById("limitdateLabel");
 
 categorySelect.addEventListener('change', function() {
 
@@ -10,6 +11,7 @@ categorySelect.addEventListener('change', function() {
 		// limitSwitch.style.visibility = "visible";
 		// limitSwitch.removeAttribute('hidden');
 		// limitDateInput.removeAttribute('hidden');
+		limitdateLabel.classList.remove('hidden-input');
 		limitDateInput.classList.remove('hidden-input');
 		limitDateInput.setAttribute('required', 'true');
 
@@ -18,6 +20,7 @@ categorySelect.addEventListener('change', function() {
 		// limitSwitch.setAttribute('hidden', true);
 		// limitDateInput.setAttribute('hidden', true);
 		limitDateInput.classList.add('hidden-input');
+		limitdateLabel.classList.add('hidden-input');
 		limitDateInput.removeAttribute('required');
 		limitDateInput.valueAsDate = new Date("2999-12-31");
 	}

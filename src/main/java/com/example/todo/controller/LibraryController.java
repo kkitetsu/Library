@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.todo.dto.NotificationDTO;
 import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.UsersEntity;
@@ -213,18 +216,37 @@ public class LibraryController {
 		}
 		
 		int user_id = (int)session.getAttribute("userId");
-		List<SearchLogsDTO> ntf = libraryService.displayNotification(user_id);
 		
+		//お知らせ取得：貸出要請
+		List<NotificationDTO> lend_notification = libraryService.LendNotification(user_id);
+		lend_notification.forEach(
+			e->e.setMessage(e.getNotificationDate()+" : 【"+e.getBorrowerName()+"】様から【"+e.getBookTitle()+"】の貸出要請がありました")
+		);
+		//お知らせ取得：期限
+		List<NotificationDTO> limit_notification = libraryService.LimitNotification(user_id);
+		limit_notification.forEach(
+				e->e.setMessage(e.getNotificationDate()+" : 【"+e.getLenderName()+"】様の【"+e.getBookTitle()+"】の貸出期限まで１週間になりました")
+			);
 		
-		
-		if(ntf.size() == 0) {
-			SearchLogsDTO none_message = new SearchLogsDTO();
-			none_message.setComment("現在、お知らせはありません");
-			ntf.add(none_message);
-		}
+		//お知らせ合体（）
+		List<NotificationDTO> ntf = new ArrayList<NotificationDTO>();
+		ntf.addAll(limit_notification);
+		ntf.addAll(lend_notification);
+		Collections.sort(
+				ntf,new Comparator<NotificationDTO>() {
+                    @Override
+                    public int compare(NotificationDTO obj1, NotificationDTO obj2){
+                      return obj2.getNotificationDate().compareTo(obj1.getNotificationDate());
+                       }
+                    }
+				);
 		
 		//お知らせを表示
-		session.setAttribute("notification", ntf);
+		if(ntf.size()==0) {
+			session.setAttribute("notification", null);
+		}else {
+			session.setAttribute("notification", ntf);
+		}
 
 		//本のリストを取得
 		List<BooksEntity> bookshelf = libraryService.displayBooks();
@@ -241,6 +263,36 @@ public class LibraryController {
 
 		return "/home";
 	}
+	
+	@RequestMapping(value = "/home", params="search",method = RequestMethod.POST)
+	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session) {
+
+		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
+
+		if (searchBooksRequest.getBook_name() != "") {
+			model.addAttribute("condition", searchBooksRequest.getBook_name());
+		}
+		model.addAttribute("search_box", new SearchBooksRequest());
+		model.addAttribute("bookshelf", bookshelf);
+		
+		// Editor: kk
+		// Record and show user's name
+		model.addAttribute("userName", session.getAttribute("userName"));
+
+		return "/home";
+	}
+	
+	@RequestMapping(value = "/home",params="note", method = RequestMethod.POST)
+	public String note(Model model, SearchBooksRequest searchBooksRequest, HttpSession session,@RequestParam("note")String[] note ) {
+
+		for(int i = 0; i < note.length - 1 ; i++) {
+			libraryService.confirmBorrowerNotification(Integer.parseInt(note[i]),(int)session.getAttribute("userId"));
+			libraryService.confirmLenderNotification(Integer.parseInt(note[i]),(int)session.getAttribute("userId"));
+		}
+		
+		return "redirect:/home";
+	}
+
 	
 	@GetMapping(value = "/exhibit")
 	public String displayAdd(Model model, HttpSession session) {
@@ -376,26 +428,6 @@ public class LibraryController {
         String path = filePath.toString();
         return "/uploadImage/"+fileName;
     }
-
-
-
-	@RequestMapping(value = "/home", method = RequestMethod.POST)
-	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session) {
-
-		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
-
-		if (searchBooksRequest.getBook_name() != "") {
-			model.addAttribute("condition", searchBooksRequest.getBook_name());
-		}
-		model.addAttribute("search_box", new SearchBooksRequest());
-		model.addAttribute("bookshelf", bookshelf);
-		
-		// Editor: kk
-		// Record and show user's name
-		model.addAttribute("userName", session.getAttribute("userName"));
-
-		return "/home";
-	}
 
 	/** @author kk */
 	@GetMapping("/register")

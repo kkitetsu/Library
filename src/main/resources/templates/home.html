@@ -45,12 +45,19 @@
 							<div id="closeModal">&times;</span>
 							</div>
 							<div class="contentBoxMordal">
-								<div th:if="${session.notification} != null">
-									<div class="notification" th:each="note:${session.notification}">
-										- <span th:text="${note.Comment}"></span>
+								<form th:action="@{/home}" th:method="post">
+									<div th:if="${session.notification} != null">
+										<div class="notification" th:each="note:${session.notification}">
+											<input type="checkbox" name="note" th:value="${note.TransId}"> <span
+												th:text="${note.message}"></span>
+										</div>
 									</div>
-								</div>
-
+									<div th:if="${session.notification} == null">
+										<div class="notification">現在、お知らせはありません</div>
+									</div>
+									
+									<button type="submit" name="note" class="blue_btn">確認</button>
+								</form>
 							</div>
 						</div>
 					</div>
@@ -135,7 +142,7 @@
 								<input type="text" th:field="*{book_name}" class="input_box">
 							</td>
 							<td>
-								<button type="submit" class="btn btn-danger" id="small_size">検索</button>
+								<button type="submit" class="btn btn-danger" id="small_size" name="search">検索</button>
 							</td>
 						</tr>
 					</table>

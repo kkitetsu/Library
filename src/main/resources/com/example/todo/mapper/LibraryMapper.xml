@@ -26,6 +26,16 @@
 			id=#{id};
 	</select>
 	
+	<!-- @author kk -->
+	<select id="getLoginIdBasedOnId" resultType="int">
+		SELECT 
+			login_id
+		FROM
+			users
+		WHERE
+			id=#{id};
+	</select>
+	
 	<!--  @author kk -->
 	<select id="getLastIdInUsers" resultType="int">
 		SELECT 
@@ -45,9 +55,7 @@
 	<select id="searchBooks"
 		resultType="com.example.todo.entity.BooksEntity">
 		SELECT 
-			id,
-			title,
-			content 
+			*
 		FROM 
 			books
 		WHERE 
@@ -219,7 +227,6 @@
 			name = #{name},
 			department  = #{department},
 			mailaddress = #{mailaddress}, 
-			login_id = #{loginId},
 			password = #{password},
 		    edited_date = CURRENT_TIMESTAMP
 		WHERE 

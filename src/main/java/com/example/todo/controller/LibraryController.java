@@ -209,7 +209,7 @@ public class LibraryController {
 	 */
 
 	@GetMapping(value = "/home")
-	public String home(Model model,HttpSession session) {
+	public String home(Model model, HttpSession session) {
 		
 		if (session.getAttribute("userId") == null) {
 			return "redirect:/login";
@@ -249,14 +249,14 @@ public class LibraryController {
 		}
 
 		//本のリストを取得
-		List<BooksEntity> bookshelf = libraryService.displayBooks();
-
+		if(session.getAttribute("bookshelf") == null) {
+			List<BooksEntity> bookshelf = libraryService.displayBooks();
+			model.addAttribute("bookshelf", bookshelf);
+		}
+		
 		//検索フィールド
 		model.addAttribute("search_box", new SearchBooksRequest());
-
-		//本のリストを格納
-		model.addAttribute("bookshelf", bookshelf);
-		
+				
 		// Editor: kk
 		// Record and show user's name
 		model.addAttribute("userName", session.getAttribute("userName"));
@@ -265,7 +265,7 @@ public class LibraryController {
 	}
 	
 	@RequestMapping(value = "/home", params="search",method = RequestMethod.POST)
-	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session) {
+	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session,  @RequestParam("category")String category) {
 
 		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
 
@@ -273,13 +273,13 @@ public class LibraryController {
 			model.addAttribute("condition", searchBooksRequest.getBook_name());
 		}
 		model.addAttribute("search_box", new SearchBooksRequest());
-		model.addAttribute("bookshelf", bookshelf);
+		session.setAttribute("bookshelf", bookshelf);
 		
 		// Editor: kk
 		// Record and show user's name
 		model.addAttribute("userName", session.getAttribute("userName"));
 
-		return "/home";
+		return "redirect:/home";
 	}
 	
 	@RequestMapping(value = "/home",params="note", method = RequestMethod.POST)

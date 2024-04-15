@@ -19,7 +19,7 @@
 	<div class="content_box">
 		<!-- ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
 		<header>
-			<div class="header_logo"> <a href="https://www.rakuten-sec.co.jp/"><img src="img/rakuten_logo.png"
+			<div class="header_logo"> <a href="/home"><img src="img/rakuten_logo.png"
 						alt="Rakuten_sec_mark" class="main_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
 
@@ -133,11 +133,17 @@
 				<form th:action="@{/home}" th:object="${search_box}" th:method="post">
 					<table class="search_table">
 						<tr>
-							<td colspan="2">
-								<input type="text" th:field="*{book_name}" class="input_box">
+							<td>
+								<select class="search_input_box">
+									<option value="title">タイトル</option>
+									<option value="content">コンテンツ</option>
+									<option value="lenduser">所有者</option>option>
 							</td>
 							<td>
-								<button type="submit" class="btn btn-danger" id="small_size">検索</button>
+								<input type="text" th:field="*{book_name}" class="search_input_box">
+							</td>
+							<td>
+								<button type="submit" class="btn btn-danger" id="search_btn">検索</button>
 							</td>
 						</tr>
 					</table>
@@ -150,8 +156,8 @@
 				</div>
 			</div>
 
-			<div class="main_content_box">
-				<div class="book_content_box" th:each="book: ${bookshelf}">
+			<div class="main_content_box_home" id="main_content_box">
+				<div class="book_content_box" th:each="book: ${bookshelf}" id="book_content_box">
 					<div class="book_content_img_box">
 						<img th:src="*{book.image}" onerror="this.src='/img/default_book_img.jpg'"
 							class="book_content_img">
@@ -182,30 +188,7 @@
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>
 	</div>
-	<script>
-
-		var modal = document.getElementById("myModal");
-		var btn = document.getElementById("openModal");
-		var span = document.getElementById("closeModal");
-		// ボタンがクリックされた時にモーダルを表示
-		btn.onclick = function () {
-			modal.style.display = "block";
-		}
-
-		// ×（クローズアイコン）がクリックされた時にモーダルを非表示
-		span.onclick = function () {
-			modal.style.display = "none";
-		}
-
-		// モーダルの外側をクリックした時にモーダルを非表示
-		window.onclick = function (event) {
-			if (event.target == modal) {
-				modal.style.display = "none";
-			}
-		}
-
-
-	</script>
+		<script type="text/javascript" th:src="@{/js/setting_for_home.js}"></script>
 </body>
 
 </html>

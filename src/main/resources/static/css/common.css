@@ -61,6 +61,12 @@ header {
 	max-width: 250px;
 }
 
+#search_btn{
+	width:100%;
+	font-size:50px;
+	max-width:500px;
+}
+
 #small_size,
 #small_size_loading {
 	font-weight: bolder;
@@ -129,21 +135,31 @@ td {
 	font-size: 50px;
 }
 
-.main_content_box {
+
+
+.main_content_box, .main_content_box_home {
 	background: rgba(216, 112, 147, 0.9);
-	padding: 20px 20px;
+	padding: 30px 10px;
 	border-radius: 10px;
 	width: 90%;
-	margin: 20px 5%;
+	margin: 0 5%;
 	display: flex;
-	justify-content: center;
 	flex-direction: row;
 	align-items: center;
 	flex-wrap: wrap;
 	padding-bottom: 60px;	
+
 }
 
-.footer {
+.main_content_box{
+	justify-content: center;
+}
+
+.main_content_box_home {
+	justify-content: flex-start;
+}
+
+footer {
 	text-align: center;
 	font-size: 40px;
 	font-weight: bold;
@@ -151,10 +167,19 @@ td {
 	color: white;
 	margin-top: 15px;
 	min-height: 15%;
+	position:relative;
+	bottom:-40px;
 }
 
 body {
-	min-width: 100vh;
+	min-width: 100vw;
+	min-height: 100vh;
+	margin:0;
+	padding:0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .input_box {
@@ -164,6 +189,14 @@ body {
 	padding-left: 10px;
 	width: 80%;
 	max-width: 600px;
+}
+
+.search_input_box{
+	border: none;
+	height: 90%;
+	border-radius: 10px;
+	padding-left: 10px;
+	width: 95%;
 }
 
 .log_table,

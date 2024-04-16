@@ -19,8 +19,8 @@
 	<div class="content_box">
 		<!-- ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
 		<header>
-			<div class="header_logo"> <a href="/home"><img src="img/rakuten_logo.png"
-						alt="Rakuten_sec_mark" class="main_logo"> </a></div>
+			<div class="header_logo"> <a href="/home"><img src="img/rakuten_logo.png" alt="Rakuten_sec_mark"
+						class="main_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
 
 			<div class="header_btn_box">
@@ -42,8 +42,7 @@
 					<div class="modal-content">
 						<div>
 							<div id="titleModal"> &lt お知らせ &gt </div>
-							<div id="closeModal">&times;</span>
-							</div>
+							<div id="closeModal">&times;</div>
 							<div class="contentBoxMordal">
 								<div th:if="${session.notification} != null">
 									<div class="notification" th:each="note:${session.notification}">
@@ -137,7 +136,8 @@
 								<select class="search_input_box">
 									<option value="title">タイトル</option>
 									<option value="content">コンテンツ</option>
-									<option value="lenduser">所有者</option>option>
+									<option value="lenduser">所有者</option>
+								</select>
 							</td>
 							<td>
 								<input type="text" th:field="*{book_name}" class="search_input_box">
@@ -155,7 +155,6 @@
 					<lable>検索条件：</lable><span th:text="${condition}"></span>
 				</div>
 			</div>
-
 			<div class="main_content_box_home" id="main_content_box">
 				<div class="book_content_box" th:each="book: ${bookshelf}" id="book_content_box">
 					<div class="book_content_img_box">
@@ -180,6 +179,30 @@
 
 					</div>
 				</div>
+				<!-- Show current page number -->
+				<table class="btn_box">
+					<tr>
+						<td>
+							<div class="btn btn-danger" id="smaller_size" th:if="${currentPage} > 1">
+								<a th:href="@{/home(currPage=${currentPage - 1})}">
+									&lt
+								</a>
+							</div>
+						</td>
+						<td>
+							<div id="small_size" style="text-align:center">
+								<span th:text="${currentPage}"></span> / <span th:text="${maxPageNum}">
+							</div>
+						</td>
+						<td>
+							<div class="btn btn-danger" id="smaller_size" th:if="${currentPage<maxPageNum}">
+								<a th:href="@{/home(currPage=${currentPage + 1})}">
+									&gt
+								</a>
+							</div>
+						</td>
+					</tr>
+				</table>
 			</div>
 			<form th:action="@{/exhibit}"><button type="submit" class="add_button">+</form>
 		</div>
@@ -188,7 +211,7 @@
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>
 	</div>
-		<script type="text/javascript" th:src="@{/js/setting_for_home.js}"></script>
+	<script type="text/javascript" th:src="@{/js/setting_for_home.js}"></script>
 </body>
 
 </html>

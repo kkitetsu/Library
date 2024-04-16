@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.todo.mapper.LibraryMapper">
-	
 	<!-- 
 	@auther shunsukekuzawa 
 	Search all books on display.
@@ -16,6 +15,23 @@
 			exhibition_flag=1;
 	</select>
 	
+		<!-- 
+	@author Lee 
+	Search all "Lendable" books on display (maximum: 20).
+	-->
+	<select id="displayLendableBooks"
+		resultType="com.example.todo.entity.BooksEntity">
+		SELECT 
+			* 
+		FROM 
+			books
+		WHERE
+			exhibition_flag=1
+		order by
+			limitdate asc
+		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};
+	</select>
+	
 	<!-- @author kk -->
 	<select id="getNameBasedOnId" resultType="java.lang.String">
 		SELECT 
@@ -25,7 +41,6 @@
 		WHERE
 			id=#{id};
 	</select>
-	
 	<!--  @author kk -->
 	<select id="getLastIdInUsers" resultType="int">
 		SELECT 
@@ -37,7 +52,6 @@
 		LIMIT 
 			1;
 	</select>
-	
 	<!-- 
 	@auther shunsukekuzawa
 	 Search books searched by user with keyword.
@@ -56,7 +70,6 @@
 		  AND title LIKE CONCAT('%', #{book_name},'%')
 		</if>
 	</select>
-	
 	<select id="displayNotification"
 		resultType="com.example.todo.dto.SearchLogsDTO">
 		SELECT 
@@ -72,7 +85,6 @@
 		WHERE 
 			t.lender_user_id = #{user_id};
 	</select>
-	
 	<!--  @author kk -->
 	<select id="login" resultType="com.example.todo.entity.UsersEntity">
 		SELECT 
@@ -93,7 +105,7 @@
 	</select>
 	<!-- @author Lee : Mybookのlistの為のSQL文-->
 	<select id="displayMyBooks"
-			resultType="com.example.todo.entity.BooksEntity">
+		resultType="com.example.todo.entity.BooksEntity">
 		SELECT 
 			id, 
 			title, 
@@ -118,7 +130,6 @@
 		FROM 
 			transactions;		
 	</select>
-	
 	<!-- @author Lee :他のユーザーに貸した(LEND)/借りた(BORROW)履歴 -->
 	<select id="displayLendLogs" resultType="com.example.todo.dto.SearchLogsDTO">
 		SELECT 
@@ -138,7 +149,6 @@
 			t.Lender_user_id = #{userId}
 		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};	
 	</select>
-	
 	<select id="displayBorrowLogs" resultType="com.example.todo.dto.SearchLogsDTO">
 		SELECT
 			t.id as TransId,
@@ -184,6 +194,15 @@
 		AND 
 			exhibitor_user_id=#{userId};
 	</select>
+	<!-- @author Lee: Lendable Bookの大きさ計算-->
+	<select id="getLendableBookSize">
+		SELECT 
+			COUNT(*) AS row_count 
+		FROM 
+			books
+		WHERE
+			exhibition_flag=1;
+	</select>
 	<!--  @author lee:ユーザーの情報アップデート -->
 	<update id="editUser">
 		UPDATE 
@@ -212,7 +231,6 @@
 		VALUES
 			(#{bookId}, #{lenderId}, #{borrowerId}, CURRENT_TIMESTAMP);
 	</insert>
-	
 	<update id="updateBooksNoLongerExhibit">
 		UPDATE
 			books
@@ -221,8 +239,7 @@
 		WHERE
 			id=#{bookId};
 	</update>
-	
-	<insert id = "bookRegister">
+	<insert id="bookRegister">
 	INSERT INTO books
 		(title, exhibitor_user_id, category, limitdate, image)
 	VALUES

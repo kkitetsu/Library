@@ -13,5 +13,6 @@ import lombok.Data;
 public class SearchBooksRequest {
 
 	private String book_name;
+	private String category;
 	
 }

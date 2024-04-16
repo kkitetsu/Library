@@ -76,6 +76,15 @@ public class LibraryService {
 		return libraryMapper.displayBooks();
 	}
 	
+	/**
+	 * @author Lee
+	 * 借りれる本だけ表示（最大20件）
+	 * @return
+	 */
+	public List<BooksEntity> displayLendableBooks(final int SUBLISTSIZE, int startIndex, int userId) {
+		return libraryMapper.displayLendableBooks(SUBLISTSIZE, startIndex, userId);
+	}
+	
 	public List<SearchLogsDTO> displayNotification(int user_id){
 		return libraryMapper.displayNotification(user_id);
 	}
@@ -175,7 +184,9 @@ public class LibraryService {
 	public int getMyBookLogsSize(int userId) {
 		return libraryMapper.getMyBookLogsSize(userId);
 	}
-	
+	public int getLendableBookSize(int userId) {
+		return libraryMapper.getLendableBookSize(userId);
+	}
 	/** @author kk */
 	public int getLastIdInUsers() {
 		return libraryMapper.getLastIdInUsers();

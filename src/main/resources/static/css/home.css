@@ -10,7 +10,7 @@
 	font-size: 35px;
 }
 
-.book_content_box {
+.book_content_box{
 	text-align: center;
 	margin: 10px 30px;
 	width: 300px;
@@ -126,8 +126,8 @@ font-weight:bold;
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	width: 50%;
-	height: 30%;
+	width: 80%;
+	height: auto;
 	transform: translate(-50%, -50%);
 	padding: 20px;
 	background-color: #fefefe;
@@ -136,14 +136,17 @@ font-weight:bold;
 #titleModal{
 	font-size:40px;
 	display:inline-block;
-	width:95%;
+	width:100%;
 	text-align:center;
 }
 #closeModal {
 	font-size: 40px;
 	font-weight: bold;
+	height:40px;
 	cursor: pointer;
-	display:inline-block;
+	position:absolute;
+	top:0px;
+	right:20px;
 	width:auto;
 	text-align:center;
 }
@@ -291,3 +294,24 @@ span.deleteclass::after {
 	background-color:rgb(188,0,1);
 }
 
+
+
+/* width: 1100 以下の際 */
+@media screen and (max-width:1100px){
+		.book_content_box{
+	text-align: center;
+	margin: 10px 30px;
+	width: 200px;
+	height: 350px;
+	border-radius: 10px;
+	background-color: indianred;
+	display:inline-block; 
+}
+	.book_content_img_box {
+    margin: 5px 5%;
+    padding:10px;
+    width: 90%;
+    max-height: 200px;
+    background-color: white;
+}
+}

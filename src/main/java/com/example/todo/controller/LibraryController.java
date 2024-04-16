@@ -196,6 +196,8 @@ public class LibraryController {
 		return "redirect:/home";
 	}
 
+	
+
 	/**
 	 * @author shunsukekuzawa
 	 * 
@@ -206,30 +208,42 @@ public class LibraryController {
 	 */
 
 	@GetMapping(value = "/home")
-	public String home(Model model,HttpSession session) {
-		
+	public String home(@RequestParam(defaultValue = "1") int currPage, Model model,HttpSession session) {
 		if (session.getAttribute("userId") == null) {
 			return "redirect:/login";
 		}
-		
 		int user_id = (int)session.getAttribute("userId");
 		List<SearchLogsDTO> ntf = libraryService.displayNotification(user_id);
 		//お知らせを表示
 		session.setAttribute("notification", ntf);
-
+		//Editor: Lee
+		// 借りれる本のサイズを返します。
+		int LogsSize= libraryService.getLendableBookSize(user_id);
+		final int SUBLISTSIZE = 20;
+		int maxPageNum;
+		int startIndex = (currPage - 1) * SUBLISTSIZE;
 		//本のリストを取得
-		List<BooksEntity> bookshelf = libraryService.displayBooks();
-
+		//List<BooksEntity> bookshelf = libraryService.displayBooks();
+		//Editor: Lee
+		//最大20件の本のリストを取得
+		List<BooksEntity> bookshelf = libraryService.displayLendableBooks(SUBLISTSIZE, startIndex, user_id);
+		model.addAttribute("currentPage", currPage);
+		if (LogsSize % SUBLISTSIZE == 0) {
+			maxPageNum = (int) LogsSize / SUBLISTSIZE;
+		} else {
+			maxPageNum = (int) (LogsSize / SUBLISTSIZE) + 1;
+		}
 		//検索フィールド
 		model.addAttribute("search_box", new SearchBooksRequest());
-
 		//本のリストを格納
 		model.addAttribute("bookshelf", bookshelf);
-		
 		// Editor: kk
 		// Record and show user's name
 		model.addAttribute("userName", session.getAttribute("userName"));
-
+		//Editor: LEE
+		//ページの数を保存		
+		model.addAttribute("currentPage", currPage);
+		model.addAttribute("maxPageNum", maxPageNum);
 		return "/home";
 	}
 	
@@ -371,8 +385,9 @@ public class LibraryController {
 
 
 	@RequestMapping(value = "/home", method = RequestMethod.POST)
-	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session) {
+	public String search(@RequestParam(defaultValue = "1") int currPage, Model model, SearchBooksRequest searchBooksRequest, HttpSession session) {	
 
+		
 		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
 
 		if (searchBooksRequest.getBook_name() != "") {
@@ -384,7 +399,8 @@ public class LibraryController {
 		// Editor: kk
 		// Record and show user's name
 		model.addAttribute("userName", session.getAttribute("userName"));
-
+		model.addAttribute("currentPage", 1);
+		model.addAttribute("maxPageNum", 1);
 		return "/home";
 	}
 

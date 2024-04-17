@@ -24,6 +24,31 @@ public interface LibraryMapper {
 	 * @return List for books
 	 */
 	public List<BooksEntity> displayBooks();
+	
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Select all book-info for display.
+	 * 
+	 * @return List for books
+	 */
+	public List<BooksEntity> searchBooksByTitle(SearchBooksRequest searchBooksRequest);
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Select all book-info for display.
+	 * 
+	 * @return List for books
+	 */
+	public List<BooksEntity> searchBooksByContent(SearchBooksRequest searchBooksRequest);
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Select all book-info for display.
+	 * 
+	 * @return List for books
+	 */
+	public List<BooksEntity> searchBooksByUser(SearchBooksRequest searchBooksRequest);
 
 	/**
 	 * @author Lee

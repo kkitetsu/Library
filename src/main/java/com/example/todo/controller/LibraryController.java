@@ -234,7 +234,6 @@ public class LibraryController {
 						+ "】の貸出期限まで１週間になりました"));
 		
 		List<NotificationDTO> anyNewRequestedReturnDate = libraryService.getAnyNewRequestedReturnDate(user_id);
-		System.out.println(anyNewRequestedReturnDate);
 		anyNewRequestedReturnDate.forEach(
 				e -> e.setMessage(e.getBorrowerName() + " から借り入れ期間の延長要請が届いています。対象の本は " + e.getBookTitle() + ", 希望返却日は " + 
 					 e.getNewDateRequested() + " です。")
@@ -338,6 +337,16 @@ public class LibraryController {
 			libraryService.confirmLenderNotification(Integer.parseInt(note[i]), (int) session.getAttribute("userId"));
 		}
 
+		return "redirect:/home";
+	}
+	
+	/**
+	 * @author kk 
+	 */
+	@RequestMapping(value = "/home", params = "requestResponse", method = RequestMethod.POST)
+	public String requestResponse(Model model, HttpSession session,
+									@RequestParam("requestResponse") String requestResponse) {
+		System.out.println(requestResponse);
 		return "redirect:/home";
 	}
 

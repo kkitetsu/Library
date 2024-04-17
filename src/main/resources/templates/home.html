@@ -50,6 +50,8 @@
 										<div class="notification" th:each="note:${session.notification}">
 											<input type="checkbox" name="note" th:value="${note.TransId}"> <span
 												th:text="${note.message}"></span>
+											<button type="submit" name="requestResponse" value="approve" th:if="${note.message.contains('延長要請')}">承認</button>
+											<button type="submit" name="requestResponse" value="deny" th:if="${note.message.contains('延長要請')}">却下</button>
 										</div>
 									</div>
 									<div th:if="${session.notification} == null">

@@ -299,7 +299,7 @@ public class LibraryController {
 		} else if (Objects.equals(session.getAttribute("category"), "lenduser")) {
 			bookshelf = libraryService.searchBooksByUser(searchBooksRequest);
 		} else {
-			bookshelf = libraryService.displayBooks();
+			bookshelf = libraryService.searchBooksByTitle(searchBooksRequest);
 		}
 
 		if (bookshelf.isEmpty()) {

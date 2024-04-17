@@ -52,7 +52,7 @@
 	@auther shunsukekuzawa
 	 Search books searched by user with keyword.
 	-->
-	<select id="searchBooks"
+	<select id="searchBooksByTitle"
 		resultType="com.example.todo.entity.BooksEntity">
 		SELECT 
 			*
@@ -62,6 +62,34 @@
 			exhibition_flag = 1
 		<if test="book_name != null">
 		  AND title LIKE CONCAT('%', #{book_name},'%')
+		</if>
+	</select>
+	
+	<select id="searchBooksByContent"
+		resultType="com.example.todo.entity.BooksEntity">
+		SELECT 
+			*
+		FROM 
+			books
+		WHERE 
+			exhibition_flag = 1
+		<if test="book_name != null">
+		  AND content LIKE CONCAT('%', #{book_name},'%')
+		</if>
+	</select>
+	
+	<select id="searchBooksByUser"
+		resultType="com.example.todo.entity.BooksEntity">
+		SELECT 
+			*
+		FROM 
+			books AS b
+		LEFT JOIN
+			users AS u on b.exhibitor_user_id = u.id
+		WHERE 
+			exhibition_flag = 1
+		<if test="book_name != null">
+		  AND u.name LIKE CONCAT('%', #{book_name},'%')
 		</if>
 	</select>
 	

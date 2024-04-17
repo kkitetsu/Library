@@ -7,18 +7,20 @@
 .condition {
 	text-align: center;
 	margin: 20px;
+	width:90%;
 	font-size: 35px;
 }
 
-.book_content_box {
+.book_content_box{
 	text-align: center;
 	margin: 10px 30px;
 	width: 300px;
 	height: 450px;
 	border-radius: 10px;
 	background-color: indianred;
-	display:inline-block;
+	display:inline-block; 
 }
+
 .book_content_img_box{
 	margin:10px;
 	width:280px;
@@ -95,8 +97,8 @@ font-weight:bold;
 	width: 6rem;
 	height: 6rem;
 	position: fixed;
-	bottom: 10%;
-	right: 25%;
+	bottom: 100px;
+	right: 15%;
 	/*padding: 1rem;*/
 	border-radius: 50%;
 	text-align: center;
@@ -126,8 +128,8 @@ font-weight:bold;
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	width: 50%;
-	height: 30%;
+	width: 80%;
+	height: auto;
 	transform: translate(-50%, -50%);
 	padding: 20px;
 	background-color: #fefefe;
@@ -136,14 +138,17 @@ font-weight:bold;
 #titleModal{
 	font-size:40px;
 	display:inline-block;
-	width:95%;
+	width:100%;
 	text-align:center;
 }
 #closeModal {
 	font-size: 40px;
 	font-weight: bold;
+	height:40px;
 	cursor: pointer;
-	display:inline-block;
+	position:absolute;
+	top:0px;
+	right:20px;
 	width:auto;
 	text-align:center;
 }
@@ -173,8 +178,10 @@ font-weight:bold;
   transition: all 200ms ease-in;
 }
 nav.nav {
+  margin:0;
   width: 300px;
   height: 100vh;
+  min-height:1000px;
   background-color: #FFF;
   right: -300px;
   top: 0;
@@ -238,7 +245,7 @@ span.deleteclass::after {
 .logo {
   text-align: center;
   width:100%;
-  height:200px;
+  height:100px;
 }
 .logo  a{
   text-decoration: none;
@@ -252,7 +259,7 @@ span.deleteclass::after {
   padding: 0;
 }
 .nav ul li a {
-  padding: 10px 20px;
+  padding: 10px 0px;
   display: block;
   color: #313131;
   font-size: 1rem;
@@ -275,6 +282,8 @@ span.deleteclass::after {
 .linkList{
 	width:100%;
 	text-align:center;
+	position:absolute;
+	top:140px;
 }
 .user_name{
 	text-align:Center;
@@ -287,3 +296,24 @@ span.deleteclass::after {
 	background-color:rgb(188,0,1);
 }
 
+
+
+/* width: 1100 以下の際 */
+@media screen and (max-width:1100px){
+		.book_content_box{
+	text-align: center;
+	margin: 10px 30px;
+	width: 200px;
+	height: 350px;
+	border-radius: 10px;
+	background-color: indianred;
+	display:inline-block; 
+}
+	.book_content_img_box {
+    margin: 5px 5%;
+    padding:10px;
+    width: 90%;
+    max-height: 200px;
+    background-color: white;
+}
+}

@@ -21,7 +21,7 @@
 		<!-- ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
 		<header>
 			<div class="header_logo">
-				<a href="https://www.rakuten-sec.co.jp/">
+				<a href="/login">
 					<img src="img/rakuten_logo.png" alt="Rakuten_sec_mark" class="main_logo">
 				</a>
 			</div>
@@ -35,8 +35,8 @@
 			<div class="main_title">
 				- ログイン
 			</div>
-			<div th:if="${errMsg}">
-				<div th:text="${errMsg}" class="main_title"></div>
+			<div th:if="${errMsg}" class="error_msg">
+				<div th:text="${errMsg}"></div>
 			</div>
 			<!-- メインコンテンツが入る赤色の箱-->
 			<div class="main_content_box">

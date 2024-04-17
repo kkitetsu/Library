@@ -27,8 +27,8 @@
 	<div class="content_box">
 		<!--ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
 		<header>
-			<div class="header_logo"> <a href="https://www.rakuten-sec.co.jp/"><img src="img/rakuten_logo.png"
-						alt="Rakuten_sec_mark" class="maing_logo"> </a></div>
+			<div class="header_logo"> <a href="/home"><img src="img/rakuten_logo.png" alt="Rakuten_sec_mark"
+						class="maing_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
 			<div class="header_btn_box">
 				<table class="header_table">
@@ -51,7 +51,7 @@
 					<div th:text="${validationError}" class="main_title"></div>
 				</div>
 				<form th:action="@{/editbook}" enctype="multipart/form-data" th:object="${bookAddRequest}"
-					th:method="post">
+					th:method="post" class="edit_box">
 					<label for="imgUpload" class="image-upload-container">
 						<div class="image-upload-placeholder">
 							<strong>本の画像をアップロード</strong>
@@ -86,14 +86,15 @@
 					</table>
 					<table class="edit_book_table">
 						<tr>
-							<td>
-								<input type="submit" class="btn btn-primary" value="削除" name="delete" id="small_size">
+							<td style="width:30%">
+								<input type="submit" class="btn btn-primary" value="削除" name="delete"
+									id="oneone_size">
 							</td>
-							<td>
-								<input type="submit" class="btn btn-danger" value="修正" name="update" id="small_size_loading">
+							<td style="width:30%">
+								<input type="submit" class="btn btn-danger" value="修正" name="update" id="onethird_size">
 							</td>
-							<td>
-								<a href="/mybook" class="btn btn-primary" id="small_size2">キャンセル</a>
+							<td style="width:30%">
+								<a href="/home" class="btn btn-primary" id="onesecond_size">キャンセル</a>
 							</td>
 						</tr>
 
@@ -109,8 +110,7 @@
 		<!--JavaScriptリンク-->
 		<script type="text/javascript" th:src="@{/js/add.js}"></script>
 		<script type="text/javascript" th:src="@{/js/loading.js}"></script>
-		<script type="text/javascript" th:src="@{/js/editbook.js}"></script>
-
+		
 </body>
 
 </html>

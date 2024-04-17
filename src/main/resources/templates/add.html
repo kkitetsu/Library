@@ -27,7 +27,7 @@
 	<div class="content_box">
 		<!--ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
 		<header>
-			<div class="header_logo"> <a href="https://www.rakuten-sec.co.jp/"><img src="img/rakuten_logo.png"
+			<div class="header_logo">  <a href="/home"><img src="img/rakuten_logo.png"
 						alt="Rakuten_sec_mark" class="maing_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
 			<div class="header_btn_box">
@@ -46,8 +46,8 @@
 			<div class="main_title">
 				-出品
 			</div>
-			<div th:if="${validationError}">
-				<div th:text="${validationError}" class="main_title"></div>
+			<div th:if="${validationError}" class="error_msg">
+				<div th:text="${validationError}"></div>
 			</div>
 
 			<div class="main_content_box">

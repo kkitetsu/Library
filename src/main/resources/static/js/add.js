@@ -13,7 +13,6 @@ categorySelect.addEventListener('change', function() {
 //		 limitDateInput.removeAttribute('hidden');
 		limitdateLabel.classList.remove('hidden-input');
 		limitDateInput.classList.remove('hidden-input');
-//		limitDateInput.setAttribute('required', 'true');
 
 	} else {
 		// limitSwitch.style.visibility = "hidden";
@@ -21,7 +20,6 @@ categorySelect.addEventListener('change', function() {
 		// limitDateInput.setAttribute('hidden', true);
 		limitDateInput.classList.add('hidden-input');
 		limitdateLabel.classList.add('hidden-input');
-		limitDateInput.removeAttribute('required');
 		limitDateInput.valueAsDate = new Date("2999-12-31");
 	}
 })

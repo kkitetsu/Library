@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.todo.dto.NotificationDTO;
 import com.example.todo.dto.SearchLogsDTO;
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.entity.TransactionEntity;
@@ -24,6 +25,13 @@ public interface LibraryMapper {
 	 */
 	public List<BooksEntity> displayBooks();
 
+	/**
+	 * @author Lee
+	 * 借りれる本だけ表示（最大20件）
+	 * @return
+	 */
+	public List<BooksEntity> displayLendableBooks(final int SUBLISTSIZE, int startIndex, int userId);
+	
 	/** 
 	 * @author Lee 
 	 * @param MYBOOK リクエストデータ 
@@ -41,7 +49,37 @@ public interface LibraryMapper {
 	 * @param id
 	 * @return
 	 */
-	public List<SearchLogsDTO> displayNotification(int user_id);
+	public List<NotificationDTO> LendNotification(int user_id);
+	
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Select notification info.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public List<NotificationDTO> LimitNotification(int user_id);
+	
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Select notification info.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public void confirmBorrowerNotification(int note,int user_id) ;
+	
+	/**
+	 * @author shunsukekuzawa
+	 * 
+	 * Select notification info.
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public void confirmLenderNotification(int note,int user_id) ;
 	
 	/**
 	 * @author shunsukekuzawa
@@ -74,12 +112,13 @@ public interface LibraryMapper {
 	
 	/**
 	 * @author Lee 
-	 * @param 貸した/借りた履歴/My bookリクエストデータ(今後 ユーザーID　主キーに修正予定)
-	 * @return 貸した/借りた履歴/My book のサイズ
+	 * @param 貸した/借りた履歴/My book/Lendable books リクエストデータ(今後 ユーザーID　主キーに修正予定)
+	 * @return 貸した/借りた履歴/My book/Lendable books のサイズ
 	 **/
      int getLendLogsSize(int userId);
      int getBorrowLogsSize(int userId);
      int getMyBookLogsSize(int userId);
+     int getLendableBookSize(int userId);
 
       /** @author kk */
 	public void register(UsersEntity usersEntity);

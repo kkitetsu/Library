@@ -194,6 +194,11 @@ public class LibraryController {
 			}
 			model.addAttribute("errMsg", errorList);
 			model.addAttribute("logininfo", new LoginRequest());
+			/**
+			 * @author shunsukekuzawa
+			 * セッションスコープに保存されている本の情報をクリア
+			 */
+			DeleteSession(session);
 			return "/login";
 		}
 
@@ -274,7 +279,7 @@ public class LibraryController {
 		}
 
 		int maxPageNum;
-		System.out.println(session.getAttribute("bookshelf"));
+		
 		//本の全リストを取得：ログイン時、本追加・修正からリダイレクトした時に実行
 		if (session.getAttribute("bookshelf") == null) {
 			List<BooksEntity> bookshelf = libraryService.displayBooks();

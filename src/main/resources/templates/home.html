@@ -131,16 +131,18 @@
 
 			</nav>
 			<!-- サイドバー終 -->
-
+			
+			<!-- 検索エリア -->
 			<div class="search_box">
 				<form th:action="@{/home}" th:object="${search_box}" th:method="post">
 					<table class="search_table">
 						<tr>
 							<td>
 								<select class="search_input_box" name="category">
+									 <option value="" selected hidden><p th:text="${session.category_type}"></p></option>
 									<option value="title">タイトル</option>
 									<option value="content">コンテンツ</option>
-									<option value="lenduser">所有者</option>
+									<option value="lenduser">出品者</option>
 								</select>
 							</td>
 							<td colspan="2">
@@ -168,7 +170,7 @@
 
 			<div class="main_content_box_home" id="main_content_box" th:if="${session.bookCount} > 0">
 				<div class="book_content_box" th:each="book, iterStat: ${session.bookshelf}" id="book_content_box"
-					th:if="${iterStat.index>= (20*(currentPage-1)+1) and iterStat.index<=(20*(currentPage))}">
+					th:if="${iterStat.index>= (20*(currentPage-1)) and iterStat.index<=(20*(currentPage)-1)}">
 					<div class="book_content_img_box">
 						<img th:src="*{book.image}" onerror="this.src='/img/default_book_img.jpg'"
 							class="book_content_img">

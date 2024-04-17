@@ -81,7 +81,7 @@ public class LibraryService {
 	public List<BooksEntity> displayBooks() {
 		return libraryMapper.displayBooks();
 	}
-	
+
 	public List<NotificationDTO> LendNotification(int user_id){
 		return libraryMapper.LendNotification(user_id);
 	}
@@ -193,7 +193,9 @@ public class LibraryService {
 	public int getMyBookLogsSize(int userId) {
 		return libraryMapper.getMyBookLogsSize(userId);
 	}
-	
+	public int getLendableBookSize(int userId) {
+		return libraryMapper.getLendableBookSize(userId);
+	}
 	/** @author kk */
 	public int getLastIdInUsers() {
 		return libraryMapper.getLastIdInUsers();

@@ -21,8 +21,8 @@
 	<div class="content_box">
 		<!-- ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
 		<header>
-			<div class="header_logo">  <a href="/home"><img src="img/rakuten_logo.png"
-						alt="Rakuten_sec_mark" class="main_logo"> </a></div>
+			<div class="header_logo"> <a href="/home"><img src="img/rakuten_logo.png" alt="Rakuten_sec_mark"
+						class="main_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
 			<div class="header_btn_box">
 				<table class="header_table">
@@ -41,72 +41,80 @@
 			</div>
 			<!-- メインコンテンツが入る赤色の箱 -->
 			<div class="main_content_box">
+				<div th:if="${LogsSize} > 0 ">
+					<Table class="my_book_table">
+						<tr>
+							<th id="border-right">
+								区分
+							</th>
+							<th id="border-right">
+								タイトル
+							</th>
+							<th id="border-right">
+								期限
+							</th>
+							<th>
+								編集
+							</th>
+						</tr>
+						<!-- Table rows will be added dynamically here -->
+						<tr th:each="book :${mybook}">
+							<td th:text="*{book.category}" id="border-right"> </td>
+							<td th:text="*{book.title}" id="border-right"> </td>
+							<td th:text="*{book.limitdate}" id="border-right"> </td>
+							<td>
 
-				<Table class="my_book_table">
-					<tr>
-						<th id="border-right">
-							区分
-						</th>
-						<th id="border-right">
-							タイトル
-						</th>
-						<th id="border-right">
-							期限
-						</th>
-						<th>
-							編集
-						</th>
-					</tr>
-					<!-- Table rows will be added dynamically here -->
-					<tr th:each="book :${mybook}">
-						<td th:text="*{book.category}" id="border-right"> </td>
-						<td th:text="*{book.title}" id="border-right"> </td>
-						<td th:text="*{book.limitdate}" id="border-right"> </td>
-						<td>
-
-							<form th:action="@{/editbook}"><button type="submit" class="btn btn-secondary" id="edit">
-									編集
-									<input type="hidden" th:name="image" th:value="*{book.image}">
-									<input type="hidden" th:name="id" th:value="*{book.id}">
-							</form>
-						</td>
-					</tr>
-				</table>
-				<table class="btn_box">
-					<tr>
-						<td>
-							<div class="btn btn-danger" id="smaller_size" th:if="${currentPage} > 1">
-								<a th:href="@{/mybook(currPage=${currentPage - 1})}">
-									&lt
-								</a>
-							</div>
-						</td>
-						<td>
-							<div id="small_size" style="text-align:center">
-								<span th:text="${currentPage}"></span> / <span th:text="${maxPageNum}">
-							</div>
-						</td>
-						<td>
-							<div class="btn btn-danger" id="smaller_size" th:if="${currentPage<maxPageNum}">
-								<a th:href="@{/mybook(currPage=${currentPage + 1})}">
-									&gt
-								</a>
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<Td></Td>
-						<Td>
-							<div>
-								<form th:action="@{/home}" th:method="GET">
-									<button type="submit" class="btn btn-primary" id="small_size" value="home">
-										ホーム</button>
+								<form th:action="@{/editbook}"><button type="submit" class="btn btn-secondary"
+										id="edit">
+										編集
+										<input type="hidden" th:name="image" th:value="*{book.image}">
+										<input type="hidden" th:name="id" th:value="*{book.id}">
 								</form>
-							</div>
-						</Td>
-						<td></td>
-					</tr>
-				</table>
+							</td>
+						</tr>
+					</table>
+					<table class="btn_box">
+						<tr>
+							<td>
+								<div class="btn btn-danger" id="smaller_size" th:if="${currentPage} > 1">
+									<a th:href="@{/mybook(currPage=${currentPage - 1})}">
+										&lt
+									</a>
+								</div>
+							</td>
+							<td>
+								<div id="small_size" style="text-align:center">
+									<span th:text="${currentPage}"></span> / <span th:text="${maxPageNum}">
+								</div>
+							</td>
+							<td>
+								<div class="btn btn-danger" id="smaller_size" th:if="${currentPage<maxPageNum}">
+									<a th:href="@{/mybook(currPage=${currentPage + 1})}">
+										&gt
+									</a>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<Td></Td>
+							<Td>
+								<div>
+									<form th:action="@{/home}" th:method="GET">
+										<button type="submit" class="btn btn-primary" id="small_size" value="home">
+											ホーム</button>
+									</form>
+								</div>
+							</Td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+				<div th:if="${LogsSize} == 0">
+					<div class="no_result_img_box">
+						<img src="img/no_result_image.png" alt="No_Result_Img" class="no_result_img"></img>
+					</div>
+					<div th:if="${errMsg}" th:text="${errMsg}" class="error_msg"> </div>
+				</div>
 			</div>
 			<!-- フッター（修正禁止）-->
 

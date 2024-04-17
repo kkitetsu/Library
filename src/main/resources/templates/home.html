@@ -132,16 +132,18 @@
 
 			</nav>
 			<!-- サイドバー終 -->
-
+			
+			<!-- 検索エリア -->
 			<div class="search_box">
 				<form th:action="@{/home}" th:object="${search_box}" th:method="post">
 					<table class="search_table">
 						<tr>
 							<td>
 								<select class="search_input_box" name="category">
+									 <option value="" selected hidden><p th:text="${session.category_type}"></p></option>
 									<option value="title">タイトル</option>
 									<option value="content">コンテンツ</option>
-									<option value="lenduser">所有者</option>
+									<option value="lenduser">出品者</option>
 								</select>
 							</td>
 							<td colspan="2">

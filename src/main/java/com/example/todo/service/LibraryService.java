@@ -71,6 +71,10 @@ public class LibraryService {
 		libraryMapper.editUser(usersEntity);
 	}
 	
+	public List<BooksEntity> displayBooks(){
+		return libraryMapper.displayBooks();
+	}
+	
 	/**
 	 * @author shunsukekuzawa
 	 * 
@@ -78,8 +82,14 @@ public class LibraryService {
 	 * 
 	 * @return List for books
 	 */
-	public List<BooksEntity> displayBooks() {
-		return libraryMapper.displayBooks();
+	public List<BooksEntity> searchBooksByTitle(SearchBooksRequest searchBooksRequest) {
+		return libraryMapper.searchBooksByTitle(searchBooksRequest);
+	}
+	public List<BooksEntity> searchBooksByContent(SearchBooksRequest searchBooksRequest) {
+		return libraryMapper.searchBooksByContent(searchBooksRequest);
+	}
+	public List<BooksEntity> searchBooksByUser(SearchBooksRequest searchBooksRequest) {
+		return libraryMapper.searchBooksByUser(searchBooksRequest);
 	}
 	
 	public List<NotificationDTO> LendNotification(int user_id){

@@ -69,7 +69,10 @@ public class LibraryController {
 		model.addAttribute("BorrowLogs", BorrowLogs);
 		model.addAttribute("currentPage", currPage);
 		model.addAttribute("maxPageNum", maxPageNum);
-		
+		model.addAttribute("LogsSize", LogsSize);
+		if(LogsSize==0) {
+			model.addAttribute("errMsg", "表示する項目がありませんでした。");
+		}
 		return "/borrowlog";
 	}
 
@@ -95,6 +98,11 @@ public class LibraryController {
 		model.addAttribute("LendLogs", LendLogs);
 		model.addAttribute("currentPage", currPage);
 		model.addAttribute("maxPageNum", maxPageNum);
+		model.addAttribute("LogsSize", LogsSize);
+		if(LogsSize==0) {
+			model.addAttribute("errMsg", "表示する項目がありませんでした。");
+		}
+		
 
 		return "/lendlog";
 	}
@@ -122,6 +130,10 @@ public class LibraryController {
 			maxPageNum = (int) (LogsSize / SUBLISTSIZE) + 1;
 		}
 		model.addAttribute("maxPageNum", maxPageNum);
+		model.addAttribute("LogsSize", LogsSize);
+		if(LogsSize==0) {
+			model.addAttribute("errMsg", "表示する項目がありませんでした。");
+		}
 		return "/mybook";
 	}
 

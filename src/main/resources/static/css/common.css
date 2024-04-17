@@ -334,7 +334,18 @@ input[type="file"] {
 	display: none;
 	/* 初期状態では画像を隠します */
 }
-
+.no_result_img_box{
+	width:100%;
+	height:auto;
+	text-align:center;
+}
+.no_result_img{
+	width:90%;
+	max-width:400px;
+	height:auto;
+	margin: 10px 5%;
+	border-radius: 20px;	
+}
 /* ファイルがない状態での表示スタイル（任意） */
 .image-upload-placeholder {
 	display: flex;
@@ -358,7 +369,18 @@ a:hover {
 #error {
 	color: red;
 }
-
+.error_msg{
+	background-color:white;
+	color:red;
+	text-decoration:underline;
+	margin:10px 2.5%;
+	padding:10px;
+	border-radius:5px;
+	font-size:30px;
+	text-align:center;
+	opacity:0.8;
+	width:95%;
+}
 #side_bar_list {
 	width: 80%;
 	font-size: 25px;

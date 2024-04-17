@@ -46,11 +46,11 @@
 			<div class="main_title">
 				-出品
 			</div>
-			<div th:if="${validationError}">
-				<div th:text="${validationError}" class="main_title"></div>
+			<div th:if="${validationError}" class="error_msg">
+				<div th:text="${validationError}"></div>
 			</div>
-			<div th:if="${errorMsg}">
-				<div th:text="${errorMsg}" class="main_title"></div>
+			<div th:if="${errorMsg}" class="error_msg">
+				<div th:text="${errorMsg}"></div>
 			</div>
 			<div class="main_content_box">
 				<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}"

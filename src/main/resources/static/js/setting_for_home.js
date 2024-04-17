@@ -5,9 +5,10 @@
  */
  function adjustpadding(){
 	 var container=document.querySelector('.main_content_box_home');
-	 var bookbox=document.querySelectorAll('.book_content_box'); 
+	 var bookbox=document.querySelector('.book_content_box'); 
 	 var containersize=container.offsetWidth-20;
-	 var bookboxsize=360; //360px
+	 var bookboxsize=bookbox.offsetWidth+60; //360px 
+//	 var bookboxsize=360; //360px
 	 var padding_size=(containersize%bookboxsize)/2;
 	 
 	 console.log('abcdef');

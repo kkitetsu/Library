@@ -71,7 +71,10 @@ public class LibraryController {
 		model.addAttribute("BorrowLogs", BorrowLogs);
 		model.addAttribute("currentPage", currPage);
 		model.addAttribute("maxPageNum", maxPageNum);
-
+		model.addAttribute("LogsSize", LogsSize);
+		if (LogsSize == 0) {
+			model.addAttribute("errMsg", "表示する項目がありませんでした。");
+		}
 		return "/borrowlog";
 	}
 
@@ -97,6 +100,10 @@ public class LibraryController {
 		model.addAttribute("LendLogs", LendLogs);
 		model.addAttribute("currentPage", currPage);
 		model.addAttribute("maxPageNum", maxPageNum);
+		model.addAttribute("LogsSize", LogsSize);
+		if (LogsSize == 0) {
+			model.addAttribute("errMsg", "表示する項目がありませんでした。");
+		}
 
 		return "/lendlog";
 	}
@@ -123,6 +130,10 @@ public class LibraryController {
 			maxPageNum = (int) (LogsSize / SUBLISTSIZE) + 1;
 		}
 		model.addAttribute("maxPageNum", maxPageNum);
+		model.addAttribute("LogsSize", LogsSize);
+		if (LogsSize == 0) {
+			model.addAttribute("errMsg", "表示する項目がありませんでした。");
+		}
 		return "/mybook";
 	}
 
@@ -209,8 +220,8 @@ public class LibraryController {
 	 * @return URL of home.html
 	 */
 	@GetMapping(value = "/home")
-	public String home(Model model, @ModelAttribute("alertMessage") String alertMessage, HttpSession session) {
-
+	public String home(@RequestParam(defaultValue = "1") int currPage, Model model,
+			@ModelAttribute("alertMessage") String alertMessage, HttpSession session) {
 		model.addAttribute("condition", model.getAttribute("alertMessage"));
 
 		if (session.getAttribute("userId") == null) {
@@ -224,7 +235,7 @@ public class LibraryController {
 		lend_notification.forEach(
 				e -> e.setMessage(e.getNotificationDate() + " : 【" + e.getBorrowerName() + "】様から【" + e.getBookTitle()
 						+ "】の貸出要請がありました"));
-		
+
 		//お知らせ取得：期限
 		List<NotificationDTO> limit_notification = libraryService.LimitNotification(user_id);
 		limit_notification.forEach(
@@ -235,7 +246,7 @@ public class LibraryController {
 		List<NotificationDTO> ntf = new ArrayList<NotificationDTO>();
 		ntf.addAll(limit_notification);
 		ntf.addAll(lend_notification);
-		
+
 		//お知らせ時系列順に並べ替え
 		Collections.sort(
 				ntf, new Comparator<NotificationDTO>() {
@@ -252,13 +263,7 @@ public class LibraryController {
 			session.setAttribute("notification", ntf);
 		}
 
-		//本の全リストを取得：ログイン時、本追加・修正からリダイレクトした時に実行
-		if (session.getAttribute("bookshelf") == null) {
-			List<BooksEntity> bookshelf = libraryService.displayBooks();
-			session.setAttribute("bookshelf", bookshelf);
-		}
-		
-		if (Objects.equals(session.getAttribute("category"), "lenduser") ) {
+		if (Objects.equals(session.getAttribute("category"), "lenduser")) {
 			session.setAttribute("category_type", "出品者");
 		} else if (Objects.equals(session.getAttribute("category"), "title")) {
 			session.setAttribute("category_type", "タイトル");
@@ -268,6 +273,24 @@ public class LibraryController {
 			session.setAttribute("category_type", "タイトル");
 		}
 
+		int maxPageNum;
+		System.out.println(session.getAttribute("bookshelf"));
+		//本の全リストを取得：ログイン時、本追加・修正からリダイレクトした時に実行
+		if (session.getAttribute("bookshelf") == null) {
+			List<BooksEntity> bookshelf = libraryService.displayBooks();
+			session.setAttribute("condition", null);
+			session.setAttribute("bookshelf", bookshelf);
+			// Editor : Lee
+			// 本が何冊か計算します。
+			int bookCount = bookshelf.size();
+			session.setAttribute("bookCount", bookCount);
+			maxPageNum = bookCount / 20;
+			if (bookCount % 20 > 0) {
+				maxPageNum++;
+			}
+			session.setAttribute("maxPageNum", maxPageNum);
+		}
+		model.addAttribute("currentPage", currPage);
 		//検索フィールド
 		SearchBooksRequest newBookRequest = new SearchBooksRequest();
 		newBookRequest.setBook_name((String) session.getAttribute("search_name"));
@@ -277,20 +300,28 @@ public class LibraryController {
 		// Editor: kk
 		// Record and show user's name
 		model.addAttribute("userName", session.getAttribute("userName"));
-
 		return "/home";
 	}
 
+	/**
+	 * @author shunsukekuzawa
+	 * Search books by keyword
+	 * @param model
+	 * @param searchBooksRequest
+	 * @param session
+	 * @param category
+	 * @return
+	 */
 	@RequestMapping(value = "/home", params = "search", method = RequestMethod.POST)
 	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session,
 			@RequestParam("category") String category) {
-		
+
 		//カテゴリの指定がなければ、前回選択したカテゴリを引き継ぎ
 		List<BooksEntity> bookshelf = new ArrayList<BooksEntity>();
 		if (category != "") {
 			session.setAttribute("category", category);
 		}
-		
+
 		if (Objects.equals(session.getAttribute("category"), "title")) {
 			bookshelf = libraryService.searchBooksByTitle(searchBooksRequest);
 		} else if (Objects.equals(session.getAttribute("category"), "content")) {
@@ -317,9 +348,28 @@ public class LibraryController {
 		// Record and show user's name
 		session.setAttribute("userName", session.getAttribute("userName"));
 
+		// Editor: Lee
+		// 本が何冊か計算します。
+		int bookCount = bookshelf.size();
+		session.setAttribute("bookCount", bookCount);
+		int maxPageNum = bookCount / 20;
+		if (bookCount % 20 > 0) {
+			maxPageNum++;
+		}
+		session.setAttribute("maxPageNum", maxPageNum);
+
 		return "redirect:/home";
 	}
 
+	/**
+	 * @author shunsukekuzawa
+	 * read the notifications(お知らせの既読機能)
+	 * @param model
+	 * @param searchBooksRequest
+	 * @param session
+	 * @param note
+	 * @return
+	 */
 	@RequestMapping(value = "/home", params = "note", method = RequestMethod.POST)
 	public String note(Model model, SearchBooksRequest searchBooksRequest, HttpSession session,
 			@RequestParam("note") String[] note) {
@@ -331,11 +381,10 @@ public class LibraryController {
 
 		return "redirect:/home";
 	}
-	
+
 	/**
 	 * @author shunsukekuzawa
 	 * 表示する本の情報を初期化
-	 * 
 	 * @param session
 	 */
 	private void DeleteSession(HttpSession session) {
@@ -388,7 +437,7 @@ public class LibraryController {
 			return "/editbook";
 		}
 		libraryService.bookEditer(bookRequest);
-		
+
 		DeleteSession(session);
 		return "redirect:/home";
 	}

@@ -50,6 +50,13 @@ public interface LibraryMapper {
 	 */
 	public List<BooksEntity> searchBooksByUser(SearchBooksRequest searchBooksRequest);
 
+	/**
+	 * @author Lee
+	 * 借りれる本だけ表示（最大20件）
+	 * @return
+	 */
+	public List<BooksEntity> displayLendableBooks(final int SUBLISTSIZE, int startIndex, int userId);
+	
 	/** 
 	 * @author Lee 
 	 * @param MYBOOK リクエストデータ 
@@ -130,12 +137,13 @@ public interface LibraryMapper {
 	
 	/**
 	 * @author Lee 
-	 * @param 貸した/借りた履歴/My bookリクエストデータ(今後 ユーザーID　主キーに修正予定)
-	 * @return 貸した/借りた履歴/My book のサイズ
+	 * @param 貸した/借りた履歴/My book/Lendable books リクエストデータ(今後 ユーザーID　主キーに修正予定)
+	 * @return 貸した/借りた履歴/My book/Lendable books のサイズ
 	 **/
      int getLendLogsSize(int userId);
      int getBorrowLogsSize(int userId);
      int getMyBookLogsSize(int userId);
+     int getLendableBookSize(int userId);
 
       /** @author kk */
 	public void register(UsersEntity usersEntity);

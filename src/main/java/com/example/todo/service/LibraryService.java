@@ -208,5 +208,15 @@ public class LibraryService {
 	public int getLastIdInUsers() {
 		return libraryMapper.getLastIdInUsers();
 	}
+	
+	/** @author kk */
+	public void addNewReturnDateRequested(String transId, String requestedNewDate) { 
+		libraryMapper.addNewReturnDateRequested(transId, requestedNewDate);
+	}
+	
+	/** @author kk */
+	public List<NotificationDTO> getAnyNewRequestedReturnDate(int userId) {
+		return libraryMapper.getAnyNewRequestedReturnDate(userId);
+	}
 
 }

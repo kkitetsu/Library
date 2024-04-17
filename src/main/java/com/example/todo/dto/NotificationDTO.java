@@ -22,5 +22,7 @@ public class NotificationDTO {
 	private String BorrowerName;
 	
 	private LocalDate NotificationDate;
+	
+	private String newDateRequested;
 
 }

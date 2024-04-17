@@ -57,6 +57,9 @@
 						<th>
 							期限
 						</th>
+						<th>
+							返す期限変更
+						</th>
 					</tr>
 					<!-- Table rows will be added dynamically here -->
 					<tr th:each="log :${BorrowLogs}">
@@ -64,6 +67,19 @@
 						<td th:text="*{log.BookTitle}" id="border-right"></td>
 						<td th:text="*{log.LenderName}" id="border-right"></td>
 						<td th:text="*{log.LimitDate}"></td>
+						<!-- added by kk. Use to send change return date request. -->
+						<td th:if="${!log.LimitDate.toString().equals('2999-12-31')}">
+							変更希望日
+							<form th:action="@{/requestNewReturnDate}" th:method="POST">
+						        <input type="date" name="newReturnDate">
+						        <input type="hidden" name="transId" th:value="*{log.TransId}">
+						        <button>提出</button>
+					        </form>
+					    </td>
+					    <td th:if="${log.LimitDate.toString().equals('2999-12-31')}">
+					        譲渡なので無期限です
+					    </td>
+					    <!-- until here added by kk. -->
 					</tr>
 				</Table>
 				<!-- Show current page number -->

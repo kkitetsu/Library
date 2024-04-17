@@ -227,7 +227,7 @@
 		FROM 
 			transactions
 		WHERE
-		Lender_user_id =#{userId}
+			Lender_user_id =#{userId}
 	</select>
 	<select id="getBorrowLogsSize">
 		SELECT 
@@ -330,5 +330,37 @@
 		AND
 			lender_user_id = #{user_id}
 	</update>
+	
+	<!--  writte by kk -->
+	<update id="addNewReturnDateRequested">
+		UPDATE
+			transactions
+		SET
+			new_date_requested = #{newDateRequested}
+		WHERE
+			id = #{transId}
+	</update>
+	
+	<!--  writte by kk -->
+	<select id="getAnyNewRequestedReturnDate" resultType="com.example.todo.dto.NotificationDTO">
+		SELECT 
+			b.title AS BookTitle,
+			u.name AS BorrowerName,
+			t.new_date_requested
+		FROM
+			transactions AS t
+		LEFT JOIN 
+			books AS b 
+		ON
+			b.id = t.book_id
+		INNER JOIN
+			users AS u
+		ON
+			u.id = t.borrower_user_id
+		WHERE
+			t.lender_user_id = #{userId}
+		AND 
+			t.new_date_requested IS NOT NULL;
+	</select>
 	
 </mapper>

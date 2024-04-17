@@ -169,4 +169,10 @@ public interface LibraryMapper {
 	
 	/** @author kk */
 	public Integer getLoginIdBasedOnId(int id);
+	
+	/** @author kk */
+	public void addNewReturnDateRequested(String transId, String newDateRequested);
+	
+	/**@author kk */
+	public List<NotificationDTO> getAnyNewRequestedReturnDate(int userId);
 }

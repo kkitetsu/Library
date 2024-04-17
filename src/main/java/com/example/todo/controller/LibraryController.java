@@ -232,6 +232,13 @@ public class LibraryController {
 		limit_notification.forEach(
 				e -> e.setMessage(e.getNotificationDate() + " : 【" + e.getLenderName() + "】様の【" + e.getBookTitle()
 						+ "】の貸出期限まで１週間になりました"));
+		
+		List<NotificationDTO> anyNewRequestedReturnDate = libraryService.getAnyNewRequestedReturnDate(user_id);
+		System.out.println(anyNewRequestedReturnDate);
+		anyNewRequestedReturnDate.forEach(
+				e -> e.setMessage(e.getBorrowerName() + " から借り入れ期間の延長要請が届いています。対象の本は " + e.getBookTitle() + ", 希望返却日は " + 
+					 e.getNewDateRequested() + " です。")
+		);
 
 		//お知らせ合体（）
 		List<NotificationDTO> ntf = new ArrayList<NotificationDTO>();
@@ -244,6 +251,7 @@ public class LibraryController {
 						return obj2.getNotificationDate().compareTo(obj1.getNotificationDate());
 					}
 				});
+		ntf.addAll(anyNewRequestedReturnDate);
 
 		//お知らせを表示
 		if (ntf.size() == 0) {
@@ -569,6 +577,20 @@ public class LibraryController {
 	public String doLogOut(Model model, HttpSession session) {
 		session.invalidate(); // Logout and back to home
 		return "redirect:/login";
+	}
+	
+	/**
+	 * @author kk
+	 */
+	@PostMapping("/requestNewReturnDate")
+	public String requestNewReturnDate(Model model, HttpSession session, 
+									@RequestParam("newReturnDate") String newReturnDate,
+									@RequestParam("transId") String transId) {
+		
+		System.out.println(newReturnDate);
+		System.out.println(transId);
+		libraryService.addNewReturnDateRequested(transId, newReturnDate);
+		return "redirect:/home";
 	}
 
 	/**

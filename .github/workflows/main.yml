@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - dev
-      - kk-fix
+      - kk-v2
       - home
 
 jobs:

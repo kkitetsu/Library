@@ -11,6 +11,7 @@
 		crossorigin="anonymous"></script>
 	<!--CSS共通リンク-->
 	<link rel="stylesheet" href="css/common.css" />
+	<link rel="stylesheet" href="css/register.css" /> <!-- Used for red star symbol by kk-->
 	<!--タイトルの選択-->
 	<title>Add book</title>
 </head>
@@ -48,9 +49,7 @@
 			<div th:if="${validationError}">
 				<div th:text="${validationError}" class="main_title"></div>
 			</div>
-			<div th:if="${errorMsg}">
-				<div th:text="${errorMsg}" class="main_title"></div>
-			</div>
+
 			<div class="main_content_box">
 				<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}"
 					th:method="post">
@@ -66,11 +65,11 @@
 					</label><br><br>
 					<table class="add_table">
 						<tr class="table_row">
-							<td><label for="title">タイトル</label></td>
+							<td><label for="title">タイトル</label><span class="required">*</span></td>
 							<td><input type="text" th:field="*{title}" class="input_box"></td>
 						</tr>
 						<tr class="table_row">
-							<td><label>区分</label></td>
+							<td><label>区分</label><span class="required">*</span></td>
 							<td>
 								<select th:field="*{category}" class="input_box">
 									<option value="貸出">貸出</option>
@@ -78,9 +77,9 @@
 							</td>
 						</tr>
 						<tr id="limitdate" class="table_row">
-							<td>貸出期限</td>
+							<td id="limitdateLabel" class="input_box">貸出期限<span class="required">*</span></td>
 							<td>
-								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box " required />
+								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box" />
 							</td>
 						</tr>
 						<tr>

@@ -44,14 +44,19 @@
 							<div id="titleModal"> &lt お知らせ &gt </div>
 							<div id="closeModal">&times;</div>
 							<div class="contentBoxMordal">
-								<div th:if="${session.notification} != null">
-									<div class="notification" th:each="note:${session.notification}">
-										- <span th:text="${note.BorrowerName}"></span>様から<span
-											th:text="${note.BookTitle}"></span>
-										のレンタル要請がありました
+								<form th:action="@{/home}" th:method="post">
+									<div th:if="${session.notification} != null">
+										<div class="notification" th:each="note:${session.notification}">
+											<input type="checkbox" name="note" th:value="${note.TransId}"> <span
+												th:text="${note.message}"></span>
+										</div>
 									</div>
-								</div>
+									<div th:if="${session.notification} == null">
+										<div class="notification">現在、お知らせはありません</div>
+									</div>
 
+									<button type="submit" name="note" class="blue_btn">確認</button>
+								</form>
 							</div>
 						</div>
 					</div>
@@ -127,36 +132,38 @@
 			</nav>
 			<!-- サイドバー終 -->
 
-
 			<div class="search_box">
 				<form th:action="@{/home}" th:object="${search_box}" th:method="post">
 					<table class="search_table">
 						<tr>
 							<td>
-								<select class="search_input_box">
+								<select class="search_input_box" name="category">
 									<option value="title">タイトル</option>
 									<option value="content">コンテンツ</option>
 									<option value="lenduser">所有者</option>
 								</select>
 							</td>
-							<td>
-								<input type="text" th:field="*{book_name}" class="search_input_box">
+							<td colspan="2">
+								<input type="text" th:field="*{book_name}" class="input_box" th:value="${book_name}">
 							</td>
+
 							<td>
-								<button type="submit" class="btn btn-danger" id="search_btn">検索</button>
+								<button type="submit" class="btn btn-danger" id="search_btn" name="search">検索</button>
 							</td>
 						</tr>
 					</table>
 				</form>
 			</div>
 
-			<div th:if="${bookshelf}">
-				<div class="condition" th:if="${condition}">
-					<lable>検索条件：</lable><span th:text="${condition}"></span>
+			<div th:if="${session.bookshelf}">
+				<div class="condition" th:if="${session.condition}">
+					<lable>検索条件：</lable><span th:text="${session.condition}"></span>
 				</div>
 			</div>
+
 			<div class="main_content_box_home" id="main_content_box">
-				<div class="book_content_box" th:each="book: ${bookshelf}" id="book_content_box">
+				<div class="book_content_box" th:each="book, iterStat: ${session.bookshelf}" id="book_content_box"
+					th:if="${iterStat.index>= (20*(currentPage-1)+1) and iterStat.index<=(20*(currentPage))}">
 					<div class="book_content_img_box">
 						<img th:src="*{book.image}" onerror="this.src='/img/default_book_img.jpg'"
 							class="book_content_img">
@@ -167,11 +174,10 @@
 						<input type="hidden" name="category" th:value="${book.category}" />
 						<input type="hidden" name="image" th:value="${book.image}" />
 						<input type="hidden" name="limitdate" th:value="${book.limitdate}" />
-						<input type="hidden" name="exhibitor" th:value="${book.exhibitorUserId}" />
+						<input type="hidden" name="exhibitorId" th:value="${book.exhibitorUserId}" />
 						<button class="btn btn-danger" id="content_btn" th:if="${book.category == '貸出'}">借</button>
 						<button class="btn btn-primary" id="take_btn" th:if="${book.category == '譲渡'}"> 貰</button>
 					</form>
-
 					<div class="book_content_title_box">
 						&lt <span th:text="*{book.title}"></span> &gt
 					</div>
@@ -179,31 +185,32 @@
 
 					</div>
 				</div>
-				<!-- Show current page number -->
-				<table class="btn_box">
-					<tr>
-						<td>
-							<div class="btn btn-danger" id="smaller_size" th:if="${currentPage} > 1">
-								<a th:href="@{/home(currPage=${currentPage - 1})}">
-									&lt
-								</a>
-							</div>
-						</td>
-						<td>
-							<div id="small_size" style="text-align:center">
-								<span th:text="${currentPage}"></span> / <span th:text="${maxPageNum}">
-							</div>
-						</td>
-						<td>
-							<div class="btn btn-danger" id="smaller_size" th:if="${currentPage<maxPageNum}">
-								<a th:href="@{/home(currPage=${currentPage + 1})}">
-									&gt
-								</a>
-							</div>
-						</td>
-					</tr>
-				</table>
 			</div>
+
+
+			<table class="btn_box">
+				<tr>
+					<td>
+						<div class="btn btn-danger" id="smaller_size" th:if="${currentPage} > 1">
+							<a th:href="@{/home(currPage=${currentPage - 1})}">
+							&lt
+						</a>
+						</div>
+					</td>
+					<td>
+						<div id="small_size" style="text-align:center">
+							<span th:text="${currentPage}"></span>/<span th:text="${session.maxPageNum}"></span>
+						</div>
+					</td>
+					<td>
+						<div class="btn btn-danger" id="smaller_size" th:if="${currentPage} < ${session.maxPageNum}">
+						<a th:href="@{/home(currPage=${currentPage + 1})}">
+							&gt
+						</a>
+						</div>
+					</td>
+				</tr>
+			</table>
 			<form th:action="@{/exhibit}"><button type="submit" class="add_button">+</form>
 		</div>
 

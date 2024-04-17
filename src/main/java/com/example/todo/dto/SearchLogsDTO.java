@@ -29,4 +29,10 @@ public class SearchLogsDTO {
 	private LocalDate RegisterBookDate;
 	/** 本の返却期限　*/
 	private LocalDate LimitDate;
+	/** お知らせに載せるコメント **/
+	private String comment;
+	/** お知らせに載せるコメント **/
+	private Integer notification_lender_flag;
+	/** お知らせに載せるコメント **/
+	private Integer notification_borrower_flag;
 }

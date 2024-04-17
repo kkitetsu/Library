@@ -14,28 +14,21 @@
 		WHERE
 			exhibition_flag=1;
 	</select>
-	
-		<!-- 
-	@author Lee 
-	Search all "Lendable" books on display (maximum: 20).
-	-->
-	<select id="displayLendableBooks"
-		resultType="com.example.todo.entity.BooksEntity">
-		SELECT 
-			* 
-		FROM 
-			books
-		WHERE
-			exhibition_flag=1
-		order by
-			limitdate asc
-		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};
-	</select>
-	
 	<!-- @author kk -->
 	<select id="getNameBasedOnId" resultType="java.lang.String">
 		SELECT 
 			name
+		FROM
+			users
+		WHERE
+			id=#{id};
+	</select>
+
+	
+	<!-- @author kk -->
+	<select id="getLoginIdBasedOnId" resultType="int">
+		SELECT 
+			login_id
 		FROM
 			users
 		WHERE
@@ -59,9 +52,7 @@
 	<select id="searchBooks"
 		resultType="com.example.todo.entity.BooksEntity">
 		SELECT 
-			id,
-			title,
-			content 
+			*
 		FROM 
 			books
 		WHERE 
@@ -70,21 +61,51 @@
 		  AND title LIKE CONCAT('%', #{book_name},'%')
 		</if>
 	</select>
-	<select id="displayNotification"
-		resultType="com.example.todo.dto.SearchLogsDTO">
+	
+	<select id="LendNotification"
+		resultType="com.example.todo.dto.NotificationDTO">
 		SELECT 
-			t.traded_date AS TradedDate, 
-			b.title AS BookTitle, 
-			u.name AS BorrowerName
+			t.id as TransId, u1.name as LenderName,u2.name as BorrowerName ,b.title as BookTitle, t.traded_date as NotificationDate
 		FROM 
 			transactions AS t
+		LEFT JOIN 
+			books as b on b.id = t.book_id
 		INNER JOIN 
-			books AS b on b.id = t.book_id
+			users as u1 on u1.id = t.lender_user_id
 		INNER JOIN 
-			users AS u on u.id = t.borrower_user_id 
-		WHERE 
-			t.lender_user_id = #{user_id};
+			users as u2 on u2.id = t.borrower_user_id
+		<if test="user_id != null">
+		  WHERE 
+			t.lender_user_id = #{user_id}
+		  AND 
+			t.notification_lender_flag = 1
+		</if>
+		
 	</select>
+
+	
+	<select id="LimitNotification"
+		resultType="com.example.todo.dto.NotificationDTO">
+		SELECT 
+			t.id as TransId, u1.name as LenderName,u2.name as BorrowerName ,b.title as BookTitle, DATE_SUB(b.limitdate,INTERVAL 7 DAY) as NotificationDate
+		FROM 
+			transactions AS t
+		LEFT JOIN 
+			books as b on b.id = t.book_id
+		INNER JOIN 
+			users as u1 on u1.id = t.lender_user_id
+		INNER JOIN 
+			users as u2 on u2.id = t.borrower_user_id 
+		<if test="user_id != null">
+		WHERE 
+			t.borrower_user_id = #{user_id}
+		AND 
+			b.limitdate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY) 
+		AND 
+			t.notification_borrower_flag = 1
+		</if>
+		</select>
+	
 	<!--  @author kk -->
 	<select id="login" resultType="com.example.todo.entity.UsersEntity">
 		SELECT 
@@ -211,7 +232,6 @@
 			name = #{name},
 			department  = #{department},
 			mailaddress = #{mailaddress}, 
-			login_id = #{loginId},
 			password = #{password},
 		    edited_date = CURRENT_TIMESTAMP
 		WHERE 
@@ -264,4 +284,26 @@
 		WHERE
 			id= #{id};
 	</update>
+	
+	<update id="confirmBorrowerNotification">
+		UPDATE
+			transactions
+		SET
+			notification_borrower_flag = 0
+		WHERE
+			id = #{note}
+		AND
+			borrower_user_id = #{user_id}
+	</update>
+	<update id="confirmLenderNotification">
+		UPDATE
+			transactions
+		SET
+			notification_lender_flag = 0
+		WHERE
+			id = #{note}
+		AND
+			lender_user_id = #{user_id}
+	</update>
+	
 </mapper>

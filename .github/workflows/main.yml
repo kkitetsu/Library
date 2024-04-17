@@ -28,4 +28,4 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, this is a notification from GitHub Actions!"}' $SLACK_WEBHOOK_URL
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"${{ github.actor }} がプッシュしました。"}' $SLACK_WEBHOOK_URL

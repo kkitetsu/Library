@@ -1,0 +1,32 @@
+name: Push Notification
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  send_notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Send LINE notification
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          RECEIVER_USER_ID: "REPLACE_WITH_RECEIVER_USER_ID"
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer $LINE_CHANNEL_ACCESS_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+                  "to": "'"$RECEIVER_USER_ID"'",
+                  "messages": [
+                    {
+                      "type": "text",
+                      "text": "A new push event occurred on GitHub by ${{ github.actor }}."
+                    }
+                  ]
+                }' \
+            https://api.line.me/v2/bot/message/push

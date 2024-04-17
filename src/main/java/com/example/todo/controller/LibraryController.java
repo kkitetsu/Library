@@ -205,12 +205,9 @@ public class LibraryController {
 	/**
 	 * @author shunsukekuzawa
 	 * 
-	 * Access home.
-	 * 
 	 * @param model
 	 * @return URL of home.html
 	 */
-
 	@GetMapping(value = "/home")
 	public String home(Model model, @ModelAttribute("alertMessage") String alertMessage, HttpSession session) {
 
@@ -219,7 +216,7 @@ public class LibraryController {
 		if (session.getAttribute("userId") == null) {
 			return "redirect:/login";
 		}
-
+		//ユーザーID：セッション取得
 		int user_id = (int) session.getAttribute("userId");
 
 		//お知らせ取得：貸出要請
@@ -227,16 +224,19 @@ public class LibraryController {
 		lend_notification.forEach(
 				e -> e.setMessage(e.getNotificationDate() + " : 【" + e.getBorrowerName() + "】様から【" + e.getBookTitle()
 						+ "】の貸出要請がありました"));
+		
 		//お知らせ取得：期限
 		List<NotificationDTO> limit_notification = libraryService.LimitNotification(user_id);
 		limit_notification.forEach(
 				e -> e.setMessage(e.getNotificationDate() + " : 【" + e.getLenderName() + "】様の【" + e.getBookTitle()
 						+ "】の貸出期限まで１週間になりました"));
 
-		//お知らせ合体（）
+		//お知らせ合体
 		List<NotificationDTO> ntf = new ArrayList<NotificationDTO>();
 		ntf.addAll(limit_notification);
 		ntf.addAll(lend_notification);
+		
+		//お知らせ時系列順に並べ替え
 		Collections.sort(
 				ntf, new Comparator<NotificationDTO>() {
 					@Override
@@ -252,7 +252,7 @@ public class LibraryController {
 			session.setAttribute("notification", ntf);
 		}
 
-		//本のリストを取得
+		//本の全リストを取得：ログイン時、本追加・修正からリダイレクトした時に実行
 		if (session.getAttribute("bookshelf") == null) {
 			List<BooksEntity> bookshelf = libraryService.displayBooks();
 			session.setAttribute("bookshelf", bookshelf);
@@ -268,8 +268,6 @@ public class LibraryController {
 			session.setAttribute("category_type", "タイトル");
 		}
 
-	
-		
 		//検索フィールド
 		SearchBooksRequest newBookRequest = new SearchBooksRequest();
 		newBookRequest.setBook_name((String) session.getAttribute("search_name"));
@@ -286,7 +284,8 @@ public class LibraryController {
 	@RequestMapping(value = "/home", params = "search", method = RequestMethod.POST)
 	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session,
 			@RequestParam("category") String category) {
-
+		
+		//カテゴリの指定がなければ、前回選択したカテゴリを引き継ぎ
 		List<BooksEntity> bookshelf = new ArrayList<BooksEntity>();
 		if (category != "") {
 			session.setAttribute("category", category);
@@ -331,6 +330,18 @@ public class LibraryController {
 		}
 
 		return "redirect:/home";
+	}
+	
+	/**
+	 * @author shunsukekuzawa
+	 * 表示する本の情報を初期化
+	 * 
+	 * @param session
+	 */
+	private void DeleteSession(HttpSession session) {
+		session.setAttribute("bookshelf", null);
+		session.setAttribute("search_name", null);
+		session.setAttribute("category", null);
 	}
 
 	@GetMapping(value = "/exhibit")
@@ -377,6 +388,8 @@ public class LibraryController {
 			return "/editbook";
 		}
 		libraryService.bookEditer(bookRequest);
+		
+		DeleteSession(session);
 		return "redirect:/home";
 	}
 
@@ -431,6 +444,7 @@ public class LibraryController {
 
 		System.out.println(session.getAttribute("userId"));
 		System.out.println(session.getAttribute("userName"));
+		DeleteSession(session);
 
 		return "redirect:/home";
 	}

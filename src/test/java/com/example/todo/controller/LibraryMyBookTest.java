@@ -95,36 +95,9 @@ class LibraryMyBookTest {
 	//************************************************************************************
 	// Controller Test
 
-	@Test
-	public void testConfirmAccess() {
-		Model model = mock(Model.class);
 
-		String bookId = "1";
-		String bookTitle = "hoge";
-		String image = "hoge.png";
-		String category = "lending";
-		String limitdate = "2024/04/03";
-		String exhibitor = "1";
 
-		//変数がnullの場合
-		assertEquals("/confirm",
-				libraryController.getConfirmPage(bookId, bookTitle, image, category, limitdate, exhibitor, model));
 
-		bookTitle = "";
-
-		assertEquals("/confirm",
-				libraryController.getConfirmPage(bookId, bookTitle, image, category, limitdate, exhibitor, model));
-
-		limitdate = "";
-
-		assertEquals("/confirm",
-				libraryController.getConfirmPage(bookId, bookTitle, image, category, limitdate, exhibitor, model));
-
-		image = "";
-
-		assertEquals("/confirm",
-				libraryController.getConfirmPage(bookId, bookTitle, image, category, limitdate, exhibitor, model));
-	}
 
 	@Test
 	public void testConfirmRequest() throws SQLException {

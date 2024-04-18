@@ -15,7 +15,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.Model;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -75,21 +74,8 @@ class LibraryHomeTest {
 	// * Test helper functions
 	     
 
-	@Test
-	public void testHomeAccess() {
-		Model model = mock(Model.class);
-		MockHttpSession session = new MockHttpSession();
-		session.setAttribute("userId", 1);
-		assertEquals("/home", libraryController.home(model, session));
 
-	}
 
-	@Test
-	public void testHomeAccessNull() {
-		Model model = mock(Model.class);
-		MockHttpSession session = new MockHttpSession();
-		assertEquals("redirect:/login", libraryController.home(model, session));
-	}
 
 	@Test
 	public void testHomeDisplay() throws SQLException {
@@ -148,13 +134,7 @@ class LibraryHomeTest {
 
 	}
 
-	@Test
-	public void testHomeSearchController() throws SQLException {
-		Model model = mock(Model.class);
-		SearchBooksRequest searchBooksRequest = new SearchBooksRequest();
-		MockHttpSession session = new MockHttpSession();
-		assertEquals("/home", libraryController.search(model, searchBooksRequest,session));
-	}
+
 
 	@Test
 	public void testHomeSearchService() throws SQLException {

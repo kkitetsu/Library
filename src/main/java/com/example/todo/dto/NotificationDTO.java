@@ -22,5 +22,11 @@ public class NotificationDTO {
 	private String BorrowerName;
 	
 	private LocalDate NotificationDate;
+	
+	// added by kk
+	private String newDateRequested;
+	
+	// added by kk
+	private Integer bookId;
 
 }

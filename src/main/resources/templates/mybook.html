@@ -67,8 +67,11 @@
 								<form th:action="@{/editbook}"><button type="submit" class="btn btn-secondary"
 										id="edit">
 										編集
-										<input type="hidden" th:name="image" th:value="*{book.image}">
 										<input type="hidden" th:name="id" th:value="*{book.id}">
+										<input type="hidden" th:name="image" th:value="*{book.image}">
+										<input type="hidden" th:name="title" th:value="*{book.title}">
+										<input type="hidden" th:name="category" th:value="*{book.category}">
+										<input type="hidden" th:name="limitdate" th:value="*{book.limitdate}">
 								</form>
 							</td>
 						</tr>

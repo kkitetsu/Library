@@ -62,10 +62,9 @@ header {
 	max-width: 250px;
 }
 
-
-
 #small_size,
-#small_size_loading {
+#small_size_loading,
+#small_size2 {
 	font-weight: bolder;
 	width: 350px;
 	height: auto;
@@ -86,6 +85,8 @@ header {
 	border-radius: 30px;
 }
 
+#oneone_size,
+#onesecond_size,
 #onethird_size {
 	font-weight: bolder;
 	width: 90%;
@@ -346,6 +347,8 @@ input[type="file"] {
 	position: relative;
 	margin: 0 auto;
 	overflow: hidden;
+	object-fit: cover;
+	object-fit: contain;
 }
 
 .image-preview img {
@@ -375,13 +378,41 @@ input[type="file"] {
 
 /* ファイルがない状態での表示スタイル（任意） */
 .image-upload-placeholder {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 30px;
-	/* テキストのサイズを調整 */
-	color: rgb(0, 0, 0);
-	/* テキストの色を調整 */
+  position: absolute; /* プレースホルダを絶対位置に設定 */
+  z-index: 10; /* 画像より上に表示 */
+  width: 100%; /* プレースホルダの幅 */
+  height: 100%; /* プレースホルダの高さ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* クリックイベントを画像に通す */
+  font-size: 40px;
+}
+
+#existingImage {
+  max-width: 100%;  /*枠の幅に合わせる*/ 
+  max-height: 100%;  /*枠の高さに合わせる*/
+  width: 100%; /* 幅を自動調整 */
+  height: 100%; /* 高さを自動調整 */
+  top: 0; /* 上端から0の位置 */
+  left: 0; /* 左端から0の位置 */
+  object-fit: cover; /* 画像を枠に合わせてトリミング */
+  object-fit: contain;
+  position: relative;
+  z-index: 5; /* テキストより下に表示 */
+}
+
+#previewImage {
+  max-width: 100%;  /*枠の幅に合わせる*/ 
+  max-height: 100%;  /*枠の高さに合わせる*/
+  width: 100%; /* 幅を自動調整 */
+  height: 100%; /* 高さを自動調整 */
+  top: 0; /* 上端から0の位置 */
+  left: 0; /* 左端から0の位置 */
+  object-fit: cover; /* 画像を枠に合わせてトリミング */
+  object-fit: contain;
+  position: relative;
+  z-index: 5; /* テキストより下に表示 */
 }
 
 a {
@@ -581,6 +612,7 @@ a:hover {
 		font-size: 40px;
 	}
 
+	
 	#onethird_size {
 		font-size: 25px;
 		margin: 5px;

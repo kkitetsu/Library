@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -55,6 +56,7 @@ public class LibraryController {
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
 	// @RequestMapping(value = "/borrowlog", method = RequestMethod.POST) edited kk
+
 	@RequestMapping(value = "/borrowlog", method = { RequestMethod.GET, RequestMethod.POST })
 	public String getBorrowLogPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
 		int userId = Integer.parseInt(session.getAttribute("userId").toString());
@@ -113,7 +115,6 @@ public class LibraryController {
 	 * 登録したマイブックの出力画面の表示
 	 * 今後、user idを@paramにするmethodに変える予定
 	 **/
-
 	@RequestMapping(value = "/mybook", method = { RequestMethod.GET, RequestMethod.POST })
 	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
 		int userId = Integer.parseInt(session.getAttribute("userId").toString());
@@ -246,6 +247,28 @@ public class LibraryController {
 		limit_notification.forEach(
 				e -> e.setMessage(e.getNotificationDate() + " : 【" + e.getLenderName() + "】様の【" + e.getBookTitle()
 						+ "】の貸出期限まで１週間になりました"));
+		
+		// 期間延長チェック kk
+		List<NotificationDTO> anyNewRequestedReturnDate = libraryService.getAnyNewRequestedReturnDate(user_id);
+		anyNewRequestedReturnDate.forEach(
+				e -> e.setMessage("【" + e.getBorrowerName() + "】様から借り入れ期間の延長要請が届いています。対象の本は " + e.getBookTitle() 
+				+ ", 希望返却日は " + e.getNewDateRequested() + " です。")
+		);
+		
+		// 期間延長承認返答チェック kk
+		List<NotificationDTO> approveOrDenyExtensionTime = libraryService.getApproveOrDeny(user_id);
+		List<NotificationDTO> approveOrDenyNotice = new ArrayList<>();
+		for (NotificationDTO result : approveOrDenyExtensionTime) {
+		    if (result != null && result.getNewDateRequested() != null && 
+		    		(result.getNewDateRequested().equals("approve") || result.getNewDateRequested().equals("deny"))) {
+		        NotificationDTO dto = new NotificationDTO();
+		        String msg = result.getNewDateRequested().equals("approve") ? 
+		        		"【" + result.getLenderName() + "】様から" + result.getBookTitle() + "の本の期間延長が承認されました" : 
+		        		"【" + result.getLenderName() + "】様から" + result.getBookTitle() + "の本の期間延長が却下されました。期限までに返却してください";
+		        dto.setMessage(msg);
+		        approveOrDenyNotice.add(dto);
+		    }
+		}
 
 		//お知らせ合体
 		List<NotificationDTO> ntf = new ArrayList<NotificationDTO>();
@@ -260,6 +283,8 @@ public class LibraryController {
 						return obj2.getNotificationDate().compareTo(obj1.getNotificationDate());
 					}
 				});
+		ntf.addAll(anyNewRequestedReturnDate);
+		ntf.addAll(approveOrDenyNotice);
 
 		//お知らせを表示
 		if (ntf.size() == 0) {
@@ -386,6 +411,25 @@ public class LibraryController {
 
 		return "redirect:/home";
 	}
+	
+	/**
+	 * @author kk 
+	 */
+	@RequestMapping(value = "/home", params = "requestResponse", method = RequestMethod.POST)
+	public String requestResponse(Model model, HttpSession session,
+									@RequestParam("requestResponse") String requestResponse,
+									@RequestParam("bookId") String bookId,
+	                                @RequestParam("bookTitle") String bookTitle,
+	                                @RequestParam("newDateRequested") String newDateRequested,
+	                                @RequestParam("borrowerName") String borrowerName,
+	                                @RequestParam("transId") String transId) {
+		if (requestResponse.equals("approve")) {
+			// TODO: add message that request is approved
+			libraryService.updateNewReturnDate(newDateRequested, bookId);
+		}
+		libraryService.addApproveOrDenyOnTrans(requestResponse, transId);
+		return "redirect:/home";
+	}
 
 	/**
 	 * @author shunsukekuzawa
@@ -413,40 +457,57 @@ public class LibraryController {
 	 * 本の修正への遷移経路
 	 **/
 	@GetMapping(value = "/editbook")
-	public String displayeditbook(Model model, @RequestParam("id") int id) {
+	public String displayeditbook(Model model, @RequestParam("id") int id, @RequestParam("title") String title,
+			@RequestParam("category") String category, @RequestParam("limitdate") LocalDate limitdate,
+			@RequestParam("image") String image) {
 		BookAddRequest bka = new BookAddRequest();
 		bka.setId(id);
+		bka.setTitle(title);
+		bka.setCategory(category);
+		bka.setLimitdate(limitdate);
+		bka.setImage(image);
 		model.addAttribute("bookAddRequest", bka);
 		return "/editbook";
 	}
+	
+	
+	/**@author Aru*/
+	
+	@RequestMapping(value = "/editbook", params= "update", method = RequestMethod.POST)
+    public String editBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {		
+			if (bindingResult.hasErrors()) {
+            		List<String> errorList = new ArrayList<String>();
+            		for (ObjectError error : bindingResult.getAllErrors()) {
+            			errorList.add(error.getDefaultMessage());
+            		}
+            		model.addAttribute("validationError", errorList);
+        			model.addAttribute("bookAddRequest", bookRequest);
+        			return "/editbook";
 
-	@RequestMapping(value = "/editbook", params = "update", method = RequestMethod.POST)
-	public String editBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult,
-			Model model, HttpSession session) {
-		if (bindingResult.hasErrors()) {
-			List<String> errorList = new ArrayList<String>();
-			for (ObjectError error : bindingResult.getAllErrors()) {
-				errorList.add(error.getDefaultMessage());
+			 }
+			List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
+			multipartFile.forEach(e -> {
+				String e_name = e.getOriginalFilename();
+				if (e_name == "") {
+					bookRequest.setImgPath(bookRequest.getImage());
+				} else {
+					bookRequest.setImgPath(uploadAction(e));
+				}
+	
+			});
+			libraryService.bookEditer(bookRequest);
+			
+			try {
+				Thread.sleep(7000);
+			} catch (InterruptedException e) {
+				System.out.println("待ち時間中に割り込みが発生しました。");
 			}
-			model.addAttribute("validationError", errorList);
-			model.addAttribute("bookAddRequest", new BookAddRequest());
-			return "/editbook";
-		}
-		List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
-		multipartFile.forEach(e -> {
-			bookRequest.setImgPath(uploadAction(e));
-		});
-		if (bookRequest.getLimitdate() == null) {
-			String errorMsg = "やってくれたな";
-			model.addAttribute("errorMsg", errorMsg);
-			return "/editbook";
-		}
-		libraryService.bookEditer(bookRequest);
-
-		DeleteSession(session);
-		return "redirect:/home";
-	}
-
+			
+			DeleteSession(session);
+			return "redirect:/home";        
+    }
+	
+	
 	/**
 	 * @author Aru
 	 * 
@@ -454,22 +515,22 @@ public class LibraryController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/editbook", params = "delete", method = RequestMethod.POST)
-	public String deleteBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult,
-			Model model, HttpSession session) {
+	@RequestMapping(value = "/editbook", params= "delete", method = RequestMethod.POST)
+    public String deleteBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, 
+   		Model model, HttpSession session) {		
 
-		libraryService.bookDeliter(bookRequest);
-
-		return "redirect:/home";
+			libraryService.bookDeliter(bookRequest);
+		
+			return "redirect:/home";        
 	}
+	
 
 	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
-	public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult,
-			Model model, HttpSession session) {
-
+	public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {
+		System.out.println("Here");
+		session.setAttribute("userId", 1);
 		bookRequest.setUserId((int) session.getAttribute("userId"));
 		if (bindingResult.hasErrors()) {
-			// 入力チェックエラーの場合
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : bindingResult.getAllErrors()) {
 				errorList.add(error.getDefaultMessage());
@@ -482,12 +543,7 @@ public class LibraryController {
 		multipartFile.forEach(e -> {
 			bookRequest.setImgPath(uploadAction(e));
 		});
-		if (bookRequest.getLimitdate() == null) {
-			// do something
-			String errorMsg = "やってくれたな";
-			model.addAttribute("errorMsg", errorMsg);
-			return "/add";
-		}
+
 		libraryService.bookRegister(bookRequest);
 
 		try {
@@ -498,8 +554,8 @@ public class LibraryController {
 
 		System.out.println(session.getAttribute("userId"));
 		System.out.println(session.getAttribute("userName"));
-		DeleteSession(session);
 
+		DeleteSession(session);
 		return "redirect:/home";
 	}
 
@@ -508,11 +564,12 @@ public class LibraryController {
 	 * @param multipartFile
 	 */
 	private String uploadAction(MultipartFile multipartFile) {
-		//ファイル名取得
-		String fileName = multipartFile.getOriginalFilename();
+        //ファイル名取得
+        String fileName = multipartFile.getOriginalFilename();
+        
+    	//p1 : uploadImageフォルダへの相対パス
+		java.nio.file.Path p1 = Paths.get("src/main/resources/static/uploadImage/"); 
 
-		//p1 : uploadImageフォルダへの相対パス
-		java.nio.file.Path p1 = Paths.get("src/main/resources/static/uploadImage/");
 		//p2 : 相対パス→絶対パスに変換
 		java.nio.file.Path p2 = p1.toAbsolutePath();
 		//filePath : fileNameをパスに追加
@@ -535,6 +592,45 @@ public class LibraryController {
 		return "/uploadImage/" + fileName;
 	}
 
+//<<<<<<< HEAD
+//    /**
+//     * @author kuzawa
+//     * @param model
+//     * @param searchBooksRequest
+//     * @param session
+//     * @return
+//     */
+//	@RequestMapping(value = "/home", method = RequestMethod.POST)
+//	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session) {
+//
+//		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
+//		
+//		System.out.println(bookshelf);
+//		
+//		if (bookshelf.isEmpty()) {
+//			// Added by kk. If serach result is empty, display "no search result"
+//			model.addAttribute("condition", "検索結果がありません");
+//		} else if (searchBooksRequest.getBook_name() != "") {
+//			model.addAttribute("condition", searchBooksRequest.getBook_name());
+//		}
+//		
+//		// Added by kk. Used to store the search history
+//		SearchBooksRequest newBookRequest = new SearchBooksRequest();
+//		newBookRequest.setBook_name(searchBooksRequest.getBook_name());
+//		
+//		model.addAttribute("search_box", newBookRequest);
+//		model.addAttribute("bookshelf", bookshelf);
+//
+//		// Editor: kk
+//		// Record and show user's name
+//		model.addAttribute("userName", session.getAttribute("userName"));
+//
+//		return "/home";
+//	}
+//
+//=======
+//>>>>>>> remotes/origin/dev
+	
 	/** @author kk */
 	@GetMapping("/register")
 	public String getRegisterPage(Model model) {
@@ -584,12 +680,13 @@ public class LibraryController {
 	/** @author kk */
 	@PostMapping("/confirmPage")
 	public String getConfirmPage(@RequestParam("id") String bookId,
-			@RequestParam("title") String bookTitle,
-			@RequestParam("image") String image,
-			@RequestParam("category") String category,
-			@RequestParam("limitdate") String limitdate,
-			@RequestParam("exhibitorId") String exhibitorId,
-			Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+            					 @RequestParam("title") String bookTitle,
+            					 @RequestParam("image") String image, 
+            					 @RequestParam("category") String category,
+            					 @RequestParam("limitdate") String limitdate, 
+            					 @RequestParam("exhibitorId") String exhibitorId, 
+            					 Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+		
 
 		if (exhibitorId.equals(session.getAttribute("userId").toString())) {
 			// User cannot borrow his or her own book
@@ -637,6 +734,20 @@ public class LibraryController {
 	public String doLogOut(Model model, HttpSession session) {
 		session.invalidate(); // Logout and back to home
 		return "redirect:/login";
+	}
+	
+	/**
+	 * @author kk
+	 */
+	@PostMapping("/requestNewReturnDate")
+	public String requestNewReturnDate(Model model, HttpSession session, 
+									@RequestParam("newReturnDate") String newReturnDate,
+									@RequestParam("transId") String transId) {
+		
+		System.out.println(newReturnDate);
+		System.out.println(transId);
+		libraryService.addNewReturnDateRequested(transId, newReturnDate);
+		return "redirect:/home";
 	}
 
 	/**

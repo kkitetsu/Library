@@ -28,10 +28,11 @@ window.onload = function() {
 var modal = document.getElementById("myModal");
 var btn = document.getElementById("openModal");
 var span = document.getElementById("closeModal");
-var pageNum = 0;
-var prevWord = "";
+
 // ボタンがクリックされた時にモーダルを表示
 btn.onclick = function() {
+	var pageNum = 0;
+	var prevWord = "";
 	pageNum = pageNum + 1
 	var keyWord = $("#js-search-word").val();
 	if (prevWord !== keyWord) {
@@ -57,10 +58,10 @@ btn.onclick = function() {
 					list += `<li class=lists__item>` +
 						`<div class=lists__item__inner>` +
 						`<a href=${data.Items[i].Item.itemUrl} class=lists__item__link target=_blank>` +
-						`<img src=${data.Items[i].Item.largeImageUrl} class=lists__item__img alt>` +
-						`<p class=lists__item__detail>作品名：　${data.Items[i].Item.title}</p>` +
-						`<p class=lists__item__detail>作者　：　${data.Items[i].Item.author}</p>` +
-						`<p class=lists__item__detail>出版社：　${data.Items[i].Item.publisherName}</p>` + `</a>` +
+						`<img src=${data.Items[i].Item.largeImageUrl} class=lists__item__img${i} alt>` +
+						`<p class=lists__item__detail${i}>作品名：　${data.Items[i].Item.title}</p>` +
+						`<p class=lists__item__detail${i}>作者　：　${data.Items[i].Item.author}</p>` +
+						`<p class=lists__item__detail${i}>出版社：　${data.Items[i].Item.publisherName}</p>` + `</a>` +
 						`</div>` + `</li>`;
 				};
 				$(".lists").prepend(list);

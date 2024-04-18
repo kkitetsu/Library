@@ -129,7 +129,7 @@ font-weight:bold;
 	top: 50%;
 	left: 50%;
 	width: 80%;
-	height: auto;
+	height: 800px;
 	transform: translate(-50%, -50%);
 	padding: 20px;
 	background-color: #fefefe;
@@ -159,7 +159,8 @@ font-weight:bold;
 	font-size:25px;
 	padding:25px;
 	font-weight:bolder;
-	height:auto;
+	height:650px;
+	overflow: auto;
 	border: black 1px solid;
 	border-radius:10px;
 }

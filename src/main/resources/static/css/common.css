@@ -16,7 +16,7 @@ header {
 	margin-bottom: 20px;
 	min-height: 15%vh;
 	background-color: rgb(188, 0, 1);
-	font-size:40px;
+	font-size: 40px;
 }
 
 .header_logo,
@@ -28,15 +28,16 @@ header {
 .header_logo {
 	width: 20%;
 	max-width: 500px;
-	position:relative;
-    justify-content: center;
-    align-items: center;
+	position: relative;
+	justify-content: center;
+	align-items: center;
 }
-.header_logo a{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height:140px;
+
+.header_logo a {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 140px;
 }
 
 .main_logo {
@@ -47,7 +48,7 @@ header {
 .header_title {
 	flex: 1;
 	color: white;
-	font-size: 2.5rem;
+	font-size: 50px;
 	text-align: center;
 	font-weight: bold;
 	display: flex;
@@ -56,15 +57,15 @@ header {
 }
 
 .header_btn_box {
-	max-height:100%;
-	width:20%;
+	max-height: 100%;
+	width: 20%;
 	max-width: 250px;
 }
 
-#search_btn{
-	width:100%;
-	font-size:50px;
-	max-width:500px;
+#search_btn {
+	width: 100%;
+	font-size: 50px;
+	max-width: 500px;
 }
 
 #small_size,
@@ -88,6 +89,15 @@ header {
 	border-radius: 30px;
 }
 
+#onethird_size {
+	font-weight: bolder;
+	width: 200px;
+	height: auto;
+	font-size: 35px;
+	margin: 5px;
+	padding: 5px;
+	border-radius: 20px;
+}
 
 
 .content_box {
@@ -133,11 +143,13 @@ td {
 	margin-left: 50px;
 	color: aliceblue;
 	font-size: 50px;
+	margin-bottom: 10px;
 }
 
 
 
-.main_content_box, .main_content_box_home {
+.main_content_box,
+.main_content_box_home {
 	background: rgba(216, 112, 147, 0.9);
 	padding: 30px 10px;
 	border-radius: 10px;
@@ -147,11 +159,11 @@ td {
 	flex-direction: row;
 	align-items: center;
 	flex-wrap: wrap;
-	padding-bottom: 60px;	
+	padding-bottom: 60px;
 
 }
 
-.main_content_box{
+.main_content_box {
 	justify-content: center;
 }
 
@@ -167,19 +179,19 @@ footer {
 	color: white;
 	margin-top: 15px;
 	min-height: 15%;
-	position:relative;
-	bottom:-40px;
+	position: relative;
+	bottom: -40px;
 }
 
 body {
 	min-width: 100vw;
 	min-height: 100vh;
-	margin:0;
-	padding:0;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+	margin: 0;
+	padding: 0;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .input_box {
@@ -191,7 +203,7 @@ body {
 	max-width: 600px;
 }
 
-.search_input_box{
+.search_input_box {
 	border: none;
 	height: 90%;
 	border-radius: 10px;
@@ -210,6 +222,10 @@ body {
 	border-radius: 25px;
 }
 
+.edit_box {
+	width: 100%;
+}
+
 .add_table,
 .edit_book_table {
 	width: 90%;
@@ -224,10 +240,13 @@ body {
 	width: 90%;
 	margin: 10px 5%;
 	color: white;
-	font-size: 50px;
+	font-size: 40px;
 	text-align: center;
 	border-radius: 25px;
 }
+
+
+
 
 .log_table td,
 .my_book_table td {
@@ -315,7 +334,18 @@ input[type="file"] {
 	display: none;
 	/* 初期状態では画像を隠します */
 }
-
+.no_result_img_box{
+	width:100%;
+	height:auto;
+	text-align:center;
+}
+.no_result_img{
+	width:90%;
+	max-width:400px;
+	height:auto;
+	margin: 10px 5%;
+	border-radius: 20px;	
+}
 /* ファイルがない状態での表示スタイル（任意） */
 .image-upload-placeholder {
 	display: flex;
@@ -339,7 +369,18 @@ a:hover {
 #error {
 	color: red;
 }
-
+.error_msg{
+	background-color:white;
+	color:red;
+	text-decoration:underline;
+	margin:10px 2.5%;
+	padding:10px;
+	border-radius:5px;
+	font-size:30px;
+	text-align:center;
+	opacity:0.8;
+	width:95%;
+}
 #side_bar_list {
 	width: 80%;
 	font-size: 25px;
@@ -465,9 +506,53 @@ a:hover {
 	height: 200px;
 	object-fit: cover;
 }
-
 /* edited by kk. Used to avoid unfocusable issue when input box is hidden and limitdate */
 .input_box.hidden-input {
-    position: absolute;
-    left: -9999px;
+	position: absolute;
+	left: -9999px;
+}
+
+
+/* width: 1200 以下の際 */
+@media screen and (max-width:1300px) {
+	.search_table {
+		font-size: 30px;
+	}
+
+	#search_btn {
+		font-size: 30px;
+	}
+}
+
+/* width: 1100 以下の際 */
+@media screen and (max-width:1100px) {
+	#search_btn {
+		font-size: 20px;
+	}
+
+	#small_size {
+		width: 200px;
+		font-size: 30px;
+		border-radius: 15px;
+	}
+
+	.table_row,
+	.input_box {
+		font-size: 30px;
+	}
+
+	.main_title {
+		font-size: 40px;
+	}
+
+	#onethird_size {
+		width: 140px;
+		height: auto;
+		font-size: 20px;
+		margin: 5px;
+		padding: 5px;
+		border-radius: 10px;
+	}
+	
+
 }

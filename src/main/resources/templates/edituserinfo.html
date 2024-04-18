@@ -35,8 +35,8 @@
 		<!--メインー（修正可能領域）-->
 		<div class="main">
 			<!--白い箱-->
-			<div th:if="${errMsg}">
-		        <div th:text="${errMsg}" class="main_title" id="error"></div>
+			<div th:if="${errMsg}" class="error_msg">
+		        <div th:text="${errMsg}"></div>
 		    </div>
    			<div class="main_title">
 				- 会員情報修正

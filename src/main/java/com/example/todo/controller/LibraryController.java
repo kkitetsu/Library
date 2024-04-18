@@ -233,11 +233,27 @@ public class LibraryController {
 				e -> e.setMessage(e.getNotificationDate() + " : 【" + e.getLenderName() + "】様の【" + e.getBookTitle()
 						+ "】の貸出期限まで１週間になりました"));
 		
+		// 期間延長チェック kk
 		List<NotificationDTO> anyNewRequestedReturnDate = libraryService.getAnyNewRequestedReturnDate(user_id);
 		anyNewRequestedReturnDate.forEach(
-				e -> e.setMessage(e.getBorrowerName() + " から借り入れ期間の延長要請が届いています。対象の本は " + e.getBookTitle() + ", 希望返却日は " + 
-					 e.getNewDateRequested() + " です。")
+				e -> e.setMessage("【" + e.getBorrowerName() + "】様から借り入れ期間の延長要請が届いています。対象の本は " + e.getBookTitle() 
+				+ ", 希望返却日は " + e.getNewDateRequested() + " です。")
 		);
+		
+		// 期間延長承認返答チェック kk
+		List<NotificationDTO> approveOrDenyExtensionTime = libraryService.getApproveOrDeny(user_id);
+		List<NotificationDTO> approveOrDenyNotice = new ArrayList<>();
+		for (NotificationDTO result : approveOrDenyExtensionTime) {
+		    if (result != null && result.getNewDateRequested() != null && 
+		    		(result.getNewDateRequested().equals("approve") || result.getNewDateRequested().equals("deny"))) {
+		        NotificationDTO dto = new NotificationDTO();
+		        String msg = result.getNewDateRequested().equals("approve") ? 
+		        		"【" + result.getLenderName() + "】様から" + result.getBookTitle() + "の本の期間延長が承認されました" : 
+		        		"【" + result.getLenderName() + "】様から" + result.getBookTitle() + "の本の期間延長が却下されました。期限までに返却してください";
+		        dto.setMessage(msg);
+		        approveOrDenyNotice.add(dto);
+		    }
+		}
 
 		//お知らせ合体（）
 		List<NotificationDTO> ntf = new ArrayList<NotificationDTO>();
@@ -251,6 +267,7 @@ public class LibraryController {
 					}
 				});
 		ntf.addAll(anyNewRequestedReturnDate);
+		ntf.addAll(approveOrDenyNotice);
 
 		//お知らせを表示
 		if (ntf.size() == 0) {
@@ -345,8 +362,17 @@ public class LibraryController {
 	 */
 	@RequestMapping(value = "/home", params = "requestResponse", method = RequestMethod.POST)
 	public String requestResponse(Model model, HttpSession session,
-									@RequestParam("requestResponse") String requestResponse) {
-		System.out.println(requestResponse);
+									@RequestParam("requestResponse") String requestResponse,
+									@RequestParam("bookId") String bookId,
+	                                @RequestParam("bookTitle") String bookTitle,
+	                                @RequestParam("newDateRequested") String newDateRequested,
+	                                @RequestParam("borrowerName") String borrowerName,
+	                                @RequestParam("transId") String transId) {
+		if (requestResponse.equals("approve")) {
+			// TODO: add message that request is approved
+			libraryService.updateNewReturnDate(newDateRequested, bookId);
+		}
+		libraryService.addApproveOrDenyOnTrans(requestResponse, transId);
 		return "redirect:/home";
 	}
 

@@ -71,7 +71,7 @@
 						<td th:if="${!log.LimitDate.toString().equals('2999-12-31')}">
 							変更希望日
 							<form th:action="@{/requestNewReturnDate}" th:method="POST">
-						        <input type="date" name="newReturnDate">
+						        <input type="date" name="newReturnDate" required>
 						        <input type="hidden" name="transId" th:value="*{log.TransId}">
 						        <button>提出</button>
 					        </form>

@@ -346,7 +346,9 @@
 		SELECT 
 			b.title AS BookTitle,
 			u.name AS BorrowerName,
-			t.new_date_requested
+			t.new_date_requested,
+			t.id AS TransId,
+			t.book_id AS bookId
 		FROM
 			transactions AS t
 		LEFT JOIN 
@@ -360,7 +362,61 @@
 		WHERE
 			t.lender_user_id = #{userId}
 		AND 
-			t.new_date_requested IS NOT NULL;
+			t.new_date_requested IS NOT NULL
+		AND 
+			t.new_date_requested != "approve"
+    	AND 
+    		t.new_date_requested != "deny";
+	</select>
+	
+	<!--  writte by kk -->
+	<update id="updateNewReturnDate">
+		UPDATE
+			books
+		SET
+			limitdate = #{newDateRequested}
+		WHERE
+			id = #{bookId}
+	</update>
+	
+	<!--  writte by kk -->
+	<update id="removeNewReturnDate">
+		UPDATE
+			transactions
+		SET
+			new_date_requested = NULL
+		WHERE
+			id = #{transId}
+	</update>
+	
+	<!--  writte by kk -->
+	<update id="addApproveOrDenyOnTrans">
+		UPDATE
+			transactions
+		SET
+			new_date_requested = #{result}
+		WHERE
+			id = #{transId}
+	</update>
+	
+	<!--  writte by kk -->
+	<select id="getApproveOrDeny" resultType="com.example.todo.dto.NotificationDTO">
+		SELECT 
+			t.new_date_requested,
+			b.title AS BookTitle,
+			u.name AS LenderName
+		FROM
+			transactions AS t
+		LEFT JOIN 
+			books AS b 
+		ON
+			b.id = t.book_id
+		INNER JOIN
+			users AS u
+		ON
+			u.id = t.lender_user_id
+		WHERE
+			t.borrower_user_id = #{userId}
 	</select>
 	
 </mapper>

@@ -23,6 +23,10 @@ public class NotificationDTO {
 	
 	private LocalDate NotificationDate;
 	
+	// added by kk
 	private String newDateRequested;
+	
+	// added by kk
+	private Integer bookId;
 
 }

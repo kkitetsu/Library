@@ -173,6 +173,18 @@ public interface LibraryMapper {
 	/** @author kk */
 	public void addNewReturnDateRequested(String transId, String newDateRequested);
 	
-	/**@author kk */
+	/** @author kk */
 	public List<NotificationDTO> getAnyNewRequestedReturnDate(int userId);
+	
+	/** @author kk */
+	public void updateNewReturnDate(String newDateRequested, String bookId);
+	
+	/** @author kk */
+	public void removeNewReturnDate(String transId);
+	
+	/** @author kk */
+	public void addApproveOrDenyOnTrans(String result, String transId);
+	
+	/** @author kk */
+	public List<NotificationDTO> getApproveOrDeny(int userId);
 }

@@ -131,7 +131,7 @@
 
 			</nav>
 			<!-- サイドバー終 -->
-			
+
 			<!-- 検索エリア -->
 			<div class="search_box">
 				<form th:action="@{/home}" th:object="${search_box}" th:method="post">
@@ -139,7 +139,9 @@
 						<tr>
 							<td>
 								<select class="search_input_box" name="category">
-									 <option value="" selected hidden><p th:text="${session.category_type}"></p></option>
+									<option value="" selected hidden>
+										<p th:text="${session.category_type}"></p>
+									</option>
 									<option value="title">タイトル</option>
 									<option value="content">コンテンツ</option>
 									<option value="lenduser">出品者</option>
@@ -156,7 +158,7 @@
 					</table>
 				</form>
 			</div>
-
+			<button onclick＝"apiFunciton()">API</button>
 			<div th:if="${session.bookshelf}">
 				<div class="main_content_box">
 					<div class="condition" th:if="${session.condition}">
@@ -225,7 +227,16 @@
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>
 	</div>
+	
 	<script type="text/javascript" th:src="@{/js/setting_for_home.js}"></script>
+	<script>
+		function apiFunciton() {
+			//const author = encodeURI(document.getElementById('book_name').value);
+			alert("caution!!");
+			//if (author) {
+			//	fetchBooks(author);
+		}
+	</script>
 </body>
 
 </html>

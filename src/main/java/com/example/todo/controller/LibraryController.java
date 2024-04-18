@@ -48,6 +48,11 @@ public class LibraryController {
 	public String getLogPage(Model model) {
 		return "/log";
 	}
+	
+	@GetMapping(value = "/api")
+	public String getAPI(Model model) {
+		return "/API";
+	}
 
 	/**
 	 * @author Lee 

@@ -17,6 +17,7 @@
 	 console.log(padding_size);
 	 container.style.paddingLeft=padding_size + 'px';	 
  	 container.style.paddingRight=padding_size + 'px';	 
+
  }
 
  window.onload=function(){

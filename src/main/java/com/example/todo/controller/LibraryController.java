@@ -402,11 +402,19 @@ public class LibraryController {
 	 */
 	@RequestMapping(value = "/home", params = "note", method = RequestMethod.POST)
 	public String note(Model model, SearchBooksRequest searchBooksRequest, HttpSession session,
-			@RequestParam("note") String[] note) {
+						@RequestParam("note") String[] note,
+						@RequestParam("transId") String transId) {
 
 		for (int i = 0; i < note.length - 1; i++) {
-			libraryService.confirmBorrowerNotification(Integer.parseInt(note[i]), (int) session.getAttribute("userId"));
-			libraryService.confirmLenderNotification(Integer.parseInt(note[i]), (int) session.getAttribute("userId"));
+			// There will be a NumberFormatException when user checks the approve or deny message
+			// In order to avoid the exception, use try catch to handle it (by kk)
+			try {
+				libraryService.confirmBorrowerNotification(Integer.parseInt(note[i]), (int) session.getAttribute("userId"));
+				libraryService.confirmLenderNotification(Integer.parseInt(note[i]), (int) session.getAttribute("userId"));
+			} catch (Exception e) {
+				System.out.println(transId);
+				libraryService.addApproveOrDenyOnTrans(null, transId);
+			}
 		}
 
 		return "redirect:/home";
@@ -424,7 +432,6 @@ public class LibraryController {
 	                                @RequestParam("borrowerName") String borrowerName,
 	                                @RequestParam("transId") String transId) {
 		if (requestResponse.equals("approve")) {
-			// TODO: add message that request is approved
 			libraryService.updateNewReturnDate(newDateRequested, bookId);
 		}
 		libraryService.addApproveOrDenyOnTrans(requestResponse, transId);
@@ -527,7 +534,6 @@ public class LibraryController {
 
 	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
 	public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {
-		System.out.println("Here");
 		session.setAttribute("userId", 1);
 		bookRequest.setUserId((int) session.getAttribute("userId"));
 		if (bindingResult.hasErrors()) {
@@ -551,9 +557,6 @@ public class LibraryController {
 		} catch (InterruptedException e) {
 			System.out.println("待ち時間中に割り込みが発生しました。");
 		}
-
-		System.out.println(session.getAttribute("userId"));
-		System.out.println(session.getAttribute("userName"));
 
 		DeleteSession(session);
 		return "redirect:/home";

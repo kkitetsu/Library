@@ -62,7 +62,7 @@
 							</td>
 							<td>
 								<input id="password" th:field="*{password}" type="password" class="input_box" name="password" required>
-								<div id="passwordError" style="color: red; display: none;">パスワードは4文字以上必要です</div>
+								<div id="passwordError" style="color: red; display: none;">パスワードは4文字以上16文字以下です</div>
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -72,7 +72,7 @@
 				            </td>
 				            <td>
 				                <input id="confirm_password" type="password" class="input_box" name="confirm_password" required>
-				                <span id="password_error" style="color: red; display: none;">パスワードが上のと違います</span>
+				                <span id="password_error" style="color: red; display: none;">同じパスワードを入力してください</span>
 				            </td>
 				       	</tr>
 						<tr class="table_row">

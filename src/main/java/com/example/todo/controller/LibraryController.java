@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -415,7 +416,8 @@ public class LibraryController {
 	 **/
 	@GetMapping(value = "/editbook")
 	public String displayeditbook(Model model, @RequestParam("id") int id, @RequestParam("title") String title,
-			@RequestParam("category") String category, @RequestParam("limitdate") LocalDate limitdate,
+			@RequestParam("category") String category, 
+			@RequestParam("limitdate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate limitdate,
 			@RequestParam("image") String image) {
 		BookAddRequest bka = new BookAddRequest();
 		bka.setId(id);
@@ -549,44 +551,7 @@ public class LibraryController {
 		return "/uploadImage/" + fileName;
 	}
 
-//<<<<<<< HEAD
-//    /**
-//     * @author kuzawa
-//     * @param model
-//     * @param searchBooksRequest
-//     * @param session
-//     * @return
-//     */
-//	@RequestMapping(value = "/home", method = RequestMethod.POST)
-//	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session) {
-//
-//		List<BooksEntity> bookshelf = libraryService.searchBooks(searchBooksRequest);
-//		
-//		System.out.println(bookshelf);
-//		
-//		if (bookshelf.isEmpty()) {
-//			// Added by kk. If serach result is empty, display "no search result"
-//			model.addAttribute("condition", "検索結果がありません");
-//		} else if (searchBooksRequest.getBook_name() != "") {
-//			model.addAttribute("condition", searchBooksRequest.getBook_name());
-//		}
-//		
-//		// Added by kk. Used to store the search history
-//		SearchBooksRequest newBookRequest = new SearchBooksRequest();
-//		newBookRequest.setBook_name(searchBooksRequest.getBook_name());
-//		
-//		model.addAttribute("search_box", newBookRequest);
-//		model.addAttribute("bookshelf", bookshelf);
-//
-//		// Editor: kk
-//		// Record and show user's name
-//		model.addAttribute("userName", session.getAttribute("userName"));
-//
-//		return "/home";
-//	}
-//
-//=======
-//>>>>>>> remotes/origin/dev
+
 	
 	/** @author kk */
 	@GetMapping("/register")

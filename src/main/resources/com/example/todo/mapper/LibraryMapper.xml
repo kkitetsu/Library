@@ -157,8 +157,9 @@
 		resultType="com.example.todo.entity.BooksEntity">
 		SELECT 
 			id, 
-			title, 
-			exhibitor_user_id, 
+			title,
+			image,
+			exhibitor_user_id as exhibitorUserId, 
 			category, 
 			limitdate 
 		FROM 

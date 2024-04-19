@@ -461,26 +461,27 @@ public class LibraryController {
 		} else {
 			session.setAttribute("notification", ntf);
 		}
+		
 		if (previousPage.equals(null)) {
 			return "redirect:/home";
 		} else {
 			switch (previousPage) {
 			case "home":
-				return "redirect:/home";
+				return "redirect:/home"; // already work
 			case "add":
-				return "redirect:/exhibit";
+				return "redirect:/exhibit"; // done by kk
 			case "borrowlog":
-				return "redirect:/borrowlog";
+				return "redirect:/borrowlog"; // done by kk
 			case "editbook":
-				return "redirect:/mybook";
+				return "redirect:/mybook"; // done by kk
 			case "edituserinfo":
-				return "redirect:/edituser";
+				return "redirect:/edituser"; // done by kk
 			case "lendlog":
-				return "redirect:/lendlog";
+				return "redirect:/lendlog"; // done by kk
 			case "mybook":
-				return "redirect:/mybook";
+				return "redirect:/mybook"; // done by kk
 			default:
-				return "redirect:/home";
+				return "redirect:/home"; 
 			}
 		}
 

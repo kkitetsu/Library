@@ -73,15 +73,16 @@
 						$(".comment").remove();
 						var list = "";
 						for (var i = 0; i < data.Items.length; i++) {
-							list += `<li class=lists__item>` +
-								`<div class=lists__item__inner>` +
+							list += '<li class=lists__item>' +
+								'<div class=lists__item__inner>' +
 								
-								`<img src=${data.Items[i].Item.largeImageUrl} class=lists__item__img${i} alt>` +
+								'<img src=${data.Items[i].Item.largeImageUrl} class=lists__item__img${i} alt>' +
 								
-								`<p class=lists__item__detail${i}>作品名：　${data.Items[i].Item.title}</p>` +
-								`<p class=lists__item__detail${i}>作者　：　${data.Items[i].Item.author}</p>` +
-								`<p class=lists__item__detail${i}>出版社：　${data.Items[i].Item.publisherName}</p>` + 
-								`</div>` + `</li>`;
+								'<p class=lists__title__detail${i}>作品名：　${data.Items[i].Item.title}</p>' +
+								'<p class=lists__author__detail${i}>作者　：　${data.Items[i].Item.author}</p>' +
+								'<p class=lists__publish__detail${i}>出版社：　${data.Items[i].Item.publisherName}</p>' + 
+								'<button class=lists__option__detail${i}>選択</button>' +
+								'</div>' + '</li>';
 						};
 						$(".lists").prepend(list);
 					} else {

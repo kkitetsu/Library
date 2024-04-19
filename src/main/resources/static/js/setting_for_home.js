@@ -58,10 +58,10 @@ btn.onclick = function() {
 					list += `<li class=lists__item>` +
 						`<div class=lists__item__inner>` +
 						`<a href=${data.Items[i].Item.itemUrl} class=lists__item__link target=_blank>` +
-						`<img src=${data.Items[i].Item.largeImageUrl} class=lists__item__img${i} alt>` +
+						`<img src=${data.Items[i].Item.largeImageUrl} class=lists__item__img${i} alt>` + `</a>` +
 						`<p class=lists__item__detail${i}>作品名：　${data.Items[i].Item.title}</p>` +
 						`<p class=lists__item__detail${i}>作者　：　${data.Items[i].Item.author}</p>` +
-						`<p class=lists__item__detail${i}>出版社：　${data.Items[i].Item.publisherName}</p>` + `</a>` +
+						`<p class=lists__item__detail${i}>出版社：　${data.Items[i].Item.publisherName}</p>` + 
 						`</div>` + `</li>`;
 				};
 				$(".lists").prepend(list);

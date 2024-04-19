@@ -305,7 +305,7 @@ public class LibraryController {
 		}
 
 		int maxPageNum;
-		
+
 		//本の全リストを取得：ログイン時、本追加・修正からリダイレクトした時に実行
 		if (session.getAttribute("bookshelf") == null) {
 			List<BooksEntity> bookshelf = libraryService.displayBooks();
@@ -408,7 +408,8 @@ public class LibraryController {
 	@RequestMapping(value = "/home", params = "note", method = RequestMethod.POST)
 	public String note(Model model, SearchBooksRequest searchBooksRequest, HttpSession session,
 						@RequestParam("note") String[] note,
-						@RequestParam("transId") String transId) {
+						@RequestParam("transId") String transId,
+						@RequestParam(value = "previousPage", required = false) String previousPage) {
 
 		for (int i = 0; i < note.length - 1; i++) {
 			// There will be a NumberFormatException when user checks the approve or deny message
@@ -424,7 +425,65 @@ public class LibraryController {
 			libraryService.addApproveOrDenyOnTrans(null, note[i]);
 		}
 
-		return "redirect:/home";
+		//ユーザーID：セッション取得
+		int user_id = (int) session.getAttribute("userId");
+
+		//お知らせ取得：貸出要請
+		List<NotificationDTO> lend_notification = libraryService.LendNotification(user_id);
+		lend_notification.forEach(
+				e -> e.setMessage(e.getNotificationDate() + " : 【" + e.getBorrowerName() + "】様から【" + e.getBookTitle()
+						+ "】の貸出要請がありました"));
+
+		//お知らせ取得：期限
+		List<NotificationDTO> limit_notification = libraryService.LimitNotification(user_id);
+		limit_notification.forEach(
+				e -> e.setMessage(e.getNotificationDate() + " : 【" + e.getLenderName() + "】様の【" + e.getBookTitle()
+						+ "】の貸出期限まで１週間になりました"));
+
+		//お知らせ合体
+		List<NotificationDTO> ntf = new ArrayList<NotificationDTO>();
+		ntf.addAll(limit_notification);
+		ntf.addAll(lend_notification);
+
+		//お知らせ時系列順に並べ替え
+		Collections.sort(
+				ntf, new Comparator<NotificationDTO>() {
+					@Override
+					public int compare(NotificationDTO obj1, NotificationDTO obj2) {
+						return obj2.getNotificationDate().compareTo(obj1.getNotificationDate());
+					}
+				});
+
+		//お知らせを表示
+		if (ntf.size() == 0) {
+			session.setAttribute("notification", null);
+		} else {
+			session.setAttribute("notification", ntf);
+		}
+		if (previousPage.equals(null)) {
+			return "redirect:/home";
+		} else {
+			switch (previousPage) {
+			case "home":
+				return "redirect:/home";
+			case "add":
+				return "redirect:/exhibit";
+			case "borrowlog":
+				return "redirect:/borrowlog";
+			case "editbook":
+				return "redirect:/mybook";
+			case "edituserinfo":
+				return "redirect:/edituser";
+			case "lendlog":
+				return "redirect:/lendlog";
+			case "mybook":
+				return "redirect:/mybook";
+			default:
+				return "redirect:/home";
+			}
+		}
+
+		// 		
 	}
 	
 	/**

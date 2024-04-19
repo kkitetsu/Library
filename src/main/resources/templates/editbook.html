@@ -75,7 +75,7 @@
 			<!-- mordal end-->
 		</header>
 
-		<!--メインー　（修正可能領域）-->
+		<!--メインー（修正可能領域）-->
 		<div class="main">
 			<!--白い箱-->
 			<div class="main_title">
@@ -156,8 +156,9 @@
 						<input type="file" id="imgUpload" accept="image/*" style="display: none;"
 							th:field="*{multipartFile}" multiple />
 						<figure class="image-preview">
-							<img th:src="*{image}" alt="Image Preview" id="previewImage" /></img>
+							<img th:src="*{image}" id="previewImage"/></img>
 						</figure>
+<!--						<img id ="previewImage" style="display: none;">-->
 					</label><br><br>
 					<input type="hidden" th:field="*{image}" value="*{image}">
 					<table class="edit_book_table">
@@ -174,23 +175,23 @@
 							</td>
 						</tr>
 						<tr id="limitdate" class="table_row">
+
 							<td id="limitdateLabel" class="td1">貸出期限<span class="required">*</span></td>
 							<td class="td2">
-								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box" />
+								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box"/>
 							</td>
 						</tr>
 					</table>
 					<table class="edit_book_table">
 						<tr>
 							<td style="width:33%">
-								<input type="submit" class="btn btn-primary" value="削除" name="delete"
-									id="onethird_size">
+								<input type="submit" class="btn btn-primary" value="削除" name="delete" id="onethird_size">
 							</td>
 							<td style="width:33%">
 								<input type="submit" class="btn btn-danger" value="修正" name="update" id="onethird_size">
 							</td>
-							<td style="width:33%">
-								<a href="/home" class="btn btn-primary" id="onethird_size">キャンセル</a>
+							<td style="width:30%">
+								<a href="/mybook" class="btn btn-primary" id="onesecond_size">キャンセル</a>
 							</td>
 						</tr>
 

@@ -394,7 +394,11 @@ public class LibraryController {
 
 	/**
 	 * @author shunsukekuzawa
-	 * read the notifications(お知らせの既読機能)
+	 * @editor kk
+	 * 
+	 * Read the notifications(お知らせの既読機能)
+	 * お知らせは、レンタル要請が優先的に表示される
+	 * 
 	 * @param model
 	 * @param searchBooksRequest
 	 * @param session
@@ -406,19 +410,17 @@ public class LibraryController {
 						@RequestParam("note") String[] note,
 						@RequestParam("transId") String transId) {
 
-		System.out.println(note.length);
-		System.out.println(transId);
 		for (int i = 0; i < note.length - 1; i++) {
 			// There will be a NumberFormatException when user checks the approve or deny message
 			// In order to avoid the exception, use try catch to handle it (by kk)
-			System.out.println("Success: " + note[i]);
 			int j = libraryService.confirmBorrowerNotification(Integer.parseInt(note[i]), (int) session.getAttribute("userId"));
 			int k = libraryService.confirmLenderNotification(Integer.parseInt(note[i]), (int) session.getAttribute("userId"));
-			System.out.println(j + " " + k);
 			if (k == 1) {
 				// if confirm lender notification is successful, then continue
 				continue;
 			}
+			// if confirm lender notification update did not work, it means that there are no lender notifications to update.
+			// It is safe to update the approve or deny message.
 			libraryService.addApproveOrDenyOnTrans(null, note[i]);
 		}
 

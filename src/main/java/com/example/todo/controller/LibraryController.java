@@ -266,8 +266,8 @@ public class LibraryController {
 		        String msg = result.getNewDateRequested().equals("approve") ? 
 		        		"【" + result.getLenderName() + "】様から" + result.getBookTitle() + "の本の期間延長が承認されました" : 
 		        		"【" + result.getLenderName() + "】様から" + result.getBookTitle() + "の本の期間延長が却下されました。期限までに返却してください";
-		        dto.setMessage(msg);
-		        approveOrDenyNotice.add(dto);
+		        result.setMessage(msg);
+		        approveOrDenyNotice.add(result);
 		    }
 		}
 
@@ -406,15 +406,20 @@ public class LibraryController {
 						@RequestParam("note") String[] note,
 						@RequestParam("transId") String transId) {
 
+		System.out.println(note.length);
+		System.out.println(transId);
 		for (int i = 0; i < note.length - 1; i++) {
 			// There will be a NumberFormatException when user checks the approve or deny message
 			// In order to avoid the exception, use try catch to handle it (by kk)
-			try {
-				libraryService.confirmBorrowerNotification(Integer.parseInt(note[i]), (int) session.getAttribute("userId"));
-				libraryService.confirmLenderNotification(Integer.parseInt(note[i]), (int) session.getAttribute("userId"));
-			} catch (Exception e) {
-				libraryService.addApproveOrDenyOnTrans(null, transId);
+			System.out.println("Success: " + note[i]);
+			int j = libraryService.confirmBorrowerNotification(Integer.parseInt(note[i]), (int) session.getAttribute("userId"));
+			int k = libraryService.confirmLenderNotification(Integer.parseInt(note[i]), (int) session.getAttribute("userId"));
+			System.out.println(j + " " + k);
+			if (k == 1) {
+				// if confirm lender notification is successful, then continue
+				continue;
 			}
+			libraryService.addApproveOrDenyOnTrans(null, note[i]);
 		}
 
 		return "redirect:/home";

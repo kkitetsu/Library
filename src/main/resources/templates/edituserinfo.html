@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="UTF-8">
 	<!-- Bootstrap利用のため、必要なコード修正禁止 -->
@@ -11,36 +12,132 @@
 	<!-- CSS共通リンク -->
 	<link rel="stylesheet" href="css/common.css" />
 	<link rel="stylesheet" href="css/register.css" />
+	<link rel="stylesheet" href="css/home.css" />
 	<!-- タイトルの選択-->
 	<title>R-Library: Edit User Information</title>
 </head>
+
 <body>
 	<!-- 画面全体始め（ヘッダー、メイン、フッター）-->
 
 	<div class="content_box">
 		<!-- ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
 		<header>
-			<div class="header_logo">  <a href="/home"><img src="img/rakuten_logo.png"
-						alt="Rakuten_sec_mark" class="main_logo"> </a></div>
+			<div class="header_logo"> <a href="/home"><img src="img/rakuten_logo.png" alt="Rakuten_sec_mark"
+						class="main_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
 			<div class="header_btn_box">
 				<table class="header_table">
-					<th>
-					<td> <img src="img/alarm_icon.png" class="alert_icon"> </td>
-					<td> <img src="img/user_img.png" alt="user_icon" class="user_icon"> </td>
-					</th>
+					<td>
+						<button type="submit" id="openModal" class="alert_box">
+							<img src="img/alarm_icon.png" class="alert_icon">
+						</button>
+					</td>
+					<td>
+						<div>
+							<img src="img/user_img.png" alt="user_icon" class="user_icon_trigger">
+						</div>
+					</td>
 				</table>
 			</div>
+			<!-- mordal starts-->
+			<div id="myModal" class="modal">
+				<div class="modal-content">
+					<div>
+						<div id="titleModal"> &lt お知らせ &gt </div>
+						<div id="closeModal">&times;</div>
+						<div class="contentBoxMordal">
+							<form th:action="@{/home}" th:method="post">
+								<div th:if="${session.notification} != null">
+									<div class="notification" th:each="note:${session.notification}">
+										<input type="checkbox" name="note" th:value="${note.TransId}" style="zoom:2.0;">
+										<span th:text="${note.message}"></span>
+									</div>
+								</div>
+								<div th:if="${session.notification} == null">
+									<div class="notification">現在、お知らせはありません</div>
+								</div>
+								<div class="center_box">
+									<input type="hidden" name="previousPage" value="edituserinfo">
+									<button type="submit" name="note" class="blue_btn">確認</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- mordal end-->
 		</header>
 		<!--メインー（修正可能領域）-->
 		<div class="main">
 			<!--白い箱-->
 			<div th:if="${errMsg}" class="error_msg">
-		        <div th:text="${errMsg}"></div>
-		    </div>
-   			<div class="main_title">
+				<div th:text="${errMsg}"></div>
+			</div>
+			<div class="main_title">
 				- 会員情報修正
 			</div>
+			<!--　サイドバー -->
+			<div class="overlay"></div>
+			<nav class="nav">
+				<div class="logo">
+					<a href="/home"><img src="img/rakuten_logo.png"></a>
+				</div>
+				<table class="linkList">
+					<Tr>
+						<td>
+							<div>
+								<img src="img/user_img.png" alt="user_icon" class="user_icon">
+							</div>
+
+						</td>
+					</Tr>
+					<tr>
+						<td>
+							<div class="user_name"> <span th:text="${session.userName}"></span> 様 </div>
+
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/edituser" method="get">
+								<input type="submit" value="会員情報修正" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/borrowlog" method="post">
+								<input type="submit" value="レンタル履歴" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/lendlog" method="post">
+								<input type="submit" value="貸出履歴" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/mybook" method="post">
+								<input type="submit" value="出品中リスト" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/logout" method="post">
+								<input type="submit" value="ログアウト" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+				</table>
+
+			</nav>
+			<!-- サイドバー終 -->
 			<!-- メインコンテンツが入る赤色の箱-->
 			<div class="main_content_box">
 				<!--actionの行き先修正必要 -->
@@ -62,20 +159,22 @@
 								<span class="required">*</span>
 							</td>
 							<td>
-								<input th:field="*{password}" type="password" class="input_box" name="password" required>
+								<input th:field="*{password}" type="password" class="input_box" name="password"
+									required>
 								<span id="passwordError" style="color: red; display: none;">パスワードは4文字以上必要です</span>
 							</td>
 						</tr>
 						<tr class="table_row">
-				            <td>
-				                <label for="confirm_password">パスワード再入力</label>
+							<td>
+								<label for="confirm_password">パスワード再入力</label>
 								<span class="required">*</span>
-				            </td>
-				            <td>
-				                <input id="confirm_password" type="password" class="input_box" name="confirm_password" required>
-				                <span id="password_error" style="color: red; display: none;">パスワードが上のと違います</span>
-				            </td>
-				       	</tr>
+							</td>
+							<td>
+								<input id="confirm_password" type="password" class="input_box" name="confirm_password"
+									required>
+								<span id="password_error" style="color: red; display: none;">パスワードが上のと違います</span>
+							</td>
+						</tr>
 						<tr class="table_row">
 							<td>
 								<label for="name"> 名前 </label>
@@ -106,23 +205,24 @@
 								<span class="required">*</span>
 							</td>
 							<td>
-								<input th:field="*{mailaddress}" type="text" class="input_box" name="mailaddress" required>
+								<input th:field="*{mailaddress}" type="text" class="input_box" name="mailaddress"
+									required>
 								<div id="emailError" style="color: red;"></div>
 							</td>
 						</tr>
-					
+
 						<tr>
 							<td>
 								<!-- 赤色、青色の箱はクラスを使って（赤：danger,青：primary）大きさはidで調	整します。-->
 								<input type="submit" class="btn btn-danger" id="small_size" value="登録">
 					</form>
-							</td>
-							<td>
-								<form action="/home">
-									<input type="submit" class="btn btn-primary" id="small_size" value="キャンセル">
-								</form>
-							</td>
-						</tr>
+					</td>
+					<td>
+						<form action="/home">
+							<input type="submit" class="btn btn-primary" id="small_size" value="キャンセル">
+						</form>
+					</td>
+					</tr>
 				</table>
 			</div>
 			<!-- フッター（修正禁止）-->
@@ -131,53 +231,56 @@
 		<footer>
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>
-		
+
 		<script>
 			// Get references to the password and confirm password fields
 			var passwordField = document.getElementById("password");
 			var confirmPasswordField = document.getElementById("confirm_password");
 			var password_error = document.getElementById("password_error");
 			var passwordError = document.getElementById('passwordError');
-			
-			passwordField.addEventListener('input', function() {
-			    var passwordValue = passwordField.value.trim();
-			    
-			    if (passwordValue.length < 4) {
-			        passwordError.style.display = "block";
-			        passwordField.classList.add('error-border');
-			    } else {
-			        passwordError.style.display = "none";
-			        passwordField.classList.remove('error-border');
-			    }
+
+			passwordField.addEventListener('input', function () {
+				var passwordValue = passwordField.value.trim();
+
+				if (passwordValue.length < 4) {
+					passwordError.style.display = "block";
+					passwordField.classList.add('error-border');
+				} else {
+					passwordError.style.display = "none";
+					passwordField.classList.remove('error-border');
+				}
 			});
-			
+
 			// Attach event listener to the confirm password field
-			confirmPasswordField.addEventListener("input", function() {
-			    // Check if passwords match
-			    if (passwordField.value !== confirmPasswordField.value) {
-			        password_error.style.display = "block";
-			    } else {
-			        password_error.style.display = "none";
-			    }
+			confirmPasswordField.addEventListener("input", function () {
+				// Check if passwords match
+				if (passwordField.value !== confirmPasswordField.value) {
+					password_error.style.display = "block";
+				} else {
+					password_error.style.display = "none";
+				}
 			});
-			
+
 			var emailInput = document.getElementById('mailaddress');
 			var emailError = document.getElementById('emailError');
-			
-			emailInput.addEventListener('input', function() {
-			    var emailPattern = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
-			    var emailValue = emailInput.value.trim();
-			    
-			    if (!emailPattern.test(emailValue)) {
-			        emailError.textContent = "Please enter a valid email address";
-			        emailInput.classList.add('error-border');
-			    } else {
-			        emailError.textContent = "";
-			        emailInput.classList.remove('error-border');
-			    }
-			});
-			
-		</script>
 
+			emailInput.addEventListener('input', function () {
+				var emailPattern = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
+				var emailValue = emailInput.value.trim();
+
+				if (!emailPattern.test(emailValue)) {
+					emailError.textContent = "Please enter a valid email address";
+					emailInput.classList.add('error-border');
+				} else {
+					emailError.textContent = "";
+					emailInput.classList.remove('error-border');
+				}
+			});
+
+		</script>
+		<!--JavaScriptリンク-->
+		<script type="text/javascript" th:src="@{/js/getmordal.js}"></script>
+		<script src="js/home.js"></script>
 </body>
+
 </html>

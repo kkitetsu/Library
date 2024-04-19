@@ -12,8 +12,10 @@
 	<!--CSS共通リンク-->
 	<link rel="stylesheet" href="css/common.css" />
 	<link rel="stylesheet" href="css/register.css" /> <!-- Used for red star symbol by kk-->
+	<link rel="stylesheet" href="css/home.css" />
 	<!--タイトルの選択-->
 	<title>Add book</title>
+
 </head>
 
 <body>
@@ -27,17 +29,51 @@
 	<div class="content_box">
 		<!--ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
 		<header>
-			<div class="header_logo">  <a href="/home"><img src="img/rakuten_logo.png"
-						alt="Rakuten_sec_mark" class="maing_logo"> </a></div>
+			<div class="header_logo"> <a href="/home"><img src="img/rakuten_logo.png" alt="Rakuten_sec_mark"
+						class="maing_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
 			<div class="header_btn_box">
 				<table class="header_table">
-					<th>
-					<td> <img src="img/alarm_icon.png" class="alert_icon"> </td>
-					<td> <img src="img/user_img.png" alt="user_icon" class="user_icon"> </td>
-					</th>
+					<td>
+						<button type="submit" id="openModal" class="alert_box">
+							<img src="img/alarm_icon.png" class="alert_icon">
+						</button>
+					</td>
+					<td>
+						<div>
+							<img src="img/user_img.png" alt="user_icon" class="user_icon_trigger">
+						</div>
+					</td>
 				</table>
 			</div>
+			<!-- mordal starts-->
+			<div id="myModal" class="modal">
+				<div class="modal-content">
+					<div>
+						<div id="titleModal"> &lt お知らせ &gt </div>
+						<div id="closeModal">&times;</div>
+						<div class="contentBoxMordal">
+							<form th:action="@{/home}" th:method="post">
+								<div th:if="${session.notification} != null">
+									<div class="notification" th:each="note:${session.notification}">
+										<input type="checkbox" name="note" th:value="${note.TransId}" style="zoom:2.0;">
+										<span th:text="${note.message}"></span>
+									</div>
+								</div>
+								<div th:if="${session.notification} == null">
+									<div class="notification">現在、お知らせはありません</div>
+								</div>
+								<div class="center_box">
+									<input type="hidden" name="previousPage" value="add">
+									<button type="submit" name="note" class="blue_btn">確認</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- mordal end-->
+
 		</header>
 
 		<!--メインー　（修正可能領域）-->
@@ -46,6 +82,67 @@
 			<div class="main_title">
 				-出品
 			</div>
+			<!--　サイドバー -->
+			<div class="overlay"></div>
+			<nav class="nav">
+				<div class="logo">
+					<a href="/home"><img src="img/rakuten_logo.png"></a>
+				</div>
+				<table class="linkList">
+					<Tr>
+						<td>
+							<div>
+								<img src="img/user_img.png" alt="user_icon" class="user_icon">
+							</div>
+
+						</td>
+					</Tr>
+					<tr>
+						<td>
+							<div class="user_name"> <span th:text="${session.userName}"></span> 様 </div>
+
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/edituser" method="get">
+								<input type="submit" value="会員情報修正" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/borrowlog" method="post">
+								<input type="submit" value="レンタル履歴" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/lendlog" method="post">
+								<input type="submit" value="貸出履歴" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/mybook" method="post">
+								<input type="submit" value="出品中リスト" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/logout" method="post">
+								<input type="submit" value="ログアウト" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+				</table>
+
+			</nav>
+			<!-- サイドバー終 -->
 			<div th:if="${validationError}" class="error_msg">
 				<div th:text="${validationError}"></div>
 			</div>
@@ -81,7 +178,8 @@
 						<tr id="limitdate" class="table_row">
 							<td id="limitdateLabel" class="input_box ">貸出期限<span class="required">*</span></td>
 							<td>
-								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box " required />
+								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box "
+									required />
 							</td>
 						</tr>
 						<tr>
@@ -95,9 +193,12 @@
 		<footer>
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>
-		<!--JavaScriptリンク-->
-		<script type="text/javascript" th:src="@{/js/add.js}"></script>
-		<script type="text/javascript" th:src="@{/js/loading.js}"></script>
+	</div>
+	<!--JavaScriptリンク-->
+	<script type="text/javascript" th:src="@{/js/add.js}"></script>
+	<script type="text/javascript" th:src="@{/js/loading.js}"></script>
+	<script type="text/javascript" th:src="@{/js/getmordal.js}"></script>
+	<script src="js/home.js"></script>
 </body>
 
 </html>

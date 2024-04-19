@@ -74,7 +74,7 @@
 			<div class="main_title">
 				- 出品中リスト
 			</div>
-						<!--　サイドバー -->
+			<!--　サイドバー -->
 			<div class="overlay"></div>
 			<nav class="nav">
 				<div class="logo">
@@ -212,6 +212,18 @@
 					</div>
 					<div th:if="${errMsg}" th:text="${errMsg}" class="error_msg"> </div>
 				</div>
+				<table class="btn_box">
+					<tr>
+						<Td>
+							<div>
+								<form th:action="@{/home}" th:method="GET">
+									<button type="submit" class="btn btn-primary" id="small_size" value="home">
+										ホーム</button>
+								</form>
+							</div>
+						</Td>
+					</tr>
+				</table>
 			</div>
 			<!-- フッター（修正禁止）-->
 

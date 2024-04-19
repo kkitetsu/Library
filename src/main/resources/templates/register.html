@@ -168,7 +168,7 @@
 			    var emailValue = emailInput.value.trim();
 			    
 			    if (!emailPattern.test(emailValue)) {
-			        emailError.textContent = "Please enter a valid email address";
+			        emailError.textContent = "メールアドレスがおかしいです";
 			        emailInput.classList.add('error-border');
 			    } else {
 			        emailError.textContent = "";

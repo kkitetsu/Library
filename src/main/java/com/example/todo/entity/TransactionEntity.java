@@ -21,4 +21,6 @@ public class TransactionEntity {
 	private Integer borrowerUserId;
 	/** 貸し借りの日付 */
 	private LocalDate tradedDate;
+	
+	private String newDateRequested;
 }

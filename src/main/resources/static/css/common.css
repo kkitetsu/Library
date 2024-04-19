@@ -62,13 +62,6 @@ header {
 	max-width: 250px;
 }
 
-
-#search_btn {
-	width: 100%;
-	font-size: 50px;
-	max-width: 500px;
-}
-
 #small_size,
 #small_size_loading,
 #small_size2 {
@@ -79,6 +72,7 @@ header {
 	margin: 10px;
 	padding: 10px;
 	border-radius: 30px;
+	text-align: center;
 }
 
 #smaller_size {
@@ -95,9 +89,9 @@ header {
 #onesecond_size,
 #onethird_size {
 	font-weight: bolder;
-	width: 200px;
+	width: 90%;
 	height: auto;
-	font-size: 35px;
+	font-size: 40px;
 	margin: 5px;
 	padding: 5px;
 	border-radius: 20px;
@@ -187,6 +181,18 @@ footer {
 	bottom: -40px;
 }
 
+.searchblock1 {
+	width: 240px;
+}
+
+.searchblock2 {
+	width: auto;
+}
+
+.searchblock3 {
+	min-width: 150px;
+}
+
 body {
 	min-width: 100vw;
 	min-height: 100vh;
@@ -207,12 +213,29 @@ body {
 	max-width: 600px;
 }
 
-.search_input_box {
+.search_select_box {
 	border: none;
-	height: 90%;
 	border-radius: 10px;
 	padding-left: 10px;
 	width: 95%;
+}
+
+.search_input_box {
+	border: none;
+	border-radius: 10px;
+	padding-left: 10px;
+	width: 95%;
+}
+
+#search_btn {
+	width: 100%;
+	font-size: 50px;
+	max-width: 500px;
+}
+
+.table_box {
+	width: 90%;
+	margin: 0 5%;
 }
 
 .log_table,
@@ -238,6 +261,14 @@ body {
 	font-size: 30px;
 	text-align: center;
 	border-radius: 25px;
+}
+
+.edit_book_table .td1 {
+	width: 30%;
+}
+
+.edit_book_table .td2 {
+	width: 70%;
 }
 
 .search_table {
@@ -334,58 +365,72 @@ input[type="file"] {
 	display: none;
 }
 
-.no_result_img_box{
-	width:100%;
-	height:auto;
-	text-align:center;
-}
-.no_result_img{
-	width:90%;
-	max-width:400px;
-	height:auto;
-	margin: 10px 5%;
-	border-radius: 20px;	
+.no_result_img_box {
+	width: 100%;
+	height: auto;
+	text-align: center;
 }
 
+.no_result_img {
+	width: 90%;
+	max-width: 400px;
+	height: auto;
+	margin: 10px 5%;
+	border-radius: 20px;
+}
+
+
 .image-upload-placeholder {
-  position: absolute; 
-  width: 100%; 
-  height: 100%; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none; 
-  font-size: 40px;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	pointer-events: none;
+	font-size: 40px;
 }
 
 #existingImage {
-  max-width: 100%;  /*枠の幅に合わせる*/ 
-  max-height: 100%;  /*枠の高さに合わせる*/
-  width: 100%; /* 幅を自動調整 */
-  height: 100%; /* 高さを自動調整 */
-  top: 0; /* 上端から0の位置 */
-  left: 0; /* 左端から0の位置 */
-  object-fit: cover; /* 画像を枠に合わせてトリミング */
-  object-fit: contain;
-  position: relative;
-  z-index: 5; /* テキストより下に表示 */
+	max-width: 100%;
+	/*枠の幅に合わせる*/
+	max-height: 100%;
+	/*枠の高さに合わせる*/
+	width: 100%;
+	/* 幅を自動調整 */
+	height: 100%;
+	/* 高さを自動調整 */
+	top: 0;
+	/* 上端から0の位置 */
+	left: 0;
+	/* 左端から0の位置 */
+	object-fit: cover;
+	/* 画像を枠に合わせてトリミング */
+	object-fit: contain;
+	position: relative;
+	z-index: 5;
+	/* テキストより下に表示 */
 }
 
 #previewImage {
-  max-width: 100%;  
-  max-height: 100%;  
-  width: 100%; 
-  height: 100%; 
-  top: 0; 
-  left: 0; 
-  object-fit: contain;
-  position: relative;
-  z-index: 5;
+	max-width: 100%;
+	max-height: 100%;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	object-fit: contain;
+	position: relative;
+	z-index: 5;
 }
 
 a {
 	text-decoration: none;
 	color: inherit;
+}
+
+.center_box {
+	text-align: center;
 }
 
 a:hover {
@@ -395,18 +440,20 @@ a:hover {
 #error {
 	color: red;
 }
-.error_msg{
-	background-color:white;
-	color:red;
-	text-decoration:underline;
-	margin:10px 2.5%;
-	padding:10px;
-	border-radius:5px;
-	font-size:30px;
-	text-align:center;
-	opacity:0.8;
-	width:95%;
+
+.error_msg {
+	background-color: white;
+	color: red;
+	text-decoration: underline;
+	margin: 10px 2.5%;
+	padding: 10px;
+	border-radius: 5px;
+	font-size: 30px;
+	text-align: center;
+	opacity: 0.8;
+	width: 95%;
 }
+
 #side_bar_list {
 	width: 80%;
 	font-size: 25px;
@@ -532,6 +579,7 @@ a:hover {
 	height: 200px;
 	object-fit: cover;
 }
+
 /* edited by kk. Used to avoid unfocusable issue when input box is hidden and limitdate */
 .input_box.hidden-input {
 	position: absolute;
@@ -562,6 +610,8 @@ a:hover {
 		border-radius: 15px;
 	}
 
+
+
 	.table_row,
 	.input_box {
 		font-size: 30px;
@@ -571,15 +621,13 @@ a:hover {
 		font-size: 40px;
 	}
 
-	
+
 	#onethird_size {
-		width: 140px;
-		height: auto;
-		font-size: 20px;
+		font-size: 25px;
 		margin: 5px;
 		padding: 5px;
 		border-radius: 10px;
 	}
-	
+
 
 }

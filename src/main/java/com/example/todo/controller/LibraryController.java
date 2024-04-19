@@ -74,6 +74,7 @@ public class LibraryController {
 		model.addAttribute("currentPage", currPage);
 		model.addAttribute("maxPageNum", maxPageNum);
 		model.addAttribute("LogsSize", LogsSize);
+		DeleteSession(session);
 		if (LogsSize == 0) {
 			model.addAttribute("errMsg", "表示する項目がありませんでした。");
 		}
@@ -412,7 +413,6 @@ public class LibraryController {
 				libraryService.confirmBorrowerNotification(Integer.parseInt(note[i]), (int) session.getAttribute("userId"));
 				libraryService.confirmLenderNotification(Integer.parseInt(note[i]), (int) session.getAttribute("userId"));
 			} catch (Exception e) {
-				System.out.println(transId);
 				libraryService.addApproveOrDenyOnTrans(null, transId);
 			}
 		}
@@ -578,8 +578,6 @@ public class LibraryController {
 		//filePath : fileNameをパスに追加
 		java.nio.file.Path filePath = Paths.get(p2.toString() + "/" + fileName);
 
-		System.out.println(filePath.toString());
-
 		try {
 			//アップロードファイルをバイト値に変換
 			byte[] bytes = multipartFile.getBytes();
@@ -690,7 +688,6 @@ public class LibraryController {
             					 @RequestParam("exhibitorId") String exhibitorId, 
             					 Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 		
-
 		if (exhibitorId.equals(session.getAttribute("userId").toString())) {
 			// User cannot borrow his or her own book
 			redirectAttributes.addFlashAttribute("alertMessage", "自分の本は借りる・もらうことができません");

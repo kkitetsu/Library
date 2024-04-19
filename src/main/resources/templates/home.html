@@ -64,6 +64,7 @@
 									</div>
 									<div th:if="${session.notification} == null">
 										<div class="notification">現在、お知らせはありません</div>
+										<input type="hidden" name="transId" value="" />
 									</div>
 									<div class="center_box">
 										<button type="submit" name="note" class="blue_btn">確認</button>

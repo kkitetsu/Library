@@ -29,6 +29,7 @@ categorySelect.addEventListener('change', function() {
 
 document.getElementById('imgUpload').addEventListener('change', function() {
 	const file = this.files[0];
+	console.log(file);
 	if (file) {
 		const reader = new FileReader();
 		reader.onload = function(e) {

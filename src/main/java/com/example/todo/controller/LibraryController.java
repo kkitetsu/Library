@@ -170,7 +170,8 @@ public class LibraryController {
 		// Edited by kk. Display user ID on the page
 		UsersEntity user = new UsersEntity();
 		user.setLoginId(
-				libraryService.getLoginIdBasedOnId(Integer.parseInt(session.getAttribute("userId").toString())));
+			libraryService.getLoginIdBasedOnId(Integer.parseInt(session.getAttribute("userId").toString()))
+		);
 		model.addAttribute("userEntity", user);
 		return "/edituserInfo";
 	}
@@ -192,7 +193,12 @@ public class LibraryController {
 				errorList.add(error.getDefaultMessage());
 			}
 			model.addAttribute("errMsg", errorList);
-			model.addAttribute("userEntity", new UsersEntity());
+			// Edited by kk. Display user ID on the page
+			UsersEntity user = new UsersEntity();
+			user.setLoginId(
+				libraryService.getLoginIdBasedOnId(Integer.parseInt(session.getAttribute("userId").toString()))
+			);
+			model.addAttribute("userEntity", user);
 			return "/edituserInfo";
 		}
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));

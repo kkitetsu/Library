@@ -3,6 +3,7 @@ let limitSwitch    = document.getElementById("limitdate");
 let limitDateInput = document.getElementById("limitDateInput");
 let limitdateLabel = document.getElementById("limitdateLabel");
 
+
 categorySelect.addEventListener('change', function() {
 
 	let categoryType = this.value;
@@ -25,14 +26,26 @@ categorySelect.addEventListener('change', function() {
 })
 
 
+
 document.getElementById('imgUpload').addEventListener('change', function() {
 	const file = this.files[0];
+	var imgPreview = document.getElementById("previewImage");
+	
+	//楽天API(added by shunsukekuzawa)
+	const apiPreview = document.getElementById("apiPreview");
+	const apiTitle = document.getElementById("js-search-word");
+	const apiURL = document.getElementById("apiUrl");
+	
 	if (file) {
 		const reader = new FileReader();
 		reader.onload = function(e) {
-			const previewImage = document.getElementById('previewImage');
+			//楽天API(added by shunsukekuzawa)
+			apiTitle.value = "";
 			previewImage.src = e.target.result;
-			previewImage.style.display = 'block';
+			imgPreview.style.display = 'block';
+			apiPreview.src = "";
+			apiURL.value = "";
+			apiPreview.style.display = 'none';
 
 			const placeholder = document.querySelector('.image-upload-placeholder');
 			if (placeholder) {
@@ -44,30 +57,33 @@ document.getElementById('imgUpload').addEventListener('change', function() {
 });
 
 
+
 document.getElementById('imgUpload').addEventListener('change', function(event) {
   	if(event.target.files.length > 0) {
     	document.getElementById('existingImage').style.display = 'none';
   	}
+  	
 });
 
 
-document.getElementById('imgUpload').addEventListener('change', function(event) {
-  if (event.target.files.length > 0) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const previewImage = document.getElementById('previewImage');
-      previewImage.src = e.target.result;
-      previewImage.style.maxWidth = '100%';
-      previewImage.style.maxHeight = '100%';
-      previewImage.style.width = '100%';
-      previewImage.style.height = '100%';
-      previewImage.style.top = '0';
-      previewImage.style.left = '0';
-      previewImage.style.objectFit = 'contain';
-      previewImage.style.position = 'relative';
-      previewImage.style.zIndex = '5';
-      previewImage.style.display = 'block'; 
-    };
-    reader.readAsDataURL(event.target.files[0]);
-  }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  // アップロードされた画像を表示するためのイベントリスナーを設定します。
+  document.getElementById('imgUpload').addEventListener('change', function(event) {
+    if (event.target.files.length > 0) {
+      var file = event.target.files[0]; // アップロードされたファイルを取得します。
+      var reader = new FileReader(); // FileReaderのインスタンスを作成します。
+
+      // ファイルの読み込みが終了したら実行されるイベントハンドラーを定義します。
+      reader.onload = function(e) {
+        var previewImage = document.getElementById('previewImage'); // 表示するimg要素を取得します。
+        previewImage.src = e.target.result; // 読み込んだ画像データをsrc属性に設定します。
+        previewImage.style.display = 'block'; // img要素を表示状態にします。
+      };
+
+      // ファイルの読み込みを実行します。
+      reader.readAsDataURL(file);
+    }
+  });
 });

@@ -100,12 +100,13 @@ public class LibraryService {
 		return libraryMapper.LimitNotification(user_id);
 	}
 	
-	public void confirmBorrowerNotification(int note,int user_id) {
-		libraryMapper.confirmBorrowerNotification(note, user_id);
+	// edited by kk include return value for rows affected.
+	public int confirmBorrowerNotification(int note,int user_id) {
+		return libraryMapper.confirmBorrowerNotification(note, user_id);
 	}
 	
-	public void confirmLenderNotification(int note,int user_id) {
-		libraryMapper.confirmLenderNotification(note, user_id);
+	public int confirmLenderNotification(int note,int user_id) {
+		return libraryMapper.confirmLenderNotification(note, user_id);
 	}
 
 	/** 

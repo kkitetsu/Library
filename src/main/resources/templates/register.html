@@ -62,7 +62,7 @@
 							</td>
 							<td>
 								<input id="password" th:field="*{password}" type="password" class="input_box" name="password" required>
-								<div id="passwordError" style="color: red; display: none;">パスワードは4文字以上必要です</div>
+								<div id="passwordError" style="color: red; display: none;">パスワードは4文字以上16文字以下です</div>
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -72,7 +72,7 @@
 				            </td>
 				            <td>
 				                <input id="confirm_password" type="password" class="input_box" name="confirm_password" required>
-				                <span id="password_error" style="color: red; display: none;">パスワードが上のと違います</span>
+				                <span id="password_error" style="color: red; display: none;">同じパスワードを入力してください</span>
 				            </td>
 				       	</tr>
 						<tr class="table_row">
@@ -94,7 +94,7 @@
 								<select th:field="*{department}" class="input_box" name="department">
 									<option value="人事総務部">人事総務部</option>
 									<option value="IT本部">IT本部</option>
-									<option value="ーケティング推進部">マーケティング推進部</option>
+									<option value="マーケティング推進部">マーケティング推進部</option>
 									<option value="その他" selected>その他</option>
 								</select>
 							</td>

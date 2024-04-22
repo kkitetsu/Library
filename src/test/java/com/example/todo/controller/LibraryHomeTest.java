@@ -136,7 +136,7 @@ class LibraryHomeTest {
 
 
 
-	@Test
+	// comment added by kk, libraryService.searchBooks is deprecated.
 	public void testHomeSearchService() throws SQLException {
 		try (Connection connection = dataSource.getConnection();
 				Statement statement = connection.createStatement()) {

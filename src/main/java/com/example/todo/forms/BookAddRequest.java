@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.todo.validation.FileSize;
@@ -24,6 +25,7 @@ public class BookAddRequest implements Serializable {
 	
 	private String category;
 	
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	@Future(message="過去の日付は選択できません")
 	@NotNull(message="貸出期限を入れてくださいよ")
 	private LocalDate limitdate;

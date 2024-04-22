@@ -55,19 +55,22 @@
 											<span th:text="${note.message}"></span>
 										</div>
 										<div th:unless="${note.message.contains('延長要請')}">
-										    <input type="checkbox" name="note" th:value="${note.TransId}" style="zoom:2.0;" > <span
-											th:text="${note.message}"></span>
+											<input type="checkbox" name="note" th:value="${note.TransId}"
+												style="zoom:2.0;"> <span th:text="${note.message}"></span>
 										</div>
 										<!-- added by kk -->
 										<div class="inner-form">
-							                <input type="hidden" name="bookId" th:value="${note.bookId}" />
-							                <input type="hidden" name="bookTitle" th:value="${note.BookTitle}" />
-							                <input type="hidden" name="newDateRequested" th:value="${note.newDateRequested}" />
-							                <input type="hidden" name="borrowerName" th:value="${note.BorrowerName}" />
-							                <input type="hidden" name="transId" th:value="${note.TransId}" />
-							                <button type="button" class="approve-btn" th:if="${note.message.contains('延長要請')}">承認</button>
-							                <button type="button" class="deny-btn" th:if="${note.message.contains('延長要請')}">却下</button>
-							            </div>
+											<input type="hidden" name="bookId" th:value="${note.bookId}" />
+											<input type="hidden" name="bookTitle" th:value="${note.BookTitle}" />
+											<input type="hidden" name="newDateRequested"
+												th:value="${note.newDateRequested}" />
+											<input type="hidden" name="borrowerName" th:value="${note.BorrowerName}" />
+											<input type="hidden" name="transId" th:value="${note.TransId}" />
+											<button type="button" class="approve-btn"
+												th:if="${note.message.contains('延長要請')}">承認</button>
+											<button type="button" class="deny-btn"
+												th:if="${note.message.contains('延長要請')}">却下</button>
+										</div>
 										<!-- until here by kk -->
 									</div>
 								</div>
@@ -76,18 +79,18 @@
 								</div>
 								<div class="center_box">
 									<input type="hidden" name="previousPage" value="borrowlog">
-									<input type="hidden" name="transId" value="" />  <!-- added by kk -->
+									<input type="hidden" name="transId" value="" /> <!-- added by kk -->
 									<button type="submit" name="note" class="blue_btn">確認</button>
 								</div>
 							</form>
 							<!-- added by kk in order to avoid nested form. Logic is handled by home.js -->
 							<form id="inner-form" th:action="@{/home}" th:method="post" style="display: none;">
-							    <input type="hidden" id="inner-book-id" name="bookId" />
-							    <input type="hidden" id="inner-book-title" name="bookTitle" />
-							    <input type="hidden" id="inner-new-date-requested" name="newDateRequested" />
-							    <input type="hidden" id="inner-book-transId" name="transId" />
-							    <input type="hidden" id="inner-borrower-name" name="borrowerName" />
-							    <input type="hidden" id="inner-request-response" name="requestResponse" />
+								<input type="hidden" id="inner-book-id" name="bookId" />
+								<input type="hidden" id="inner-book-title" name="bookTitle" />
+								<input type="hidden" id="inner-new-date-requested" name="newDateRequested" />
+								<input type="hidden" id="inner-book-transId" name="transId" />
+								<input type="hidden" id="inner-borrower-name" name="borrowerName" />
+								<input type="hidden" id="inner-request-response" name="requestResponse" />
 							</form>
 							<!-- until here by kk -->
 						</div>
@@ -178,7 +181,7 @@
 							<th id="border-right">
 								本の持ち主
 							</th>
-							<th>
+							<th id="border-right">
 								期限
 							</th>
 							<th>
@@ -188,9 +191,10 @@
 						<!-- Table rows will be added dynamically here -->
 						<tr th:each="log :${BorrowLogs}">
 							<td th:text="*{log.TradedDate}" id="border-right"></td>
-							<td th:text="*{log.BookTitle}" id="border-right" style="max-width:40%; word-break: break-all;"></td>
+							<td th:text="*{log.BookTitle}" id="border-right"
+								style="max-width:40%; word-break: break-all;"></td>
 							<td th:text="*{log.LenderName}" id="border-right"></td>
-							<td th:text="*{log.LimitDate}"></td>
+							<td th:text="*{log.LimitDate}" id="border-right"></td>
 							<!-- added by kk. Use to send change return date request. -->
 							<td th:if="${!log.LimitDate.toString().equals('2999-12-31')}">
 								変更希望日
@@ -210,11 +214,11 @@
 					<table class="btn_box">
 						<tr>
 							<td>
-								<div class="btn btn-danger" id="smaller_size" th:if="${currentPage} > 1">
-									<a th:href="@{/borrowlog(currPage=${currentPage - 1})}">
+								<a th:href="@{/borrowlog(currPage=${currentPage - 1})}">
+									<div class="btn btn-danger" id="smaller_size" th:if="${currentPage} > 1">
 										&lt
-									</a>
-								</div>
+									</div>
+								</a>
 							</td>
 							<td>
 								<div id="small_size" style="text-align:center">
@@ -222,11 +226,10 @@
 								</div>
 							</td>
 							<td>
-								<div class="btn btn-danger" id="smaller_size" th:if="${currentPage<maxPageNum}">
-									<a th:href="@{/borrowlog(currPage=${currentPage + 1})}">
-										&gt
-									</a>
-
+								<a th:href="@{/borrowlog(currPage=${currentPage + 1})}">
+									<div class="btn btn-danger" id="smaller_size" th:if="${currentPage<maxPageNum}">&gt
+									</div>
+								</a>
 							</td>
 						</tr>
 						<tr>

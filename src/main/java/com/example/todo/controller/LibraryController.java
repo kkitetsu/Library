@@ -556,6 +556,8 @@ public class LibraryController {
 				return "redirect:/lendlog"; // html edited by kk
 			case "mybook":
 				return "redirect:/mybook"; // html edited by kk
+			case "confirm":
+				return "redirect:/home";
 			default:
 				return "redirect:/home"; 
 			}

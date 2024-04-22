@@ -56,8 +56,25 @@
 							<form th:action="@{/home}" th:method="post">
 								<div th:if="${session.notification} != null">
 									<div class="notification" th:each="note:${session.notification}">
-										<input type="checkbox" name="note" th:value="${note.TransId}" style="zoom:2.0;">
-										<span th:text="${note.message}"></span>
+										<!-- added by kk. Avoid checkbox for extension request -->
+										<div th:if="${note.message.contains('延長要請')}">
+											<span th:text="${note.message}"></span>
+										</div>
+										<div th:unless="${note.message.contains('延長要請')}">
+										    <input type="checkbox" name="note" th:value="${note.TransId}" style="zoom:2.0;" > <span
+											th:text="${note.message}"></span>
+										</div>
+										<!-- added by kk -->
+										<div class="inner-form">
+							                <input type="hidden" name="bookId" th:value="${note.bookId}" />
+							                <input type="hidden" name="bookTitle" th:value="${note.BookTitle}" />
+							                <input type="hidden" name="newDateRequested" th:value="${note.newDateRequested}" />
+							                <input type="hidden" name="borrowerName" th:value="${note.BorrowerName}" />
+							                <input type="hidden" name="transId" th:value="${note.TransId}" />
+							                <button type="button" class="approve-btn" th:if="${note.message.contains('延長要請')}">承認</button>
+							                <button type="button" class="deny-btn" th:if="${note.message.contains('延長要請')}">却下</button>
+							            </div>
+										<!-- until here by kk -->
 									</div>
 								</div>
 								<div th:if="${session.notification} == null">
@@ -65,9 +82,20 @@
 								</div>
 								<div class="center_box">
 									<input type="hidden" name="previousPage" value="editbook">
+									<input type="hidden" name="transId" value="" />  <!-- added by kk -->
 									<button type="submit" name="note" class="blue_btn">確認</button>
 								</div>
 							</form>
+							<!-- added by kk in order to avoid nested form. Logic is handled by home.js -->
+							<form id="inner-form" th:action="@{/home}" th:method="post" style="display: none;">
+							    <input type="hidden" id="inner-book-id" name="bookId" />
+							    <input type="hidden" id="inner-book-title" name="bookTitle" />
+							    <input type="hidden" id="inner-new-date-requested" name="newDateRequested" />
+							    <input type="hidden" id="inner-book-transId" name="transId" />
+							    <input type="hidden" id="inner-borrower-name" name="borrowerName" />
+							    <input type="hidden" id="inner-request-response" name="requestResponse" />
+							</form>
+							<!-- until here by kk -->
 						</div>
 					</div>
 				</div>
@@ -75,7 +103,7 @@
 			<!-- mordal end-->
 		</header>
 
-		<!--メインー　（修正可能領域）-->
+		<!--メインー（修正可能領域）-->
 		<div class="main">
 			<!--白い箱-->
 			<div class="main_title">
@@ -156,8 +184,9 @@
 						<input type="file" id="imgUpload" accept="image/*" style="display: none;"
 							th:field="*{multipartFile}" multiple />
 						<figure class="image-preview">
-							<img th:src="*{image}" alt="Image Preview" id="previewImage" /></img>
+							<img th:src="*{image}" id="previewImage"/></img>
 						</figure>
+<!--						<img id ="previewImage" style="display: none;">-->
 					</label><br><br>
 					<input type="hidden" th:field="*{image}" value="*{image}">
 					<table class="edit_book_table">
@@ -174,23 +203,23 @@
 							</td>
 						</tr>
 						<tr id="limitdate" class="table_row">
+
 							<td id="limitdateLabel" class="td1">貸出期限<span class="required">*</span></td>
 							<td class="td2">
-								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box" />
+								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box"/>
 							</td>
 						</tr>
 					</table>
 					<table class="edit_book_table">
 						<tr>
 							<td style="width:33%">
-								<input type="submit" class="btn btn-primary" value="削除" name="delete"
-									id="onethird_size">
+								<input type="submit" class="btn btn-primary" value="削除" name="delete" id="oneone_size">
 							</td>
 							<td style="width:33%">
 								<input type="submit" class="btn btn-danger" value="修正" name="update" id="onethird_size">
 							</td>
-							<td style="width:33%">
-								<a href="/home" class="btn btn-primary" id="onethird_size">キャンセル</a>
+							<td style="width:30%">
+								<a href="/mybook" class="btn btn-primary" id="onesecond_size">キャンセル</a>
 							</td>
 						</tr>
 

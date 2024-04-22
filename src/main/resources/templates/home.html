@@ -45,6 +45,8 @@
 								<form th:action="@{/home}" th:method="post">
 									<div th:if="${session.notification != null}">
 										<div class="notification" th:each="note:${session.notification}">
+											<input type="checkbox" name="note" th:value="${note.TransId}"
+												style="zoom:2.0;"> <span th:text="${note.message}"></span>
 											<!-- added by kk. Avoid checkbox for extension request -->
 											<div th:if="${note.message.contains('延長要請')}">
 												<span th:text="${note.message}"></span>
@@ -255,6 +257,44 @@
 			</form>
 		</div>
 
+		<!--編集モーダル 須崎-->
+		<div id="editModal" style="display:none">
+			<div class="modal-content">
+				<div id="titleModal"> &lt お知らせ &gt </div>
+				<div class="contentBoxMordal">
+					<p class="notification">編集が完了しました</p>
+					<div class="center_box">
+						<button class="blue_btn" id="closeEdit">確認</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--削除モーダル 須崎-->
+		<div id="deleteModal" style="display:none">
+			<div class="modal-content">
+				<div id="titleModal"> &lt お知らせ &gt </div>
+				<div class="contentBoxMordal">
+					<p class="notification">削除が完了しました</p>
+					<div class="center_box">
+						<button class="blue_btn" id="closeDelete">確認</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!--出品モーダル 須崎-->
+		<div id="exhibitModal" style="display:none">
+			<div class="modal-content">
+				<div id="titleModal"> &lt お知らせ &gt </div>
+				<div class="contentBoxMordal">
+					<p class="notification">出品が完了しました</p>
+					<div class="center_box">
+						<button class="blue_btn" id="closeExhibit">確認</button>
+					</div>
+				</div>
+			</div>
+		</div>
 		<footer>
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>

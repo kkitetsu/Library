@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+/* 以下、モーダルの内容 */
+/* モーダルウィンドウの基本スタイル */
+.apiModal {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+	z-index: 20;
+}
+
+.alert_box_api{
+	position: relative;
+	top:155px;
+	font-weight: bolder;
+	color: white;
+	background-color: #dc3545;
+	width: 200px;
+	height: auto;
+	font-size: 25px;
+	margin: 10px;
+	padding: 10px;
+	border-radius: 30px;
+	text-align:center;
+	border:none;
+}
+
+.alert_box_api:hover{
+	background-color: #bb2d3b;
+}
+
+.api_input_box{
+	border: none;
+	height: 95%;
+	border-radius: 10px;
+	padding-left: 10px;
+	width: 80%;
+	max-width: 600px;
+}
+
+.lists__item {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    display: inline-block;
+    width: 25%;
+    padding: 0 20px 20px 0;
+    vertical-align: top;
+    text-align: center;
+}
+.lists__item__inner {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+}
+.lists__item__link {
+    display: block;
+    text-decoration: none;
+}
+
+.api-modal-content {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: 80%;
+	height: 800px;
+	transform: translate(-50%, -50%);
+	padding: 20px;
+	background-color: #fefefe;
+	border: 1px solid #888;
+}
+#titleApiModal{
+	font-size:40px;
+	display:inline-block;
+	width:100%;
+	text-align:center;
+}
+#closeApiModal {
+	font-size: 40px;
+	font-weight: bold;
+	height:40px;
+	cursor: pointer;
+	position:absolute;
+	top:0px;
+	right:20px;
+	width:auto;
+	text-align:center;
+}
+.contentBoxApiMordal{
+	display: flex;
+	width:90%;
+	margin:5px 5%;
+	background-color:lightyellow;
+	font-size:25px;
+	padding:25px;
+	font-weight:bolder;
+	height:650px;
+	overflow: auto;
+	border: black 1px solid;
+	border-radius:10px;
+}

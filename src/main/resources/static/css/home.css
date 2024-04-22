@@ -116,8 +116,6 @@ font-weight:bold;
 	color:black;
 }
 
-/* 以下、モーダルの内容 */
-/* モーダルウィンドウの基本スタイル */
 .modal {
 	display: none;
 	position: fixed;
@@ -156,6 +154,7 @@ font-weight:bold;
 	width:auto;
 	text-align:center;
 }
+
 .contentBoxMordal{
 	width:90%;
 	margin:5px 5%;
@@ -167,6 +166,8 @@ font-weight:bold;
 	border: black 1px solid;
 	border-radius:10px;
 }
+
+
 /* サイドバー */
 /* Drawer */
 .overlay {

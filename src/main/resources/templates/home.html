@@ -43,7 +43,7 @@
 							<div id="closeModal">&times;</div>
 							<div class="contentBoxMordal">
 								<form th:action="@{/home}" th:method="post">
-									<div th:if="${session.notification} != null">
+									<div th:if="${session.notification != null}">
 										<div class="notification" th:each="note:${session.notification}">
 											<!-- added by kk. Avoid checkbox for extension request -->
 											<div th:if="${note.message.contains('延長要請')}">
@@ -259,10 +259,15 @@
 			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 		</footer>
 	</div>
+
+	<script type="text/javascript" th:src="@{/js/setting_for_home.js}"></script>
+
 	<!--JavaScriptリンク-->
 	<script type="text/javascript" th:src="@{/js/padding_for_home.js}"></script>
 	<script type="text/javascript" th:src="@{/js/getmordal.js}"></script>
 	<script src="js/home.js"></script>
+	<script type="text/javascript" th:src="@{/js/setting_for_home.js}"></script>
+
 </body>
 
 </html>

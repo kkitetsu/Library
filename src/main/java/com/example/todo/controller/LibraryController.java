@@ -803,7 +803,11 @@ public class LibraryController {
 		if (bindingResult.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : bindingResult.getAllErrors()) {
-				errorList.add(error.getDefaultMessage());
+				if (error.getDefaultMessage().contains("Failed to convert")) {
+					errorList.add("正しいidではありません。");
+				} else {
+					errorList.add(error.getDefaultMessage());
+				}
 			}
 			model.addAttribute("errMsg", errorList);
 			model.addAttribute("userEntity", new UsersEntity());

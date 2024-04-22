@@ -3,6 +3,7 @@
  * home.html用 JavaScript
  * 本リストの余白を左右に同じように自動に設定する
  */
+
  function adjustpadding(){
 	 var container=document.querySelector('.main_content_box_home');
 	 var bookbox=document.querySelector('.book_content_box'); 
@@ -19,10 +20,3 @@
  	 container.style.paddingRight=padding_size + 'px';	 
 
  }
-
- window.onload=function(){
-	 adjustpadding();
-	 window.addEventListener('resize', adjustpadding)
- }
- 
- 

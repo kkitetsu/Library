@@ -9,8 +9,10 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
 		crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<!--CSS共通リンク-->
 	<link rel="stylesheet" href="css/common.css" />
+	<link rel="stylesheet" href="css/api.css" />
 	<link rel="stylesheet" href="css/register.css" /> <!-- Used for red star symbol by kk-->
 	<link rel="stylesheet" href="css/home.css" />
 	<!--タイトルの選択-->
@@ -176,17 +178,57 @@
 			</div>
 
 			<div class="main_content_box">
+
+				<!--モーダル-->
+				<div id="apiModal" class="apiModal">
+					<div class="api-modal-content">
+						<div>
+							<p id="titleApiModal"></p>
+							<div id="closeApiModal">&times;</div>
+							<div class="contentBoxApiMordal">
+								<ul id="apiModalItems" class="lists">
+
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!--<div class="search">
+					<div class="search__text">
+						<label>Rakuten Booksから探す:　</label>
+						<input type="text" id="js-search-word" class="api_input_box" value="" placeholder="検索する">
+					</div>
+					<button id="openApiModal" class="alert_box">API</button>
+				</div>-->
 				<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}"
 					th:method="post">
+
 					<label for="imgUpload" class="image-upload-container">
-						<div class="image-upload-placeholder">
+						<div class="image-upload-placeholder" id="uploadMessage">
 							<strong>本の画像をアップロード</strong>
 						</div>
 						<input type="file" id="imgUpload" accept="image/*" style="display: none;"
 							th:field="*{multipartFile}" multiple />
-						<img id ="previewImage">
+						<!-- 楽天API(@author shunsukekuzawa) -->
+						<img src="" alt="Image Preview" id="apiPreview" name="apiPreview" style="display:none;" />
+						<input type="hidden" id="apiUrl" name="apiUrl" value="">
+						<figure class="image-preview" id="imagePreview">
+							<img src="" alt="Image Preview" id="previewImage" />
+						</figure>
 					</label><br><br>
 					<table class="add_table">
+						<!-- 楽天API(@author shunsukekuzawa) -->
+						<tr class="table_row">
+							<div class="search">
+								<div class="search__text">
+									<td><label for="api">RakutenBooks</label></td>
+									<td><input type="text" id="js-search-word" class="api_input_box" value=""
+											placeholder="キーワード">
+									</td>
+								</div>
+							</div>
+						</tr>
 						<tr class="table_row">
 							<td><label for="title">タイトル</label><span class="required">*</span></td>
 							<td><input type="text" th:field="*{title}" class="input_box"></td>
@@ -212,6 +254,9 @@
 							<td><a href="/home" class="btn btn-primary" id="onesecond_size">キャンセル</a></td>
 						</tr>
 					</table>
+				</form>
+				<!-- 楽天API(@author shunsukekuzawa) -->
+				<button id="openApiModal" class="alert_box_api">検索</button>
 			</div>
 
 		</div>
@@ -224,6 +269,7 @@
 	<script type="text/javascript" th:src="@{/js/loading.js}"></script>
 	<script type="text/javascript" th:src="@{/js/getmordal.js}"></script>
 	<script src="js/home.js"></script>
+	<script type="text/javascript" th:src="@{/js/api.js}"></script>
 </body>
 
 </html>

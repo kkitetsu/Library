@@ -1,11 +1,11 @@
 const toggler = document.querySelector(".user_icon_trigger");
 
 window.addEventListener("click", event => {
-    if (event.target.classList.contains("user_icon_trigger")) {
-        document.body.classList.toggle("show-nav");
-    } else {
-        document.body.classList.remove("show-nav");
-    }
+	if (event.target.classList.contains("user_icon_trigger")) {
+		document.body.classList.toggle("show-nav");
+	} else {
+		document.body.classList.remove("show-nav");
+	}
 });
 
 // Added by kk in order to handle approve/reject extension of the return date request
@@ -47,3 +47,100 @@ function handleInnerFormSubmission(btn, action) {
 }
 // until here added by kk
 
+
+
+//編集完了モーダル
+document.addEventListener('DOMContentLoaded', function() {
+  var urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('editSuccess')) {
+    openModal();
+  }
+
+  function openModal() {
+    document.getElementById('editModal').style.display = 'block';
+  }
+
+  function closeModal() {
+    document.getElementById('editModal').style.display = 'none';
+  }
+
+  // 確認ボタン
+  var close = document.getElementById("closeEdit");
+  if (close) {
+    close.addEventListener('click', closeModal);
+  }
+
+  // モーダルの外側をクリックした場合
+  window.onclick = function(event) {
+    var modal = document.getElementById('editModal');
+    if (event.target == modal) {
+      closeModal();
+    }
+  };
+});
+
+
+
+
+//削除完了モーダル
+document.addEventListener('DOMContentLoaded', function() {
+  var urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('deleteSuccess')) {
+    openModal();
+  }
+
+  function openModal() {
+    document.getElementById('deleteModal').style.display = 'block';
+  }
+
+  function closeModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+  }
+
+  // 確認ボタン
+  var close = document.getElementById("closeDelete");
+  if (close) {
+    close.addEventListener('click', closeModal);
+  }
+
+  // モーダルの外側をクリックした場合
+  window.onclick = function(event) {
+    var modal = document.getElementById('deleteModal');
+    if (event.target == modal) {
+      closeModal();
+    }
+  };
+});
+
+
+
+
+//出品完了モーダル
+document.addEventListener('DOMContentLoaded', function() {
+  var urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('exhibitSuccess')) {
+    openModal();
+  }
+
+  function openModal() {
+    document.getElementById('exhibitModal').style.display = 'block';
+  }
+
+  function closeModal() {
+    document.getElementById('exhibitModal').style.display = 'none';
+  }
+
+  // 確認ボタン
+  var close = document.getElementById("closeExhibit");
+  if (close) {
+    close.addEventListener('click', closeModal);
+  }
+
+  // モーダルの外側をクリックした場合
+  window.onclick = function(event) {
+    var modal = document.getElementById('exhibitModal');
+    if (event.target == modal) {
+      closeModal();
+    }
+  };
+});

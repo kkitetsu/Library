@@ -54,6 +54,11 @@ public class LibraryController {
 		}
 		return "/log";
 	}
+	
+	@GetMapping(value = "/api")
+	public String getAPI(Model model) {
+		return "/API";
+	}
 
 	/**
 	 * @author Lee 
@@ -268,6 +273,8 @@ public class LibraryController {
 			return "redirect:/login";
 		}
 		//ユーザーID：セッション取得
+
+
 		int user_id = (int) session.getAttribute("userId");
 
 		//お知らせ取得：貸出要請
@@ -321,7 +328,7 @@ public class LibraryController {
 
 		//お知らせを表示
 		if (ntf.size() == 0) {
-			session.setAttribute("notification", null);
+			session.setAttribute("notification",null);
 		} else {
 			session.setAttribute("notification", ntf);
 		}
@@ -617,7 +624,7 @@ public class LibraryController {
 	/**
 	 * @author Lee 
 	 * 本の修正への遷移経路
-	 **/
+	 */
 	@GetMapping(value = "/editbook")
 	public String displayeditbook(Model model, HttpSession session,
 									@RequestParam("id") int id, 
@@ -678,8 +685,10 @@ public class LibraryController {
 			}
 			
 			DeleteSession(session);
-			return "redirect:/home";        
+			return "redirect:/home?editSuccess=true";        
     }
+
+
 	
 	
 	/**
@@ -697,15 +706,16 @@ public class LibraryController {
 			return "redirect:/login";
 		}
 
-		libraryService.bookDeliter(bookRequest);
-	
-		return "redirect:/home";        
+			libraryService.bookDeliter(bookRequest);
+		
+			return "redirect:/home?deleteSuccess=true";        
+
 	}
 	
 
 	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
 	public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, 
-														Model model, HttpSession session) {
+														Model model, HttpSession session,@RequestParam("apiUrl") String apiUrl) {
 		if (session.getAttribute("userId") == null) {
 			// added by kk
 			return "redirect:/login";
@@ -724,6 +734,13 @@ public class LibraryController {
 		multipartFile.forEach(e -> {
 			bookRequest.setImgPath(uploadAction(e));
 		});
+		/**
+		 * shunsukekuzawa
+		 * APIを利用していた場合の処理
+		 */
+		if(apiUrl.length() != 0) {
+			bookRequest.setImgPath(apiUrl);
+		}
 
 		libraryService.bookRegister(bookRequest);
 
@@ -734,7 +751,7 @@ public class LibraryController {
 		}
 
 		DeleteSession(session);
-		return "redirect:/home";
+		return "redirect:/home?exhibitSuccess=true";
 	}
 
 	/**

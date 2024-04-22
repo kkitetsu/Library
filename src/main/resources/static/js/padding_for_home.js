@@ -20,12 +20,3 @@
  	 container.style.paddingRight=padding_size + 'px';	 
 
  }
- 
- window.onload = function() {
-	adjustpadding();
-	window.addEventListener('resize', adjustpadding)
-}
-
-
-
-

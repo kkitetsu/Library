@@ -13,9 +13,9 @@
 	z-index: 20;
 }
 
-.alert_box{
+.alert_box_api{
 	position: relative;
-	top:128px;
+	top:155px;
 	font-weight: bolder;
 	color: white;
 	background-color: #dc3545;
@@ -29,7 +29,7 @@
 	border:none;
 }
 
-.alert_box:hover{
+.alert_box_api:hover{
 	background-color: #bb2d3b;
 }
 

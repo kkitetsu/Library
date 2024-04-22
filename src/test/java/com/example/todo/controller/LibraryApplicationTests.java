@@ -160,15 +160,15 @@ class LibraryApplicationTests {
         Set<ConstraintViolation<UsersEntity>> violations = validatorFactory.validate(usersEntity);
 
         // Assert that there is exactly one violation
-        assertEquals(2, violations.size());
+        assertEquals(3, violations.size());
 
         // Check each violation message
         boolean invalidEmailViolationFound = false;
         boolean nonPositiveIdViolationFound = false;
         for (ConstraintViolation<UsersEntity> violation : violations) {
-            if ("Invalid email address".equals(violation.getMessage())) {
+            if ("メールアドレスがおかしいです".equals(violation.getMessage())) {
                 invalidEmailViolationFound = true;
-            } else if ("ID must be a positive number".equals(violation.getMessage())) {
+            } else if ("ログインID は 0 より大きい必要があります".equals(violation.getMessage())) {
                 nonPositiveIdViolationFound = true;
             }
         }
@@ -181,10 +181,10 @@ class LibraryApplicationTests {
         usersEntity.setLoginId(-4);
         violations = validatorFactory.validate(usersEntity);
         
-        assertEquals(1, violations.size());
+        assertEquals(2, violations.size());
         
         ConstraintViolation<UsersEntity> violation = violations.iterator().next();
-        assertEquals("ID must be a positive number", violation.getMessage());
+        assertEquals("パスワードは４から16文字です", violation.getMessage());
 
 	}
     

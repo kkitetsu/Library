@@ -88,23 +88,25 @@ public interface LibraryMapper {
 	
 	/**
 	 * @author shunsukekuzawa
+	 * @editor kk include return value for rows affected
 	 * 
 	 * Select notification info.
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public void confirmBorrowerNotification(int note,int user_id) ;
+	public int confirmBorrowerNotification(int note,int user_id) ;
 	
 	/**
 	 * @author shunsukekuzawa
+	 * @editor kk include return value for rows affected
 	 * 
 	 * Select notification info.
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public void confirmLenderNotification(int note,int user_id) ;
+	public int confirmLenderNotification(int note,int user_id) ;
 	
 	/**
 	 * @author shunsukekuzawa

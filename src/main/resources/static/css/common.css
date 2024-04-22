@@ -72,7 +72,7 @@ header {
 	margin: 10px;
 	padding: 10px;
 	border-radius: 30px;
-	text-align:center;
+	text-align: center;
 }
 
 #smaller_size {
@@ -180,15 +180,19 @@ footer {
 	position: relative;
 	bottom: -40px;
 }
-.searchblock1{
-	width:240px;
+
+.searchblock1 {
+	width: 240px;
 }
-.searchblock2{
-	width:auto;
+
+.searchblock2 {
+	width: auto;
 }
-.searchblock3{
-	min-width:150px;
+
+.searchblock3 {
+	min-width: 150px;
 }
+
 body {
 	min-width: 100vw;
 	min-height: 100vh;
@@ -215,21 +219,25 @@ body {
 	padding-left: 10px;
 	width: 95%;
 }
+
 .search_input_box {
 	border: none;
 	border-radius: 10px;
 	padding-left: 10px;
 	width: 95%;
 }
+
 #search_btn {
 	width: 100%;
 	font-size: 50px;
 	max-width: 500px;
 }
-.table_box{
-	width:90%;
-	margin:0 5%;
+
+.table_box {
+	width: 90%;
+	margin: 0 5%;
 }
+
 .log_table,
 .my_book_table {
 	width: 90%;
@@ -254,11 +262,13 @@ body {
 	text-align: center;
 	border-radius: 25px;
 }
-.edit_book_table .td1{
-	width:30%;
+
+.edit_book_table .td1 {
+	width: 30%;
 }
-.edit_book_table .td2{
-	width:70%;
+
+.edit_book_table .td2 {
+	width: 70%;
 }
 
 .search_table {
@@ -337,9 +347,7 @@ input[type="file"] {
 	justify-content: center;
 	align-items: center;
 	width: 450px;
-	/* 画像の横幅 */
 	height: 600px;
-	/* 画像の高さ、比率に合わせて調整 */
 	border: 2px dashed #ccc;
 	cursor: pointer;
 	background-size: cover;
@@ -348,18 +356,13 @@ input[type="file"] {
 	margin: 0 auto;
 	overflow: hidden;
 	object-fit: cover;
-	object-fit: contain;
 }
 
 .image-preview img {
 	width: 100%;
-	/* コンテナの幅に合わせます */
 	height: 100%;
-	/* コンテナの高さに合わせます */
 	object-fit: cover;
-	object-fit: contain;
 	display: none;
-	/* 初期状態では画像を隠します */
 }
 
 .no_result_img_box {
@@ -376,30 +379,37 @@ input[type="file"] {
 	border-radius: 20px;
 }
 
-/* ファイルがない状態での表示スタイル（任意） */
+
 .image-upload-placeholder {
-  position: absolute; /* プレースホルダを絶対位置に設定 */
-  z-index: 10; /* 画像より上に表示 */
-  width: 100%; /* プレースホルダの幅 */
-  height: 100%; /* プレースホルダの高さ */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  pointer-events: none; /* クリックイベントを画像に通す */
-  font-size: 40px;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	pointer-events: none;
+	font-size: 40px;
 }
 
 #existingImage {
-  max-width: 100%;  /*枠の幅に合わせる*/ 
-  max-height: 100%;  /*枠の高さに合わせる*/
-  width: 100%; /* 幅を自動調整 */
-  height: 100%; /* 高さを自動調整 */
-  top: 0; /* 上端から0の位置 */
-  left: 0; /* 左端から0の位置 */
-  object-fit: cover; /* 画像を枠に合わせてトリミング */
-  object-fit: contain;
-  position: relative;
-  z-index: 5; /* テキストより下に表示 */
+	max-width: 100%;
+	/*枠の幅に合わせる*/
+	max-height: 100%;
+	/*枠の高さに合わせる*/
+	width: 100%;
+	/* 幅を自動調整 */
+	height: 100%;
+	/* 高さを自動調整 */
+	top: 0;
+	/* 上端から0の位置 */
+	left: 0;
+	/* 左端から0の位置 */
+	object-fit: cover;
+	/* 画像を枠に合わせてトリミング */
+	object-fit: contain;
+	position: relative;
+	z-index: 5;
+	/* テキストより下に表示 */
 }
 
 #apiPreview{
@@ -420,16 +430,15 @@ input[type="file"] {
 }
 
 #previewImage {
-  max-width: 100%;  /*枠の幅に合わせる*/ 
-  max-height: 100%;  /*枠の高さに合わせる*/
-  width: 100%; /* 幅を自動調整 */
-  height: 100%; /* 高さを自動調整 */
-  top: 0; /* 上端から0の位置 */
-  left: 0; /* 左端から0の位置 */
-  object-fit: cover; /* 画像を枠に合わせてトリミング */
-  object-fit: contain;
-  position: relative;
-  z-index: 5; /* テキストより下に表示 */
+	max-width: 100%;
+	max-height: 100%;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	object-fit: contain;
+	position: relative;
+	z-index: 5;
 }
 
 a {
@@ -629,7 +638,7 @@ a:hover {
 		font-size: 40px;
 	}
 
-	
+
 	#onethird_size {
 		font-size: 25px;
 		margin: 5px;

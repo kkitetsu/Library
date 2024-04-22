@@ -506,7 +506,7 @@ public class LibraryController {
 			}
 			
 			DeleteSession(session);
-			return "redirect:/home";        
+			return "redirect:/home?editSuccess=true";        
     }
 	
 	
@@ -523,7 +523,7 @@ public class LibraryController {
 
 			libraryService.bookDeliter(bookRequest);
 		
-			return "redirect:/home";        
+			return "redirect:/home?deleteSuccess=true";        
 	}
 	
 
@@ -558,7 +558,7 @@ public class LibraryController {
 		System.out.println(session.getAttribute("userName"));
 
 		DeleteSession(session);
-		return "redirect:/home";
+		return "redirect:/home?exhibitSuccess=true";
 	}
 
 	/**

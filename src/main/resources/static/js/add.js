@@ -29,12 +29,23 @@ categorySelect.addEventListener('change', function() {
 
 document.getElementById('imgUpload').addEventListener('change', function() {
 	const file = this.files[0];
+	var imgPreview = document.getElementById("previewImage");
+	
+	//楽天API(added by shunsukekuzawa)
+	const apiPreview = document.getElementById("apiPreview");
+	const apiTitle = document.getElementById("js-search-word");
+	const apiURL = document.getElementById("apiUrl");
+	
 	if (file) {
 		const reader = new FileReader();
 		reader.onload = function(e) {
-			const previewImage = document.getElementById('previewImage');
+			//楽天API(added by shunsukekuzawa)
+			apiTitle.value = "";
 			previewImage.src = e.target.result;
-			previewImage.style.display = 'block';
+			imgPreview.style.display = 'block';
+			apiPreview.src = "";
+			apiURL.value = "";
+			apiPreview.style.display = 'none';
 
 			const placeholder = document.querySelector('.image-upload-placeholder');
 			if (placeholder) {
@@ -51,6 +62,7 @@ document.getElementById('imgUpload').addEventListener('change', function(event) 
   	if(event.target.files.length > 0) {
     	document.getElementById('existingImage').style.display = 'none';
   	}
+  	
 });
 
 

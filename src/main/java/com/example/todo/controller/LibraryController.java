@@ -263,7 +263,6 @@ public class LibraryController {
 		for (NotificationDTO result : approveOrDenyExtensionTime) {
 		    if (result != null && result.getNewDateRequested() != null && 
 		    		(result.getNewDateRequested().equals("approve") || result.getNewDateRequested().equals("deny"))) {
-		        NotificationDTO dto = new NotificationDTO();
 		        String msg = result.getNewDateRequested().equals("approve") ? 
 		        		"【" + result.getLenderName() + "】様から" + result.getBookTitle() + "の本の期間延長が承認されました" : 
 		        		"【" + result.getLenderName() + "】様から" + result.getBookTitle() + "の本の期間延長が却下されました。期限までに返却してください";
@@ -440,6 +439,39 @@ public class LibraryController {
 		limit_notification.forEach(
 				e -> e.setMessage(e.getNotificationDate() + " : 【" + e.getLenderName() + "】様の【" + e.getBookTitle()
 						+ "】の貸出期限まで１週間になりました"));
+		
+		/**
+		 * @author kk
+		 * 本の貸し借り延長機能
+		 * 1. 延長要請のお知らせ
+		 *    - HTML 側にはチェックボックスはつかないようにしている
+		 *    - その代わり、承認か却下のボタンをユーザは推せる
+		 * 
+		 * 2. 応答（承認か却下）のお知らせ
+		 *    - 期間延長を要請したユーザにだけ表示される
+		 *    - これはチェックボックスがあるメッセージなので、ユーザはチェックを入れて確認ボタンを推せる
+		 * 
+		 */
+		// 1. 期間延長チェック kk
+		List<NotificationDTO> anyNewRequestedReturnDate = libraryService.getAnyNewRequestedReturnDate(user_id);
+		anyNewRequestedReturnDate.forEach(
+				e -> e.setMessage("【" + e.getBorrowerName() + "】様から借り入れ期間の延長要請が届いています。対象の本は " + e.getBookTitle() 
+				+ ", 希望返却日は " + e.getNewDateRequested() + " です。")
+		);
+		
+		// 2. 期間延長承認返答チェック kk
+		List<NotificationDTO> approveOrDenyExtensionTime = libraryService.getApproveOrDeny(user_id);
+		List<NotificationDTO> approveOrDenyNotice = new ArrayList<>();
+		for (NotificationDTO result : approveOrDenyExtensionTime) {
+		    if (result != null && result.getNewDateRequested() != null && 
+		    		(result.getNewDateRequested().equals("approve") || result.getNewDateRequested().equals("deny"))) {
+		        String msg = result.getNewDateRequested().equals("approve") ? 
+		        		"【" + result.getLenderName() + "】様から" + result.getBookTitle() + "の本の期間延長が承認されました" : 
+		        		"【" + result.getLenderName() + "】様から" + result.getBookTitle() + "の本の期間延長が却下されました。期限までに返却してください";
+		        result.setMessage(msg);
+		        approveOrDenyNotice.add(result);
+		    }
+		}
 
 		//お知らせ合体
 		List<NotificationDTO> ntf = new ArrayList<NotificationDTO>();
@@ -454,6 +486,10 @@ public class LibraryController {
 						return obj2.getNotificationDate().compareTo(obj1.getNotificationDate());
 					}
 				});
+		// added by kk (two functions below)
+		ntf.addAll(anyNewRequestedReturnDate);
+		ntf.addAll(approveOrDenyNotice);
+		// until here added by kk
 
 		//お知らせを表示
 		if (ntf.size() == 0) {
@@ -465,21 +501,27 @@ public class LibraryController {
 		if (previousPage.equals(null)) {
 			return "redirect:/home";
 		} else {
+			/**
+			 * Comment by kk
+			 * For all page redirecting to home,
+			 *   <input type="hidden" name="transId" value="" /> 
+			 * is necessary.
+			 */
 			switch (previousPage) {
 			case "home":
 				return "redirect:/home"; // already work
 			case "add":
-				return "redirect:/exhibit"; // done by kk
+				return "redirect:/exhibit"; // html edited by kk
 			case "borrowlog":
-				return "redirect:/borrowlog"; // done by kk
+				return "redirect:/borrowlog"; // html edited by kk
 			case "editbook":
-				return "redirect:/mybook"; // done by kk
+				return "redirect:/mybook"; // html edited by kk
 			case "edituserinfo":
-				return "redirect:/edituser"; // done by kk
+				return "redirect:/edituser"; // html edited by kk
 			case "lendlog":
-				return "redirect:/lendlog"; // done by kk
+				return "redirect:/lendlog"; // html edited by kk
 			case "mybook":
-				return "redirect:/mybook"; // done by kk
+				return "redirect:/mybook"; // html edited by kk
 			default:
 				return "redirect:/home"; 
 			}

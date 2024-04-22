@@ -74,7 +74,7 @@
 										<button type="submit" name="note" class="blue_btn">確認</button>
 									</div>
 								</form>
-								<!-- added by kk in order to avoid nested form. Logic is handled by JS -->
+								<!-- added by kk in order to avoid nested form. Logic is handled by home.js -->
 								<form id="inner-form" th:action="@{/home}" th:method="post" style="display: none;">
 								    <input type="hidden" id="inner-book-id" name="bookId" />
 								    <input type="hidden" id="inner-book-title" name="bookTitle" />

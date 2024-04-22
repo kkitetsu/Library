@@ -51,16 +51,14 @@
 			<div th:if="${validationError}" class="error_msg">
 				<div th:text="${validationError}"></div>
 			</div>
-			<div th:if="${errorMsg}" class="error_msg">
-				<div th:text="${errorMsg}"></div>
-			</div>
+
 			<div class="main_content_box">
 
 				<!--モーダル-->
 				<div id="apiModal" class="apiModal">
 					<div class="api-modal-content">
 						<div>
-							<div id="titleApiModal"> &lt 検索結果 &gt </div>
+							<p id="titleApiModal"></p>
 							<div id="closeApiModal">&times;</div>
 							<div class="contentBoxApiMordal">
 								<ul id="apiModalItems" class="lists">
@@ -71,30 +69,41 @@
 					</div>
 				</div>
 
+				<!--<div class="search">
+					<div class="search__text">
+						<label>Rakuten Booksから探す:　</label>
+						<input type="text" id="js-search-word" class="api_input_box" value="" placeholder="検索する">
+					</div>
+					<button id="openApiModal" class="alert_box">API</button>
+				</div>-->
 				<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}"
 					th:method="post">
-					
-					<!-- 楽天API -->
-					<div class="search">
-						<div class="search__text">
-							<label>Rakuten Booksから探す:　</label>
-							<input type="text" id="js-search-word" class="api_input_box" value=""
-								placeholder="検索する">
-						</div>
-						<button id="openApiModal" class="alert_box">API</button>
-					</div>
+
 					<label for="imgUpload" class="image-upload-container">
-						<div class="image-upload-placeholder">
+						<div class="image-upload-placeholder" id="uploadMessage">
 							<strong>本の画像をアップロード</strong>
 						</div>
 						<input type="file" id="imgUpload" accept="image/*" style="display: none;"
 							th:field="*{multipartFile}" multiple />
-						<img src="" alt="Image Preview" id="apiPreview" style="display:none;" />
+						<img src="" alt="Image Preview" id="apiPreview" name="apiPreview" style="display:none;" />
+						<input type="hidden" id="apiUrl" name="apiUrl" value="">
 						<figure class="image-preview" id="imagePreview">
 							<img src="" alt="Image Preview" id="previewImage" />
 						</figure>
 					</label><br><br>
 					<table class="add_table">
+						<tr class="table_row">
+							<!-- 楽天API -->
+							<div class="search">
+								<div class="search__text">
+									<td><label for="api">RakutenBooks</label></td>
+									<td><input type="text" id="js-search-word" class="api_input_box" value=""
+											placeholder="キーワード">
+									</td>
+								</div>
+
+							</div>
+						</tr>
 						<tr class="table_row">
 							<td><label for="title">タイトル</label><span class="required">*</span></td>
 							<td><input type="text" th:field="*{title}" class="input_box"></td>
@@ -108,10 +117,9 @@
 							</td>
 						</tr>
 						<tr id="limitdate" class="table_row">
-							<td id="limitdateLabel" class="input_box ">貸出期限<span class="required">*</span></td>
+							<td id="limitdateLabel" class="input_box">貸出期限<span class="required">*</span></td>
 							<td>
-								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box "
-									required />
+								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box" />
 							</td>
 						</tr>
 						<tr>
@@ -119,6 +127,8 @@
 							<td><a href="/home" class="btn btn-primary" id="small_size">キャンセル</a></td>
 						</tr>
 					</table>
+				</form>
+				<button id="openApiModal" class="alert_box">検索</button>
 			</div>
 
 		</div>

@@ -210,5 +210,35 @@ public class LibraryService {
 	public int getLastIdInUsers() {
 		return libraryMapper.getLastIdInUsers();
 	}
+	
+	/** @author kk */
+	public void addNewReturnDateRequested(String transId, String requestedNewDate) { 
+		libraryMapper.addNewReturnDateRequested(transId, requestedNewDate);
+	}
+	
+	/** @author kk */
+	public List<NotificationDTO> getAnyNewRequestedReturnDate(int userId) {
+		return libraryMapper.getAnyNewRequestedReturnDate(userId);
+	}
+	
+	/** @author kk */
+	public void updateNewReturnDate(String newDateRequested, String bookId) {
+		libraryMapper.updateNewReturnDate(newDateRequested, bookId);
+	}
+	
+	/** @author kk */
+	public void removeNewReturnDate(String transId) {
+		libraryMapper.removeNewReturnDate(transId);
+	}
+	
+	/** @author kk */
+	public void addApproveOrDenyOnTrans(String result, String transId) {
+		libraryMapper.addApproveOrDenyOnTrans(result, transId);
+	}
+	
+	/** @author kk */
+	public List<NotificationDTO> getApproveOrDeny(int userId) {
+		return libraryMapper.getApproveOrDeny(userId);
+	}
 
 }

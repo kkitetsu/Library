@@ -1,17 +1,17 @@
 var modal = document.getElementById("apiModal");
-var imgPreview = document.getElementById("imagePreview");
+var imgPreview = document.getElementById("previewImage");
 var apiPreview = document.getElementById("apiPreview");
 var btn = document.getElementById("openApiModal");
 var span = document.getElementById("closeApiModal");
 
 // ボタンがクリックされた時にモーダルを表示
 btn.onclick = function() {
-	alert("hello");
+	const apiKeyword = document.getElementById("titleApiModal");
 	var pageNum = 0;
 	var prevWord = "";
 	pageNum = pageNum + 1
 	var keyWord = $("#js-search-word").val();
-	
+	apiKeyword.textContent = "キーワード ： "+keyWord;
 	if (prevWord !== keyWord) {
 		pageNum = 1;
 		$(".lists").empty();
@@ -36,9 +36,9 @@ btn.onclick = function() {
 						`<div class=lists__item__inner>` +
 						`<a href=${data.Items[i].Item.itemUrl} id=lists__item__link target=_blank>` +
 						`<img src=${data.Items[i].Item.largeImageUrl} id=lists__item__img${i} alt>` + `</a>` +
-						`<label>作品名：　</label><p id=lists__title__detail${i}>${data.Items[i].Item.title}</p>` +
-						`<label>作者：　</label><p id=lists__author__detail${i}>${data.Items[i].Item.author}</p>` +
-						`<label>出版社：　</label><p id=lists__publisher__detail${i}>${data.Items[i].Item.publisherName}</p>` +
+						`<label>作品名：</label><span id=lists__title__detail${i}>${data.Items[i].Item.title}</span>` +
+						`<label>作者：　</label><span id=lists__author__detail${i}>${data.Items[i].Item.author}</span>` +
+						`<label>出版社：　</label><span id=lists__publisher__detail${i}>${data.Items[i].Item.publisherName}</span><br>` +
 						`<button id=lists__option__detail${i} name=${i}>選択</button>` +
 						`</div>` + `</li>`;
 				};
@@ -58,16 +58,21 @@ listRootElm.addEventListener('click', (e) => {
 	const clickElement = e.target;
 	const name = clickElement.getAttribute("name");
 	const content = document.getElementById("lists__title__detail"+ name);
+	const message = document.getElementById("uploadMessage");
 	const url = document.getElementById("lists__item__img"+ name);
-	
-	const title = document.getElementById("title");
-	const preview = document.getElementById("apiPreview");
+	const title = document.getElementById("title");	
+	const apiPreview = document.getElementById("apiPreview");
+	const preview = document.getElementById("previewImage");
+	const apiURL = document.getElementById("apiUrl");
 	if (name != null) {
 		title.value = content.textContent;
-		preview.src = url.getAttribute("src");
+		apiPreview.src = url.getAttribute("src");
+		preview.src = "";
 		modal.style.display = "none";
+		message.style.display = "none";
 		imgPreview.style.display = "none";
 		apiPreview.style.display ="block";
+		apiURL.value = url.getAttribute("src");
 	}
 });
 

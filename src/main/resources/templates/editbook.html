@@ -17,12 +17,18 @@
 </head>
 
 <body>
+	<!-- Loading中の画面-->
+	<div id="loading">
+		<div class="loading_msg_box"> Loading... </div>
+		<div class="loader"> </div>
+	</div>
+
 	<!--画面全体始め（ヘッダー、メイン、フッター)-->
 	<div class="content_box">
 		<!--ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
 		<header>
-			<div class="header_logo">  <a href="/home"><img src="img/rakuten_logo.png"
-						alt="Rakuten_sec_mark" class="maing_logo"> </a></div>
+			<div class="header_logo"> <a href="/home"><img src="img/rakuten_logo.png" alt="Rakuten_sec_mark"
+						class="maing_logo"> </a></div>
 			<div class="header_title"> 楽天図書館 </div>
 			<div class="header_btn_box">
 				<table class="header_table">
@@ -41,49 +47,52 @@
 				-本修正
 			</div>
 			<div class="main_content_box">
+				<div th:if="${validationError}">
+					<div th:text="${validationError}" class="main_title"></div>
+				</div>
 				<form th:action="@{/editbook}" enctype="multipart/form-data" th:object="${bookAddRequest}"
 					th:method="post" class="edit_box">
 					<label for="imgUpload" class="image-upload-container">
 						<div class="image-upload-placeholder">
 							<strong>本の画像をアップロード</strong>
 						</div>
-						<image src="*{image}"></image>
+						<img th:src="*{image}" id="existingImage"></img>
 						<input type="file" id="imgUpload" accept="image/*" style="display: none;"
 							th:field="*{multipartFile}" multiple />
-						<figure class="image-preview" id="imagePreview">
-							<img src="" alt="Image Preview" id="previewImage" />
+						<figure class="image-preview">
+							<img th:src="*{image}" alt="Image Preview" id="previewImage" /></img>
 						</figure>
 					</label><br><br>
-
+					<input type="hidden" th:field="*{image}" value="*{image}">
 					<table class="edit_book_table">
 						<tr class="table_row">
-							<td><label for="title">タイトル</label><span class="required">*</span></td>
-							<td><input type="text" th:field="*{title}" class="input_box"></td>
+							<td class="td1"><label for="title">タイトル</label><span class="required">*</span></td>
+							<td class="td2"><input type="text" th:field="*{title}" class="input_box"></td>
 						</tr>
 						<tr class="table_row">
-							<td><label>区分</label><span class="required">*</span></td>
-							<td>
+							<td class="td1"><label>区分</label><span class="required">*</span></td>
+							<td class="td2">
 								<select th:field="*{category}" class="input_box">
 									<option value="貸出">貸出</option>
 									<option value="譲渡">譲渡</option>
 							</td>
 						</tr>
 						<tr id="limitdate" class="table_row">
-							<td id="limitdateLabel" class="input_box ">貸出期限<span class="required">*</span></td>
-							<td>
-								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box"/>
+							<td id="limitdateLabel" class="td1">貸出期限<span class="required">*</span></td>
+							<td class="td2">
+								<input type="datetime" th:field="*{limitdate}" id="limitDateInput" class="input_box"/>
 							</td>
 						</tr>
 					</table>
 					<table class="edit_book_table">
 						<tr>
-							<td style="width:30%">
+							<td style="width:33%">
 								<input type="submit" class="btn btn-primary" value="削除" name="delete" id="onethird_size">
 							</td>
-							<td style="width:30%">
+							<td style="width:33%">
 								<input type="submit" class="btn btn-danger" value="修正" name="update" id="onethird_size">
 							</td>
-							<td style="width:30%">
+							<td style="width:33%">
 								<a href="/home" class="btn btn-primary" id="onethird_size">キャンセル</a>
 							</td>
 						</tr>
@@ -99,9 +108,8 @@
 		</footer>
 		<!--JavaScriptリンク-->
 		<script type="text/javascript" th:src="@{/js/add.js}"></script>
+		<script type="text/javascript" th:src="@{/js/loading.js}"></script>
 		
-
-
 </body>
 
 </html>

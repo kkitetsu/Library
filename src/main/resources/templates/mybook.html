@@ -37,11 +37,11 @@
 		<div class="main">
 			<!--白い箱-->
 			<div class="main_title">
-				- 出品履歴
+				- 出品中リスト
 			</div>
 			<!-- メインコンテンツが入る赤色の箱 -->
 			<div class="main_content_box">
-				<div th:if="${LogsSize} > 0 ">
+				<div th:if="${LogsSize} > 0 " class="table_box">
 					<Table class="my_book_table">
 						<tr>
 							<th id="border-right">
@@ -67,32 +67,36 @@
 								<form th:action="@{/editbook}"><button type="submit" class="btn btn-secondary"
 										id="edit">
 										編集
-										<input type="hidden" th:name="image" th:value="*{book.image}">
 										<input type="hidden" th:name="id" th:value="*{book.id}">
+										<input type="hidden" th:name="image" th:value="*{book.image}">
+										<input type="hidden" th:name="title" th:value="*{book.title}">
+										<input type="hidden" th:name="category" th:value="*{book.category}">
+										<input type="hidden" th:name="limitdate" th:value="*{book.limitdate}">
 								</form>
 							</td>
 						</tr>
 					</table>
 					<table class="btn_box">
 						<tr>
-							<td>
-								<div class="btn btn-danger" id="smaller_size" th:if="${currentPage} > 1">
-									<a th:href="@{/mybook(currPage=${currentPage - 1})}">
+							<td style="width:33%;  text-align:right;">
+								<a th:href="@{/mybook(currPage=${currentPage - 1})}">
+									<div class="btn btn-danger" id="smaller_size" th:if="${currentPage} > 1">
 										&lt
-									</a>
-								</div>
+									</div>
+								</a>
 							</td>
-							<td>
-								<div id="small_size" style="text-align:center">
+							<td style="width:33%;">
+								<div id="small_size" style="text-align:center; width:100%;">
 									<span th:text="${currentPage}"></span> / <span th:text="${maxPageNum}">
 								</div>
 							</td>
-							<td>
-								<div class="btn btn-danger" id="smaller_size" th:if="${currentPage<maxPageNum}">
-									<a th:href="@{/mybook(currPage=${currentPage + 1})}">
+							<td style="width:33%;  text-align:left;">
+								<a th:href="@{/mybook(currPage=${currentPage + 1})}">
+									<div class="btn btn-danger" id="smaller_size" th:if="${currentPage<maxPageNum}">
 										&gt
-									</a>
-								</div>
+									</div>
+								</a>
+
 							</td>
 						</tr>
 						<tr>

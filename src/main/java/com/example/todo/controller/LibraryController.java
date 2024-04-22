@@ -47,7 +47,11 @@ public class LibraryController {
 	private LibraryService libraryService;
 
 	@GetMapping(value = "/log")
-	public String getLogPage(Model model) {
+	public String getLogPage(Model model, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		return "/log";
 	}
 
@@ -60,6 +64,10 @@ public class LibraryController {
 
 	@RequestMapping(value = "/borrowlog", method = { RequestMethod.GET, RequestMethod.POST })
 	public String getBorrowLogPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		int LogsSize = libraryService.getBorrowLogsSize(userId);
 		final int SUBLISTSIZE = 5;
@@ -89,6 +97,10 @@ public class LibraryController {
 	 **/
 	@RequestMapping(value = "/lendlog", method = { RequestMethod.GET, RequestMethod.POST })
 	public String getLendLogPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		int LogsSize = libraryService.getLendLogsSize(userId);
 		final int SUBLISTSIZE = 5;
@@ -119,6 +131,10 @@ public class LibraryController {
 	 **/
 	@RequestMapping(value = "/mybook", method = { RequestMethod.GET, RequestMethod.POST })
 	public String getmybookPage(@RequestParam(defaultValue = "1") int currPage, Model model, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		int userId = Integer.parseInt(session.getAttribute("userId").toString());
 		int LogsSize = libraryService.getMyBookLogsSize(userId);
 		final int SUBLISTSIZE = 5;
@@ -147,6 +163,10 @@ public class LibraryController {
 	 **/
 	@GetMapping(value = "/edituser")
 	public String geteditUserPage(Model model, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		// Edited by kk. Display user ID on the page
 		UsersEntity user = new UsersEntity();
 		user.setLoginId(
@@ -162,6 +182,10 @@ public class LibraryController {
 	@RequestMapping(value = "/edituser", method = RequestMethod.POST)
 	public String EditUserInfo(@Validated @ModelAttribute UsersEntity usersEntity,
 			BindingResult bindingResult, Model model, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		if (bindingResult.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : bindingResult.getAllErrors()) {
@@ -181,7 +205,8 @@ public class LibraryController {
 
 	/** @author kk */
 	@GetMapping(value = "/login")
-	public String getLoginPage(Model model) {
+	public String getLoginPage(Model model, HttpSession session) {
+		session.invalidate();
 		model.addAttribute("loginRequest", new LoginRequest());
 		return "login";
 	}
@@ -233,6 +258,7 @@ public class LibraryController {
 		model.addAttribute("condition", model.getAttribute("alertMessage"));
 
 		if (session.getAttribute("userId") == null) {
+			// added by kk
 			return "redirect:/login";
 		}
 		//ユーザーID：セッション取得
@@ -346,6 +372,10 @@ public class LibraryController {
 	@RequestMapping(value = "/home", params = "search", method = RequestMethod.POST)
 	public String search(Model model, SearchBooksRequest searchBooksRequest, HttpSession session,
 			@RequestParam("category") String category) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 
 		//カテゴリの指定がなければ、前回選択したカテゴリを引き継ぎ
 		List<BooksEntity> bookshelf = new ArrayList<BooksEntity>();
@@ -410,6 +440,10 @@ public class LibraryController {
 						@RequestParam("note") String[] note,
 						@RequestParam("transId") String transId,
 						@RequestParam(value = "previousPage", required = false) String previousPage) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 
 		for (int i = 0; i < note.length - 1; i++) {
 			// There will be a NumberFormatException when user checks the approve or deny message
@@ -541,6 +575,10 @@ public class LibraryController {
 	                                @RequestParam("newDateRequested") String newDateRequested,
 	                                @RequestParam("borrowerName") String borrowerName,
 	                                @RequestParam("transId") String transId) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		if (requestResponse.equals("approve")) {
 			libraryService.updateNewReturnDate(newDateRequested, bookId);
 		}
@@ -562,6 +600,7 @@ public class LibraryController {
 	@GetMapping(value = "/exhibit")
 	public String displayAdd(Model model, HttpSession session) {
 		if (session.getAttribute("userId") == null) {
+			// added by kk
 			return "redirect:/login";
 		}
 		BookAddRequest bka = new BookAddRequest();
@@ -574,10 +613,16 @@ public class LibraryController {
 	 * 本の修正への遷移経路
 	 **/
 	@GetMapping(value = "/editbook")
-	public String displayeditbook(Model model, @RequestParam("id") int id, @RequestParam("title") String title,
-			@RequestParam("category") String category, 
-			@RequestParam("limitdate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate limitdate,
-			@RequestParam("image") String image) {
+	public String displayeditbook(Model model, HttpSession session,
+									@RequestParam("id") int id, 
+									@RequestParam("title") String title,
+									@RequestParam("category") String category, 
+									@RequestParam("limitdate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate limitdate,
+									@RequestParam("image") String image) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		BookAddRequest bka = new BookAddRequest();
 		bka.setId(id);
 		bka.setTitle(title);
@@ -592,8 +637,13 @@ public class LibraryController {
 	/**@author Aru*/
 	
 	@RequestMapping(value = "/editbook", params= "update", method = RequestMethod.POST)
-    public String editBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {		
-			if (bindingResult.hasErrors()) {
+    public String editBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, 
+    															Model model, HttpSession session) {		
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
+		if (bindingResult.hasErrors()) {
             		List<String> errorList = new ArrayList<String>();
             		for (ObjectError error : bindingResult.getAllErrors()) {
             			errorList.add(error.getDefaultMessage());
@@ -635,17 +685,25 @@ public class LibraryController {
 	 */
 	@RequestMapping(value = "/editbook", params= "delete", method = RequestMethod.POST)
     public String deleteBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, 
-   		Model model, HttpSession session) {		
+    															Model model, HttpSession session) {	
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 
-			libraryService.bookDeliter(bookRequest);
-		
-			return "redirect:/home";        
+		libraryService.bookDeliter(bookRequest);
+	
+		return "redirect:/home";        
 	}
 	
 
 	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
-	public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, Model model, HttpSession session) {
-		session.setAttribute("userId", 1);
+	public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, 
+														Model model, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		bookRequest.setUserId((int) session.getAttribute("userId"));
 		if (bindingResult.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
@@ -714,7 +772,11 @@ public class LibraryController {
 	}
 
 	@GetMapping(value = "/modifyUserInfo")
-	public String getModifyUserInfo(Model model) {
+	public String getModifyUserInfo(Model model, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		return "/modifyUserInfo";
 	}
 
@@ -761,6 +823,10 @@ public class LibraryController {
             					 @RequestParam("limitdate") String limitdate, 
             					 @RequestParam("exhibitorId") String exhibitorId, 
             					 Model model, HttpSession session, RedirectAttributes redirectAttributes) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		
 		if (exhibitorId.equals(session.getAttribute("userId").toString())) {
 			// User cannot borrow his or her own book
@@ -790,6 +856,10 @@ public class LibraryController {
 	public String doBookConfirm(@RequestParam("id") String id,
 			@RequestParam("exhibitorId") String exhibitorId,
 			Model model, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		int bookId = Integer.parseInt(id);
 		int lenderId = Integer.parseInt(exhibitorId);
 		int borrowerId = Integer.parseInt(session.getAttribute("userId").toString());
@@ -806,6 +876,10 @@ public class LibraryController {
 	 */
 	@PostMapping("/logout")
 	public String doLogOut(Model model, HttpSession session) {
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		session.invalidate(); // Logout and back to home
 		return "redirect:/login";
 	}
@@ -817,9 +891,10 @@ public class LibraryController {
 	public String requestNewReturnDate(Model model, HttpSession session, 
 									@RequestParam("newReturnDate") String newReturnDate,
 									@RequestParam("transId") String transId) {
-		
-		System.out.println(newReturnDate);
-		System.out.println(transId);
+		if (session.getAttribute("userId") == null) {
+			// added by kk
+			return "redirect:/login";
+		}
 		libraryService.addNewReturnDateRequested(transId, newReturnDate);
 		return "redirect:/home";
 	}

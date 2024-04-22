@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Document</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="css/kawabe.css" />
+	<link rel="stylesheet" href="css/home.css" />
+</head>
+
+<body>
+	<div class="wrap">
+		<div class="container">
+			<div class="search">
+				<div class="search__text">
+					<input type="text" id="js-search-word" class="search__text__input" value="" placeholder="検索する">
+				</div>
+				<button id="openApiModal" class="alert_box">API</button>
+			</div>
+
+
+		</div>
+	</div>
+
+	<div id="apiModal" class="apiModal">
+		<div class="api-modal-content">
+			<div>
+				<div id="titleApiModal"> &lt 検索結果 &gt </div>
+				<div id="closeApiModal">&times;</div>
+				<div  class="contentBoxApiMordal">
+					<ul id="apiModalItems" class="lists">
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" th:src="@{/js/api.js}"></script>
+</body>
+
+</html>

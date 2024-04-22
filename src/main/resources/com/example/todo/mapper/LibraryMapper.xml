@@ -314,7 +314,8 @@
 			id= #{id};
 	</update>
 	
-	<update id="confirmBorrowerNotification">
+	<!--  edited by kk. Include return statement in order to see if any rows are affected -->
+	<update id="confirmBorrowerNotification" parameterType="map" statementType="PREPARED">
 		UPDATE
 			transactions
 		SET
@@ -324,7 +325,7 @@
 		AND
 			borrower_user_id = #{user_id}
 	</update>
-	<update id="confirmLenderNotification">
+	<update id="confirmLenderNotification" parameterType="map" statementType="PREPARED">
 		UPDATE
 			transactions
 		SET
@@ -407,6 +408,7 @@
 	<select id="getApproveOrDeny" resultType="com.example.todo.dto.NotificationDTO">
 		SELECT 
 			t.new_date_requested,
+			t.id AS TransId,
 			b.title AS BookTitle,
 			u.name AS LenderName
 		FROM

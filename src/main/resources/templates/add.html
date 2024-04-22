@@ -146,12 +146,10 @@
 			<div th:if="${validationError}" class="error_msg">
 				<div th:text="${validationError}"></div>
 			</div>
-			<div th:if="${errorMsg}" class="error_msg">
-				<div th:text="${errorMsg}"></div>
-			</div>
+
 			<div class="main_content_box">
 				<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}"
-					th:method="post">
+					th:method="post" style="width:95%">
 					<label for="imgUpload" class="image-upload-container">
 						<div class="image-upload-placeholder">
 							<strong>本の画像をアップロード</strong>
@@ -176,10 +174,11 @@
 							</td>
 						</tr>
 						<tr id="limitdate" class="table_row">
-							<td id="limitdateLabel" class="input_box ">貸出期限<span class="required">*</span></td>
+							<td id="limitdateLabel">貸出期限<span class="required">*</span></td>
 							<td>
-								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box "
+  						<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box "
 									required />
+
 							</td>
 						</tr>
 						<tr>

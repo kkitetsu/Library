@@ -1,0 +1,31 @@
+name: Push Notification
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - kk-v2
+      - home
+
+jobs:
+  send_notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Send LINE notification
+        env:
+          LINE_NOTIFY_ACCESS_TOKEN: ${{ secrets.LINE_NOTIFY_ACCESS_TOKEN }}
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer $LINE_NOTIFY_ACCESS_TOKEN" \
+            -F "message=A new push event occurred on GitHub by ${{ github.actor }}." \
+            https://notify-api.line.me/api/notify
+
+      - name: Send Slack Notification
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"${{ github.actor }} がプッシュしました。"}' $SLACK_WEBHOOK_URL

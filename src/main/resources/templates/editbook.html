@@ -18,6 +18,12 @@
 </head>
 
 <body>
+	<!-- Loading中の画面-->
+	<div id="loading">
+		<div class="loading_msg_box"> Loading... </div>
+		<div class="loader"> </div>
+	</div>
+
 	<!--画面全体始め（ヘッダー、メイン、フッター)-->
 	<div class="content_box">
 		<!--ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
@@ -137,20 +143,23 @@
 			</nav>
 			<!-- サイドバー終 -->
 			<div class="main_content_box">
+				<div th:if="${validationError}">
+					<div th:text="${validationError}" class="main_title"></div>
+				</div>
 				<form th:action="@{/editbook}" enctype="multipart/form-data" th:object="${bookAddRequest}"
 					th:method="post" class="edit_box">
 					<label for="imgUpload" class="image-upload-container">
 						<div class="image-upload-placeholder">
 							<strong>本の画像をアップロード</strong>
 						</div>
-						<image src="*{image}"></image>
+						<img th:src="*{image}" id="existingImage"></img>
 						<input type="file" id="imgUpload" accept="image/*" style="display: none;"
 							th:field="*{multipartFile}" multiple />
-						<figure class="image-preview" id="imagePreview">
-							<img src="" alt="Image Preview" id="previewImage" />
+						<figure class="image-preview">
+							<img th:src="*{image}" alt="Image Preview" id="previewImage" /></img>
 						</figure>
 					</label><br><br>
-
+					<input type="hidden" th:field="*{image}" value="*{image}">
 					<table class="edit_book_table">
 						<tr class="table_row">
 							<td class="td1"><label for="title">タイトル</label><span class="required">*</span></td>
@@ -191,7 +200,6 @@
 				</form>
 			</div>
 		</div>
-
 	</div>
 	<footer>
 		問い合わせ先：rakuten_tarou@rakuten-sec.co.jp

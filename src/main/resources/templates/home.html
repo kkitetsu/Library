@@ -23,6 +23,8 @@
 			<div class="header_title"> 楽天図書館 </div>
 
 			<div class="header_btn_box">
+				
+				 
 				<table class="header_table">
 					<td>
 						<button type="submit" id="openModal" class="alert_box">
@@ -191,6 +193,8 @@
 					</table>
 				</form>
 			</div>
+			 <div th:if="${alertMessage != null and alertMessage.contains('自分の')}" th:text="${alertMessage}" class="error_msg">
+			 </div>
 			<div th:if="${session.bookshelf}">
 				<div class="main_content_box" th:if="${session.condition}">
 					<div class="condition">

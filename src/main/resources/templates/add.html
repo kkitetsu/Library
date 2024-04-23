@@ -124,7 +124,6 @@
 							<div>
 								<img src="img/user_img.png" alt="user_icon" class="user_icon">
 							</div>
-
 						</td>
 					</Tr>
 					<tr>
@@ -203,7 +202,6 @@
 				</div>-->
 				<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}"
 					th:method="post">
-
 					<label for="imgUpload" class="image-upload-container">
 						<div class="image-upload-placeholder" id="uploadMessage">
 							<strong>本の画像をアップロード</strong>
@@ -242,7 +240,7 @@
 							</td>
 						</tr>
 						<tr id="limitdate" class="table_row">
-							<td id="limitdateLabel" class="input_box">貸出期限<span class="required">*</span></td>
+							<td id="limitdateLabel">貸出期限<span class="required">*</span></td>
 							<td>
   						<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box "
 									required />

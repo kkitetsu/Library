@@ -102,7 +102,7 @@
 			<div class="main_title">
 				- 出品中リスト
 			</div>
-						<!--　サイドバー -->
+			<!--　サイドバー -->
 			<div class="overlay"></div>
 			<nav class="nav">
 				<div class="logo">
@@ -184,7 +184,8 @@
 						<!-- Table rows will be added dynamically here -->
 						<tr th:each="book :${mybook}">
 							<td th:text="*{book.category}" id="border-right"> </td>
-							<td th:text="*{book.title}" id="border-right"> </td>
+							<td th:text="*{book.title}" id="border-right" style="max-width:30%; word-break: break-all;">
+							</td>
 							<td th:text="*{book.limitdate}" id="border-right"> </td>
 							<td>
 
@@ -242,7 +243,20 @@
 						<img src="img/no_result_image.png" alt="No_Result_Img" class="no_result_img"></img>
 					</div>
 					<div th:if="${errMsg}" th:text="${errMsg}" class="error_msg"> </div>
+					<table class="btn_box">
+						<tr>
+							<Td>
+								<div>
+									<form th:action="@{/home}" th:method="GET">
+										<button type="submit" class="btn btn-primary" id="small_size" value="home">
+											ホーム</button>
+									</form>
+								</div>
+							</Td>
+						</tr>
+					</table>
 				</div>
+
 			</div>
 			<!-- フッター（修正禁止）-->
 

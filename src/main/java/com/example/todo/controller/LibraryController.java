@@ -175,7 +175,8 @@ public class LibraryController {
 		// Edited by kk. Display user ID on the page
 		UsersEntity user = new UsersEntity();
 		user.setLoginId(
-				libraryService.getLoginIdBasedOnId(Integer.parseInt(session.getAttribute("userId").toString())));
+			libraryService.getLoginIdBasedOnId(Integer.parseInt(session.getAttribute("userId").toString()))
+		);
 		model.addAttribute("userEntity", user);
 		return "/edituserInfo";
 	}
@@ -197,7 +198,12 @@ public class LibraryController {
 				errorList.add(error.getDefaultMessage());
 			}
 			model.addAttribute("errMsg", errorList);
-			model.addAttribute("userEntity", new UsersEntity());
+			// Edited by kk. Display user ID on the page
+			UsersEntity user = new UsersEntity();
+			user.setLoginId(
+				libraryService.getLoginIdBasedOnId(Integer.parseInt(session.getAttribute("userId").toString()))
+			);
+			model.addAttribute("userEntity", user);
 			return "/edituserInfo";
 		}
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
@@ -223,7 +229,11 @@ public class LibraryController {
 		if (bindingResult.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : bindingResult.getAllErrors()) {
-				errorList.add(error.getDefaultMessage());
+				if (error.getDefaultMessage().contains("Failed to convert")) {
+					errorList.add("ログイン ID は整数である必要があります");
+				} else {
+					errorList.add(error.getDefaultMessage());
+				}
 			}
 			model.addAttribute("errMsg", errorList);
 			model.addAttribute("logininfo", new LoginRequest());
@@ -563,6 +573,8 @@ public class LibraryController {
 				return "redirect:/lendlog"; // html edited by kk
 			case "mybook":
 				return "redirect:/mybook"; // html edited by kk
+			case "confirm":
+				return "redirect:/home";
 			default:
 				return "redirect:/home"; 
 			}
@@ -820,7 +832,11 @@ public class LibraryController {
 		if (bindingResult.hasErrors()) {
 			List<String> errorList = new ArrayList<String>();
 			for (ObjectError error : bindingResult.getAllErrors()) {
-				errorList.add(error.getDefaultMessage());
+				if (error.getDefaultMessage().contains("Failed to convert")) {
+					errorList.add("正しいidではありません。");
+				} else {
+					errorList.add(error.getDefaultMessage());
+				}
 			}
 			model.addAttribute("errMsg", errorList);
 			model.addAttribute("userEntity", new UsersEntity());

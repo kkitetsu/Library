@@ -14,8 +14,6 @@
 }
 
 .alert_box_api{
-	position: relative;
-	top:155px;
 	font-weight: bolder;
 	color: white;
 	background-color: #dc3545;
@@ -38,8 +36,7 @@
 	height: 95%;
 	border-radius: 10px;
 	padding-left: 10px;
-	width: 80%;
-	max-width: 600px;
+	width: 95%;
 }
 
 .lists__item {

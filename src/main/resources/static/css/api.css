@@ -46,14 +46,14 @@
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     display: inline-block;
-    width: 25%;
+    width: 33%;
     padding: 0 20px 20px 0;
     vertical-align: top;
     text-align: center;
 }
 .lists__item__inner {
     width: 100%;
-    max-width: 200px;
+    max-width: 300px;
     margin: 0 auto;
 }
 .lists__item__link {
@@ -61,12 +61,26 @@
     text-decoration: none;
 }
 
+.api_btn{
+	color: white;
+	background-color: #dc3545;
+	width: 100px;
+	height: auto;
+	font-size: 25px;
+	margin: 10px;
+	margin-top: 20px;
+	padding: 10px;
+	border-radius: 30px;
+	text-align:center;
+	border:none;
+}
+
 .api-modal-content {
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	width: 80%;
-	height: 800px;
+	height: 1000px;
 	transform: translate(-50%, -50%);
 	padding: 20px;
 	background-color: #fefefe;
@@ -97,7 +111,7 @@
 	font-size:25px;
 	padding:25px;
 	font-weight:bolder;
-	height:650px;
+	height:800px;
 	overflow: auto;
 	border: black 1px solid;
 	border-radius:10px;

@@ -11,6 +11,7 @@ import com.example.todo.validation.FileSize;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -20,6 +21,7 @@ public class BookAddRequest implements Serializable {
 	
 	private String image;
 	
+	@Size(max=200, message="タイトルが長すぎます200文字以内で勘弁してください")
 	@NotEmpty(message="タイトルは必須です")
 	private String title;
 	

@@ -87,3 +87,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('onethird_size').addEventListener('click', function(event) {
+    const title = document.querySelector('input[name="title"]').value.trim();
+    const limitdate = document.querySelector('input[name="limitdate"]').value.trim();
+
+    // タイトルのバリデーション
+    if (!title) {
+      alert('タイトルを入力してください。');
+      event.preventDefault(); // フォーム送信を中断
+      return false;
+    }
+
+    // 貸出期限のバリデーション
+    if (!limitdate) {
+      alert('貸出期限を入力してください。');
+      event.preventDefault(); // フォーム送信を中断
+      return false;
+    }
+  });
+});
+
+
+

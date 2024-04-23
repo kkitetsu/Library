@@ -48,12 +48,17 @@ function handleInnerFormSubmission(btn, action) {
 // until here added by kk
 
 
+//added by Aru below
 
-//編集完了モーダル
+
+// 編集完了モーダル
 document.addEventListener('DOMContentLoaded', function() {
   var urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('editSuccess')) {
     openModal();
+    var bookTitle = urlParams.get('bookTitle'); // 本のタイトルを取得
+    var message = `${bookTitle}の編集が完了しました`;
+    document.getElementById('editNotification').textContent = message;
   }
 
   function openModal() {
@@ -81,12 +86,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
 //削除完了モーダル
 document.addEventListener('DOMContentLoaded', function() {
   var urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('deleteSuccess')) {
     openModal();
+    var bookTitle = urlParams.get('bookTitle'); // 本のタイトルを取得
+    var message = `${bookTitle}の削除が完了しました`;
+    document.getElementById('deleteNotification').textContent = message;
   }
 
   function openModal() {
@@ -120,6 +127,9 @@ document.addEventListener('DOMContentLoaded', function() {
   var urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('exhibitSuccess')) {
     openModal();
+    var bookTitle = urlParams.get('bookTitle'); // 本のタイトルを取得
+    var message = `${bookTitle}の出品が完了しました`;
+    document.getElementById('exhibitNotification').textContent = message;
   }
 
   function openModal() {

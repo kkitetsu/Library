@@ -204,7 +204,12 @@
 					<button id="openApiModal" class="alert_box">API</button>
 				</div>-->
 				<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}"
+<<<<<<< HEAD
+					th:method="post" id="bookForm">
+
+=======
 					th:method="post" style="width:95%;">
+>>>>>>> c9217b384eb9a21b2f99814569df83b3340fee6e
 					<label for="imgUpload" class="image-upload-container">
 						<div class="image-upload-placeholder" id="uploadMessage">
 							<strong>本の画像をアップロード</strong>
@@ -236,7 +241,8 @@
 						</tr>
 						<tr class="table_row">
 							<td><label for="title">タイトル</label><span class="required">*</span></td>
-							<td colspan="2" style="text-align:left;"><input type="text" th:field="*{title}" class="input_box"></td>
+
+							<td colspan="2" style="text-align:left;"><input type="text" th:field="*{title}" class="input_box" required></td>
 						</tr>
 						<tr class="table_row">
 							<td><label>区分</label><span class="required">*</span></td>
@@ -247,6 +253,7 @@
 							</td>
 						</tr>
 						<tr id="limitdate" class="table_row">
+
 							<td id="limitdateLabel" >貸出期限<span class="required">*</span></td>
 							<td colspan="2" style="text-align:left;">
 								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box_3"

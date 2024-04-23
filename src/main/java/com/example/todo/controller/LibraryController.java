@@ -657,7 +657,7 @@ public class LibraryController {
 	
 	@RequestMapping(value = "/editbook", params= "update", method = RequestMethod.POST)
     public String editBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, 
-    															Model model, HttpSession session) {		
+    															Model model, HttpSession session, RedirectAttributes redirectAttributes) {		
 		if (session.getAttribute("userId") == null) {
 			// added by kk
 			return "redirect:/login";
@@ -683,6 +683,8 @@ public class LibraryController {
 	
 			});
 			libraryService.bookEditer(bookRequest);
+			redirectAttributes.addAttribute("editSuccess", "true");
+	        redirectAttributes.addAttribute("bookTitle", bookRequest.getTitle());
 			
 			try {
 				Thread.sleep(7000);
@@ -706,13 +708,15 @@ public class LibraryController {
 	 */
 	@RequestMapping(value = "/editbook", params= "delete", method = RequestMethod.POST)
     public String deleteBook(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, 
-    															Model model, HttpSession session) {	
+    															Model model, HttpSession session, RedirectAttributes redirectAttributes) {	
 		if (session.getAttribute("userId") == null) {
 			// added by kk
 			return "redirect:/login";
 		}
 
 			libraryService.bookDeliter(bookRequest);
+			redirectAttributes.addAttribute("deleteSuccess", "true");
+	        redirectAttributes.addAttribute("bookTitle", bookRequest.getTitle());
 		
 			return "redirect:/home?deleteSuccess=true";        
 
@@ -721,7 +725,7 @@ public class LibraryController {
 
 	@RequestMapping(value = "/exhibit", method = RequestMethod.POST)
 	public String exhibit(@Validated @ModelAttribute BookAddRequest bookRequest, BindingResult bindingResult, 
-														Model model, HttpSession session,@RequestParam("apiUrl") String apiUrl) {
+														Model model, HttpSession session,RedirectAttributes redirectAttributes,@RequestParam("apiUrl") String apiUrl) {
 		if (session.getAttribute("userId") == null) {
 			// added by kk
 			return "redirect:/login";
@@ -739,6 +743,8 @@ public class LibraryController {
 		List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
 		multipartFile.forEach(e -> {
 			bookRequest.setImgPath(uploadAction(e));
+			redirectAttributes.addAttribute("exhibitSuccess", "true");
+	        redirectAttributes.addAttribute("bookTitle", bookRequest.getTitle());
 		});
 		/**
 		 * shunsukekuzawa

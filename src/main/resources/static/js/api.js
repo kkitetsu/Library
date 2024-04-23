@@ -25,7 +25,7 @@ btn.onclick = function() {
 				format: "json",
 				bookGenreId: "001",
 				page: pageNum,
-				hits: 20,
+				hits: 30,
 			}
 		}).done(function(data) {
 			if (data.count > 0) {
@@ -35,11 +35,23 @@ btn.onclick = function() {
 					list += `<li class=lists__item>` +
 						`<div class=lists__item__inner>` +
 						`<a href=${data.Items[i].Item.itemUrl} id=lists__item__link target=_blank>` +
-						`<img src=${data.Items[i].Item.largeImageUrl} id=lists__item__img${i} alt>` + `</a>` +
-						`<label>作品名：</label><span id=lists__title__detail${i}>${data.Items[i].Item.title}</span>` +
-						`<label>作者：　</label><span id=lists__author__detail${i}>${data.Items[i].Item.author}</span>` +
-						`<label>出版社：　</label><span id=lists__publisher__detail${i}>${data.Items[i].Item.publisherName}</span><br>` +
-						`<button id=lists__option__detail${i} name=${i}>選択</button>` +
+						`<img src=${data.Items[i].Item.largeImageUrl} id=lists__item__img${i} alt>` + `</a><br>` 
+						+`<table　width="600">`
+							+`<tr>`
+								+`<td><label>作品名：</label></td>`
+								+`<td><span id=lists__title__detail${i}>${data.Items[i].Item.title}</span></td><br>`
+							+`</tr>`
+							+`<tr>`
+								+`<td><label>作者：</label></td>`
+								+`<td><span id=lists__author__detail${i}>${data.Items[i].Item.author}</span></td><br>`
+							+`</tr>`
+							+`<tr>`
+								+`<td><label>出版社：</label></td>`
+								+`<td><span id=lists__publisher__detail${i}>${data.Items[i].Item.publisherName}</span><br>` 
+								+`</td>`
+							+`</tr>`
+						+`</table>`+
+						`<button class="api_btn" id=lists__option__detail${i} name=${i}>選択</button>` +
 						`</div>` + `</li>`;
 				};
 				$(".lists").prepend(list);

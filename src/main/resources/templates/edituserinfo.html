@@ -179,6 +179,7 @@
 							</td>
 							<td>
 								<span th:text="*{loginId}"></span>
+								<input th:field="*{loginId}" type="hidden" class="input_box" name="login_id">
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -297,7 +298,7 @@
 				var emailValue = emailInput.value.trim();
 
 				if (!emailPattern.test(emailValue)) {
-					emailError.textContent = "Please enter a valid email address";
+					emailError.textContent = "メールアドレスがおかしいです";
 					emailInput.classList.add('error-border');
 				} else {
 					emailError.textContent = "";

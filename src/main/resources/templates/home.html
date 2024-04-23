@@ -23,6 +23,8 @@
 			<div class="header_title"> 楽天図書館 </div>
 
 			<div class="header_btn_box">
+				
+				 
 				<table class="header_table">
 					<td>
 						<button type="submit" id="openModal" class="alert_box">
@@ -190,6 +192,8 @@
 					</table>
 				</form>
 			</div>
+			 <div th:if="${alertMessage != null and alertMessage.contains('自分の')}" th:text="${alertMessage}" class="error_msg">
+			 </div>
 			<div th:if="${session.bookshelf}">
 				<div class="main_content_box" th:if="${session.condition}">
 					<div class="condition">
@@ -256,12 +260,12 @@
 			</form>
 		</div>
 
-		<!--編集モーダル 須崎-->
+		<!--編集モーダル-->
 		<div id="editModal" style="display:none">
 			<div class="modal-content">
 				<div id="titleModal"> &lt お知らせ &gt </div>
 				<div class="contentBoxMordal">
-					<p class="notification">編集が完了しました</p>
+					<p class="notification" id="editNotification">編集が完了しました</p>
 					<div class="center_box">
 						<button class="blue_btn" id="closeEdit">確認</button>
 					</div>
@@ -269,12 +273,12 @@
 			</div>
 		</div>
 
-		<!--削除モーダル 須崎-->
+		<!--削除モーダル-->
 		<div id="deleteModal" style="display:none">
 			<div class="modal-content">
 				<div id="titleModal"> &lt お知らせ &gt </div>
 				<div class="contentBoxMordal">
-					<p class="notification">削除が完了しました</p>
+					<p class="notification" id="deleteNotification">削除が完了しました</p>
 					<div class="center_box">
 						<button class="blue_btn" id="closeDelete">確認</button>
 					</div>
@@ -282,12 +286,12 @@
 			</div>
 		</div>
 		
-		<!--出品モーダル 須崎-->
+		<!--出品モーダル-->
 		<div id="exhibitModal" style="display:none">
 			<div class="modal-content">
 				<div id="titleModal"> &lt お知らせ &gt </div>
 				<div class="contentBoxMordal">
-					<p class="notification">出品が完了しました</p>
+					<p class="notification" id="exhibitNotification">出品が完了しました</p>
 					<div class="center_box">
 						<button class="blue_btn" id="closeExhibit">確認</button>
 					</div>

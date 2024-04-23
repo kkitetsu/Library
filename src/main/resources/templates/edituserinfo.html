@@ -172,13 +172,14 @@
 				<!-- 各inputのnameはusers tableの名前をそのまま使用-->
 				<!-- 各inputに条件必要-->
 				<table class="edit_user_table">
-					<form th:action="@{/edituser}" th:method="POST" th:object="${userEntity}">
+					<form th:action="@{/edituser}" th:method="POST" th:object="${userEntity}" onsubmit="return validatePasswords()">
 						<tr class="table_row">
 							<td>
 								<label for="login_id"> IDは変えられません：</label>
 							</td>
 							<td>
 								<span th:text="*{loginId}"></span>
+								<input th:field="*{loginId}" type="hidden" class="input_box" name="login_id">
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -297,13 +298,26 @@
 				var emailValue = emailInput.value.trim();
 
 				if (!emailPattern.test(emailValue)) {
-					emailError.textContent = "Please enter a valid email address";
+					emailError.textContent = "メールアドレスがおかしいです";
 					emailInput.classList.add('error-border');
 				} else {
 					emailError.textContent = "";
 					emailInput.classList.remove('error-border');
 				}
 			});
+			
+			function validatePasswords() {
+		        var password = document.getElementById("password").value;
+		        var confirmPassword = document.getElementById("confirm_password").value;
+		
+		        if (password !== confirmPassword) {
+		            document.getElementById("password_error").style.display = "inline";
+		            return false; // Prevent form submission
+		        } else {
+		            document.getElementById("password_error").style.display = "none";
+		            return true; // Allow form submission
+		        }
+		    }
 
 		</script>
 		<!--JavaScriptリンク-->

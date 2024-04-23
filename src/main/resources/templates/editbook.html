@@ -175,7 +175,7 @@
 					<div th:text="${validationError}" class="main_title"></div>
 				</div>
 				<form th:action="@{/editbook}" enctype="multipart/form-data" th:object="${bookAddRequest}"
-					th:method="post" class="edit_box">
+					th:method="post" class="edit_box" id="bookForm">
 					<label for="imgUpload" class="image-upload-container">
 						<div class="image-upload-placeholder">
 							<strong>本の画像をアップロード</strong>
@@ -192,7 +192,7 @@
 					<table class="edit_book_table">
 						<tr class="table_row">
 							<td class="td1"><label for="title">タイトル</label><span class="required">*</span></td>
-							<td class="td2"><input type="text" th:field="*{title}" class="input_box"></td>
+							<td class="td2"><input type="text" th:field="*{title}" class="input_box" required></td>
 						</tr>
 						<tr class="table_row">
 							<td class="td1"><label>区分</label><span class="required">*</span></td>
@@ -206,7 +206,7 @@
 
 							<td id="limitdateLabel" class="td1">貸出期限<span class="required">*</span></td>
 							<td class="td2">
-								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box"/>
+								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box" required/>
 							</td>
 						</tr>
 					</table>

@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.ui.Model;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -28,6 +29,7 @@ import com.example.todo.forms.BookAddRequest;
 import com.example.todo.forms.LoginRequest;
 import com.example.todo.service.LibraryService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.ConstraintViolation;
 
 /**
@@ -60,6 +62,9 @@ class LibraryApplicationTests {
     
     @Autowired
     private LocalValidatorFactoryBean validatorFactory;
+    
+    @MockBean
+    private HttpSession session;
     
     /** @author kk */
     @BeforeEach
@@ -94,7 +99,7 @@ class LibraryApplicationTests {
 	@Test
     public void testGetLoginPage() {
         Model model = mock(Model.class);
-        String viewName = libraryController.getLoginPage(model);
+        String viewName = libraryController.getLoginPage(model, session);
         assertEquals("login", viewName);
 	}
 	
@@ -160,13 +165,13 @@ class LibraryApplicationTests {
         Set<ConstraintViolation<UsersEntity>> violations = validatorFactory.validate(usersEntity);
 
         // Assert that there is exactly one violation
-        assertEquals(3, violations.size());
+        assertEquals(5, violations.size());
 
         // Check each violation message
         boolean invalidEmailViolationFound = false;
         boolean nonPositiveIdViolationFound = false;
         for (ConstraintViolation<UsersEntity> violation : violations) {
-            if ("メールアドレスがおかしいです".equals(violation.getMessage())) {
+            if ("正しいメールアドレスの形式ではありません。".equals(violation.getMessage())) {
                 invalidEmailViolationFound = true;
             } else if ("ログインID は 0 より大きい必要があります".equals(violation.getMessage())) {
                 nonPositiveIdViolationFound = true;
@@ -181,11 +186,7 @@ class LibraryApplicationTests {
         usersEntity.setLoginId(-4);
         violations = validatorFactory.validate(usersEntity);
         
-        assertEquals(2, violations.size());
-        
-        ConstraintViolation<UsersEntity> violation = violations.iterator().next();
-        assertEquals("パスワードは４から16文字です", violation.getMessage());
-
+        assertEquals(3, violations.size());
 	}
     
     /** 

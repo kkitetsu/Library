@@ -48,7 +48,7 @@
 					<form th:action="@{/register}" th:method="POST" th:object="${userEntity}" onsubmit="return validatePasswords()">
 						<tr class="table_row">
 							<td>
-								<label for="login_id"> ID</label>
+								<label for="login_id">ID<h6>(4桁もしくは6桁の社員番号)</h6></label>
 								<span class="required">*</span>
 							</td>
 							<td>
@@ -57,7 +57,7 @@
 						</tr>
 						<tr class="table_row">
 							<td>
-								<label for="password">パスワード</label>
+								<label for="password">パスワード<h6>(4文字から16文字の英数字)</h6></label>
 								<span class="required">*</span>
 							</td>
 							<td>
@@ -67,7 +67,7 @@
 						</tr>
 						<tr class="table_row">
 				            <td>
-				                <label for="confirm_password">パスワード再入力</label>
+				                <label for="confirm_password">パスワード再入力<h6>(パスワードを再入力してください)</h6></label>
 								<span class="required">*</span>
 				            </td>
 				            <td>
@@ -77,7 +77,7 @@
 				       	</tr>
 						<tr class="table_row">
 							<td>
-								<label for="name"> 名前 </label>
+								<label for="name">名前<h6>(名前は20文字以内でお願いします)</h6></label>
 								<span class="required">*</span>
 							</td>
 							<td>
@@ -101,8 +101,8 @@
 						</tr>
 						<tr class="table_row">
 							<td>
-								<label for="mailaddress"> メールアドレス</label>
-								<span class="required">*</span>
+								<label for="mailaddress">メールアドレス<h6>(メールアドレスの形式はxxx@xxx.xxxです)</h6></label>
+								<span class="required">*<span>
 							</td>
 							<td>
 								<input id="mailaddress" th:field="*{mailaddress}" type="text" class="input_box" name="mailaddress" required>

@@ -1,7 +1,6 @@
 package com.example.todo.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,8 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.ui.Model;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.example.todo.entity.BooksEntity;
 import com.example.todo.forms.SearchBooksRequest;
@@ -45,13 +42,7 @@ class LibraryHomeTest {
 	private LibraryService libraryService;
 
 	@Autowired
-	private LibraryController libraryController;
-
-	@Autowired
 	private DataSource dataSource;
-
-	@Autowired
-	private LocalValidatorFactoryBean validatorFactory;
 
 	/** @author kk */
 	@BeforeEach
@@ -106,7 +97,6 @@ class LibraryHomeTest {
 
 	@Test
 	public void testHomeDisplay2() throws SQLException {
-		Model model = mock(Model.class);
 		try (Connection connection = dataSource.getConnection();
 				Statement statement = connection.createStatement()) {
 			String sqlUsers = "INSERT INTO users " +

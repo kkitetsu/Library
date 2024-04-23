@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.ui.Model;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.example.todo.service.LibraryService;
 
@@ -48,9 +47,6 @@ class LibraryMyBookTest {
 
 	@Autowired
 	private DataSource dataSource;
-
-	@Autowired
-	private LocalValidatorFactoryBean validatorFactory;
 
 	/** @author kk */
 	@BeforeEach

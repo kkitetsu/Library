@@ -95,6 +95,7 @@ header {
 	margin: 5px;
 	padding: 5px;
 	border-radius: 20px;
+	max-width:400px;
 }
 
 
@@ -209,10 +210,14 @@ body {
 	height: 95%;
 	border-radius: 10px;
 	padding-left: 10px;
-	width: 80%;
-	max-width: 600px;
+	width: 95%;
+	max-width: 800px;
 }
-
+.book_content_title{
+	margin-left:5%; 
+	overflow: hidden; 
+	text-overflow: ellipsis;
+}
 .search_select_box {
 	border: none;
 	border-radius: 10px;

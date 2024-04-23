@@ -63,19 +63,22 @@
 											<span th:text="${note.message}"></span>
 										</div>
 										<div th:unless="${note.message.contains('延長要請')}">
-										    <input type="checkbox" name="note" th:value="${note.TransId}" style="zoom:2.0;" > <span
-											th:text="${note.message}"></span>
+											<input type="checkbox" name="note" th:value="${note.TransId}"
+												style="zoom:2.0;"> <span th:text="${note.message}"></span>
 										</div>
 										<!-- added by kk -->
 										<div class="inner-form">
-							                <input type="hidden" name="bookId" th:value="${note.bookId}" />
-							                <input type="hidden" name="bookTitle" th:value="${note.BookTitle}" />
-							                <input type="hidden" name="newDateRequested" th:value="${note.newDateRequested}" />
-							                <input type="hidden" name="borrowerName" th:value="${note.BorrowerName}" />
-							                <input type="hidden" name="transId" th:value="${note.TransId}" />
-							                <button type="button" class="approve-btn" th:if="${note.message.contains('延長要請')}">承認</button>
-							                <button type="button" class="deny-btn" th:if="${note.message.contains('延長要請')}">却下</button>
-							            </div>
+											<input type="hidden" name="bookId" th:value="${note.bookId}" />
+											<input type="hidden" name="bookTitle" th:value="${note.BookTitle}" />
+											<input type="hidden" name="newDateRequested"
+												th:value="${note.newDateRequested}" />
+											<input type="hidden" name="borrowerName" th:value="${note.BorrowerName}" />
+											<input type="hidden" name="transId" th:value="${note.TransId}" />
+											<button type="button" class="approve-btn"
+												th:if="${note.message.contains('延長要請')}">承認</button>
+											<button type="button" class="deny-btn"
+												th:if="${note.message.contains('延長要請')}">却下</button>
+										</div>
 										<!-- until here added by kk -->
 									</div>
 								</div>
@@ -84,18 +87,18 @@
 								</div>
 								<div class="center_box">
 									<input type="hidden" name="previousPage" value="add">
-									<input type="hidden" name="transId" value="" />  <!-- added by kk -->
+									<input type="hidden" name="transId" value="" /> <!-- added by kk -->
 									<button type="submit" name="note" class="blue_btn">確認</button>
 								</div>
 							</form>
 							<!-- added by kk in order to avoid nested form. Logic is handled by home.js -->
 							<form id="inner-form" th:action="@{/home}" th:method="post" style="display: none;">
-							    <input type="hidden" id="inner-book-id" name="bookId" />
-							    <input type="hidden" id="inner-book-title" name="bookTitle" />
-							    <input type="hidden" id="inner-new-date-requested" name="newDateRequested" />
-							    <input type="hidden" id="inner-book-transId" name="transId" />
-							    <input type="hidden" id="inner-borrower-name" name="borrowerName" />
-							    <input type="hidden" id="inner-request-response" name="requestResponse" />
+								<input type="hidden" id="inner-book-id" name="bookId" />
+								<input type="hidden" id="inner-book-title" name="bookTitle" />
+								<input type="hidden" id="inner-new-date-requested" name="newDateRequested" />
+								<input type="hidden" id="inner-book-transId" name="transId" />
+								<input type="hidden" id="inner-borrower-name" name="borrowerName" />
+								<input type="hidden" id="inner-request-response" name="requestResponse" />
 							</form>
 							<!-- until here by kk -->
 						</div>
@@ -201,7 +204,7 @@
 					<button id="openApiModal" class="alert_box">API</button>
 				</div>-->
 				<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}"
-					th:method="post">
+					th:method="post" style="width:95%;">
 					<label for="imgUpload" class="image-upload-container">
 						<div class="image-upload-placeholder" id="uploadMessage">
 							<strong>本の画像をアップロード</strong>
@@ -221,40 +224,44 @@
 							<div class="search">
 								<div class="search__text">
 									<td><label for="api">RakutenBooks</label></td>
-									<td><input type="text" id="js-search-word" class="api_input_box" value=""
+									<td style="text-align:left;"><input type="text" id="js-search-word" class="api_input_box" value=""
 											placeholder="キーワード">
+									</td>
+									<td style="width: 250px;">
+										<!-- 楽天API(@author shunsukekuzawa) -->
+										<button id="openApiModal"  class="alert_box_api" >検索</button>
 									</td>
 								</div>
 							</div>
 						</tr>
 						<tr class="table_row">
 							<td><label for="title">タイトル</label><span class="required">*</span></td>
-							<td><input type="text" th:field="*{title}" class="input_box"></td>
+							<td colspan="2" style="text-align:left;"><input type="text" th:field="*{title}" class="input_box"></td>
 						</tr>
 						<tr class="table_row">
 							<td><label>区分</label><span class="required">*</span></td>
-							<td>
-								<select th:field="*{category}" class="input_box">
+							<td colspan="2" style="text-align:left;">
+								<select th:field="*{category}" class="input_box_2">
 									<option value="貸出">貸出</option>
 									<option value="譲渡">譲渡</option>
 							</td>
 						</tr>
 						<tr id="limitdate" class="table_row">
-							<td id="limitdateLabel">貸出期限<span class="required">*</span></td>
-							<td>
-  						<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box "
-									required /> <!-- what -->
-
+							<td id="limitdateLabel" >貸出期限<span class="required">*</span></td>
+							<td colspan="2" style="text-align:left;">
+								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box_3"
+									required />
 							</td>
 						</tr>
+					</table>
+					<table class="add_table">
 						<tr>
-							<td><input type="submit" class="btn btn-danger" value="登録" id="onethird_size"></td>
-							<td><a href="/home" class="btn btn-primary" id="onesecond_size">キャンセル</a></td>
+							<td style="width:50%;"><input type="submit" class="btn btn-danger" value="登録" id="onethird_size"></td>
+							<td style="width:50%;"><a href="/home" class="btn btn-primary" id="onesecond_size">キャンセル</a></td>
 						</tr>
 					</table>
+
 				</form>
-				<!-- 楽天API(@author shunsukekuzawa) -->
-				<button id="openApiModal" class="alert_box_api">検索</button>
 			</div>
 
 		</div>

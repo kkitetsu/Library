@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -40,6 +41,7 @@ public class UsersEntity {
 	@Digits(integer=Integer.MAX_VALUE, fraction=0, message="ログイン ID は整数である必要があります")
 	@Positive(message="ログインID は 0 より大きい必要があります")
 	@NotNull(message="ログインIDは空欄にできません")
+	@Max(value=999999, message="ログインIDは7桁以上にできません")
 	private Integer loginId;
 	
 	@NotEmpty(message="パスワードは空欄にできません")

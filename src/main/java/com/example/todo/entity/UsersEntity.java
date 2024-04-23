@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -25,7 +26,9 @@ public class UsersEntity {
 	@NotEmpty(message="部署は空欄にできません")
 	private String department;
 	
-	@Email(message="メールアドレスがおかしいです")
+	@Email(message="正しいメールアドレスの形式ではありません。")
+	@Pattern(regexp = "^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\\.)+[a-zA-Z]{2,}$",
+    						message="正しいメールアドレスの形式ではありません。")
 	private String mailaddress;
 	
 	@Digits(integer=Integer.MAX_VALUE, fraction=0, message="ログイン ID は整数である必要があります")

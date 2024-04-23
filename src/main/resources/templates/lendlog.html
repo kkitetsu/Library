@@ -184,7 +184,7 @@
 						<!-- Table rows will be added dynamically here -->
 						<tr th:each="log :${LendLogs}">
 							<td th:text="*{log.TradedDate}" id="border-right"></td>
-							<td th:text="*{log.BookTitle}" id="border-right"></td>
+							<td th:text="*{log.BookTitle}" id="border-right" style="max-width:40%; word-break: break-all;"></td>
 							<td th:text="*{log.BorrowerName}" id="border-right"></td>
 							<td th:text="*{log.LimitDate}"></td>
 						</tr>
@@ -232,6 +232,18 @@
 						<img src="img/no_result_image.png" alt="No_Result_Img" class="no_result_img"></img>
 					</div>
 					<div th:if="${errMsg}" th:text="${errMsg}" class="error_msg"> </div>
+					<table class="btn_box">
+						<tr>
+							<Td>
+								<div>
+									<form th:action="@{/home}" th:method="GET">
+										<button type="submit" class="btn btn-primary" id="small_size" value="home">
+											ホーム</button>
+									</form>
+								</div>
+							</Td>
+						</tr>
+					</table>
 				</div>
 			</div>
 		</div>

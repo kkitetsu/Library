@@ -56,7 +56,8 @@
 									<div class="notification">現在、お知らせはありません</div>
 								</div>
 								<div class="center_box">
-									<input type="hidden" name="previousPage" value="borrowlog">
+									<input type="hidden" name="previousPage" value="confirm">
+									<input type="hidden" name="transId" value="" /> <!-- added by lee -->
 									<button type="submit" name="note" class="blue_btn">確認</button>
 								</div>
 							</form>
@@ -146,7 +147,7 @@
 						</tr>
 						<tr class="table_row">
 							<td><label for="title">タイトル</label></td>
-							<td><span th:text="*{bookEntity.title}" class="input_box"></span></td>
+							<td><span th:text="*{bookEntity.title}" class="input_box" style="word-break: break-all"></span></td>
 						</tr>
 						<tr class="table_row">
 							<td><label>区分</label></td>
@@ -172,6 +173,9 @@
 	<footer>
 		問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
 	</footer>
+	<!--JavaScriptリンク-->
+	<script type="text/javascript" th:src="@{/js/getmordal.js}"></script>
+	<script src="js/home.js"></script>
 </body>
 
 </html>

@@ -204,12 +204,8 @@
 					<button id="openApiModal" class="alert_box">API</button>
 				</div>-->
 				<form th:action="@{/exhibit}" enctype="multipart/form-data" th:object="${bookAddRequest}"
-<<<<<<< HEAD
-					th:method="post" id="bookForm">
+					th:method="post" id="bookForm" style="width:95%;">
 
-=======
-					th:method="post" style="width:95%;">
->>>>>>> c9217b384eb9a21b2f99814569df83b3340fee6e
 					<label for="imgUpload" class="image-upload-container">
 						<div class="image-upload-placeholder" id="uploadMessage">
 							<strong>本の画像をアップロード</strong>
@@ -229,12 +225,12 @@
 							<div class="search">
 								<div class="search__text">
 									<td><label for="api">RakutenBooks</label></td>
-									<td style="text-align:left;"><input type="text" id="js-search-word" class="api_input_box" value=""
-											placeholder="キーワード">
+									<td style="text-align:left;"><input type="text" id="js-search-word"
+											class="api_input_box" value="" placeholder="キーワード">
 									</td>
 									<td style="width: 250px;">
 										<!-- 楽天API(@author shunsukekuzawa) -->
-										<button id="openApiModal"  class="alert_box_api" >検索</button>
+										<button id="openApiModal" class="alert_box_api">検索</button>
 									</td>
 								</div>
 							</div>
@@ -242,7 +238,8 @@
 						<tr class="table_row">
 							<td><label for="title">タイトル</label><span class="required">*</span></td>
 
-							<td colspan="2" style="text-align:left;"><input type="text" th:field="*{title}" class="input_box" required></td>
+							<td colspan="2" style="text-align:left;"><input type="text" th:field="*{title}"
+									class="input_box" required></td>
 						</tr>
 						<tr class="table_row">
 							<td><label>区分</label><span class="required">*</span></td>
@@ -254,7 +251,7 @@
 						</tr>
 						<tr id="limitdate" class="table_row">
 
-							<td id="limitdateLabel" >貸出期限<span class="required">*</span></td>
+							<td id="limitdateLabel">貸出期限<span class="required">*</span></td>
 							<td colspan="2" style="text-align:left;">
 								<input type="date" th:field="*{limitdate}" id="limitDateInput" class="input_box_3"
 									required />
@@ -263,8 +260,10 @@
 					</table>
 					<table class="add_table">
 						<tr>
-							<td style="width:50%;"><input type="submit" class="btn btn-danger" value="登録" id="onethird_size"></td>
-							<td style="width:50%;"><a href="/home" class="btn btn-primary" id="onesecond_size">キャンセル</a></td>
+							<td style="width:50%;"><input type="submit" class="btn btn-danger" value="登録"
+									id="onethird_size"></td>
+							<td style="width:50%;"><a href="/home" class="btn btn-primary" id="onesecond_size">キャンセル</a>
+							</td>
 						</tr>
 					</table>
 

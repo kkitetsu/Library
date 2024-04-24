@@ -1,29 +1,29 @@
 let categorySelect = document.getElementById("category");
-let limitSwitch    = document.getElementById("limitdate");
+let limitSwitch = document.getElementById("limitdate");
 let limitDateInput = document.getElementById("limitDateInput");
 let limitdateLabel = document.getElementById("limitdateLabel");
 
+function toggleLimitDateInput() {
+  let categoryType = categorySelect.value;
 
-categorySelect.addEventListener('change', function() {
+  if (categoryType === "貸出") {
+    limitSwitch.style.display = "";
+    limitDateInput.removeAttribute('hidden');
+    limitDateInput.setAttribute('required', ''); // Make it required
+  } else {
+    limitSwitch.style.display = "none";
+    limitDateInput.setAttribute('hidden', true);
+    limitDateInput.removeAttribute('required'); // Not required
+    limitDateInput.value = ""; // Clear value
+  }
+}
 
-	let categoryType = this.value;
+// Call this function on page load to set the initial state
+toggleLimitDateInput();
 
-	if (categoryType === "貸出") {
-//		 limitSwitch.style.visibility = "visible";
-//		 limitSwitch.removeAttribute('hidden');
-//		 limitDateInput.removeAttribute('hidden');
-		limitdateLabel.classList.remove('hidden-input');
-		limitDateInput.classList.remove('hidden-input');
+// Set up the event listener for changes on the category select box
+categorySelect.addEventListener('change', toggleLimitDateInput);
 
-	} else {
-		// limitSwitch.style.visibility = "hidden";
-		// limitSwitch.setAttribute('hidden', true);
-		// limitDateInput.setAttribute('hidden', true);
-		limitDateInput.classList.add('hidden-input');
-		limitdateLabel.classList.add('hidden-input');
-		limitDateInput.valueAsDate = new Date("2999-12-31");
-	}
-})
 
 
 
@@ -95,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('onethird_size').addEventListener('click', function(event) {
     const title = document.querySelector('input[name="title"]').value.trim();
+    const category = document.querySelector('select[name="category"]').value;
     const limitdate = document.querySelector('input[name="limitdate"]').value.trim();
 
     // タイトルのバリデーション
@@ -105,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 貸出期限のバリデーション
-    if (!limitdate) {
+    if (category === '貸出' && !limitdate) {
       alert('貸出期限を入力してください。');
       event.preventDefault(); // フォーム送信を中断
       return false;

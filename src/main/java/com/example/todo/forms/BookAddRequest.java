@@ -10,7 +10,6 @@ import com.example.todo.validation.FileSize;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -29,7 +28,6 @@ public class BookAddRequest implements Serializable {
 	
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	@Future(message="過去の日付は選択できません")
-	@NotNull(message="貸出期限を入れてくださいよ")
 	private LocalDate limitdate;
 		
 	private Integer userId;

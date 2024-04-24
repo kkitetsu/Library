@@ -81,7 +81,8 @@
 								<span class="required">*</span>
 							</td>
 							<td>
-								<input th:field="*{name}" type="text" class="input_box" name="name" required>
+								<input id="nameInput" th:field="*{name}" type="text" class="input_box" name="name" required>
+								<span id="name_error" style="color: red; display: none;">名前は20文字以内です</span>
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -141,7 +142,7 @@
 			passwordField.addEventListener('input', function() {
 			    var passwordValue = passwordField.value.trim();
 			    
-			    if (passwordValue.length < 4) {
+			    if (passwordValue.length < 4 || passwordValue.length > 16) {
 			        passwordError.style.display = "block";
 			        passwordField.classList.add('error-border');
 			    } else {
@@ -149,6 +150,18 @@
 			        passwordField.classList.remove('error-border');
 			    }
 			});
+			
+			var nameInput = document.getElementById("nameInput");
+			var name_error = document.getElementById("name_error");
+			
+			nameInput.addEventListener('input', function() {
+				var nameInputValue = nameInput.value.trim();
+				if (nameInputValue.length > 20) {
+					name_error.style.display = "block";
+				} else {
+					name_error.style.display = "none";
+				}
+			})
 			
 			// Attach event listener to the confirm password field
 			confirmPasswordField.addEventListener("input", function() {

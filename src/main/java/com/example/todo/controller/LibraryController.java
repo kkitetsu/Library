@@ -759,6 +759,8 @@ public class LibraryController {
 		 */
 		if(apiUrl.length() != 0) {
 			bookRequest.setImgPath(apiUrl);
+		}else {
+			
 		}
 
 		libraryService.bookRegister(bookRequest);

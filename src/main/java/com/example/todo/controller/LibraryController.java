@@ -744,7 +744,7 @@ public class LibraryController {
 				errorList.add(error.getDefaultMessage());
 			}
 			model.addAttribute("validationError", errorList);
-			model.addAttribute("bookAddRequest", new BookAddRequest());
+			model.addAttribute("bookAddRequest", bookRequest);
 			return "/add";
 		}
 		List<MultipartFile> multipartFile = bookRequest.getMultipartFile();

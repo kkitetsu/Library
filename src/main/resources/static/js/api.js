@@ -1,4 +1,4 @@
-var modal = document.getElementById("apiModal");
+var apiModal = document.getElementById("apiModal");
 var imgPreview = document.getElementById("previewImage");
 var apiPreview = document.getElementById("apiPreview");
 var btn = document.getElementById("openApiModal");
@@ -61,7 +61,7 @@ btn.onclick = function() {
 				$(".comment").html("<p class='message'>検索結果が見つかりませんでした。<br>別のキーワードで検索して下さい。</p>");
 			};
 		});
-		modal.style.display = "block";
+		apiModal.style.display = "block";
 	}
 }
 
@@ -80,7 +80,7 @@ listRootElm.addEventListener('click', (e) => {
 		title.value = content.textContent;
 		apiPreview.src = url.getAttribute("src");
 		preview.src = "";
-		modal.style.display = "none";
+		apiModal.style.display = "none";
 		message.style.display = "none";
 		imgPreview.style.display = "none";
 		apiPreview.style.display ="block";
@@ -90,12 +90,12 @@ listRootElm.addEventListener('click', (e) => {
 
 // ×（クローズアイコン）がクリックされた時にモーダルを非表示
 span.onclick = function() {
-	modal.style.display = "none";
+	apiModal.style.display = "none";
 }
 
 // モーダルの外側をクリックした時にモーダルを非表示
 window.onclick = function(event) {
 	if (event.target == modal) {
-		modal.style.display = "none";
+		apiModal.style.display = "none";
 	}
 }

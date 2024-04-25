@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -636,7 +636,8 @@ public class LibraryController {
 									@RequestParam("id") int id, 
 									@RequestParam("title") String title,
 									@RequestParam("category") String category, 
-									@RequestParam("limitdate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate limitdate,
+									@RequestParam(value = "limitdate", required = false)
+		                            String limitDateString,  // Changed to String
 									@RequestParam("image") String image) {
 		if (session.getAttribute("userId") == null) {
 			// added by kk
@@ -646,10 +647,16 @@ public class LibraryController {
 		bka.setId(id);
 		bka.setTitle(title);
 		bka.setCategory(category);
-		bka.setLimitdate(limitdate);
 		bka.setImage(image);
-		model.addAttribute("bookAddRequest", bka);
-		return "/editbook";
+	    if (limitDateString != null && !limitDateString.isEmpty() && !"譲渡".equals(category)) {
+	        LocalDate limitDate = LocalDate.parse(limitDateString, DateTimeFormatter.ISO_DATE);
+	        bka.setLimitdate(limitDate);
+	    } else {
+	        bka.setLimitdate(null);
+	    }
+
+	    model.addAttribute("bookAddRequest", bka);
+	    return "/editbook";
 	}
 	
 	

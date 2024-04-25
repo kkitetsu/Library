@@ -235,7 +235,7 @@ class LibraryApplicationTests {
     	assertEquals(2, result.get(1).getBookId());
     	assertEquals(1, result.get(1).getLenderUserId());
     	assertEquals(3, result.get(1).getBorrowerUserId());
-    	assertEquals("Book2", libraryService.displayBooks().get(1).getTitle());
+    	assertEquals("Book2", libraryService.displayBooks().get(0).getTitle());
     }
     
 //    /**

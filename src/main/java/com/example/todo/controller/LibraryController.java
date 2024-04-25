@@ -193,17 +193,16 @@ public class LibraryController {
 			return "redirect:/login";
 		}
 		if (bindingResult.hasErrors()) {
-			List<String> errorList = new ArrayList<String>();
-			for (ObjectError error : bindingResult.getAllErrors()) {
-				errorList.add(error.getDefaultMessage());
-			}
-			model.addAttribute("errMsg", errorList);
-			// Edited by kk. Display user ID on the page
-			UsersEntity user = new UsersEntity();
-			user.setLoginId(
-				libraryService.getLoginIdBasedOnId(Integer.parseInt(session.getAttribute("userId").toString()))
-			);
-			model.addAttribute("userEntity", user);
+			StringBuilder errorBuilder = new StringBuilder();
+		    for (ObjectError error : bindingResult.getAllErrors()) {
+		        if (error.getDefaultMessage().contains("Failed to convert")) {
+		            errorBuilder.append("正しいidではありません。<br/>");
+		        } else {
+		            errorBuilder.append(error.getDefaultMessage()).append("<br/>");
+		        }
+		    }
+		    model.addAttribute("errMsg", errorBuilder.toString());
+			model.addAttribute("userEntity", usersEntity);
 			return "/edituserInfo";
 		}
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
@@ -744,7 +743,7 @@ public class LibraryController {
 				errorList.add(error.getDefaultMessage());
 			}
 			model.addAttribute("validationError", errorList);
-			model.addAttribute("bookAddRequest", new BookAddRequest());
+			model.addAttribute("bookAddRequest", bookRequest);
 			return "/add";
 		}
 		List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
@@ -833,23 +832,23 @@ public class LibraryController {
 		for (UsersEntity eachUser : users) {
 			if (eachUser.getLoginId().equals(usersEntity.getLoginId())) {
 				model.addAttribute("errMsg", "このIDはすでに存在しています");
-				model.addAttribute("userEntity", new UsersEntity());
+				model.addAttribute("userEntity", usersEntity);
 				return "/register";
 			}
 		}
 
 		if (bindingResult.hasErrors()) {
-			List<String> errorList = new ArrayList<String>();
-			for (ObjectError error : bindingResult.getAllErrors()) {
-				if (error.getDefaultMessage().contains("Failed to convert")) {
-					errorList.add("正しいidではありません。");
-				} else {
-					errorList.add(error.getDefaultMessage());
-				}
-			}
-			model.addAttribute("errMsg", errorList);
-			model.addAttribute("userEntity", new UsersEntity());
-			return "/register";
+			StringBuilder errorBuilder = new StringBuilder();
+		    for (ObjectError error : bindingResult.getAllErrors()) {
+		        if (error.getDefaultMessage().contains("Failed to convert")) {
+		            errorBuilder.append("正しいidではありません。<br/>");
+		        } else {
+		            errorBuilder.append(error.getDefaultMessage()).append("<br/>");
+		        }
+		    }
+		    model.addAttribute("errMsg", errorBuilder.toString());
+		    model.addAttribute("userEntity", usersEntity);
+		    return "/register";
 		}
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
 		libraryService.register(usersEntity);

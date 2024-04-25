@@ -17,11 +17,11 @@ import lombok.Data;
 @Data
 public class LoginRequest implements Serializable {
 	
-	@Digits(integer=Integer.MAX_VALUE, fraction=0, message="ログイン ID は整数である必要があります")
-	@Positive(message="ログインID は 0 より大きい必要があります")
-	@NotNull(message="ログインIDは空欄にできません")
+	@Digits(integer=Integer.MAX_VALUE, fraction=0, message="ログイン ID は整数である必要があります。")
+	@Positive(message="ログインID は 0 より大きい必要があります。")
+	@NotNull(message="ログインIDは空欄にできません。")
 	private int login_id;
 	
-	@NotEmpty(message="パスワードは空欄にできません")
+	@NotEmpty(message="パスワードは空欄にできません。")
 	private String login_pw;
 }

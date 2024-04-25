@@ -199,7 +199,7 @@
 							<td th:if="${log.LimitDate != null}">
 								変更希望日
 								<form th:action="@{/requestNewReturnDate}" th:method="POST">
-									<input type="date" name="newReturnDate" required>
+									<input type="date" id="newReturnDate" name="newReturnDate" required>
 									<input type="hidden" name="transId" th:value="*{log.TransId}">
 									<button>提出</button>
 								</form>
@@ -273,6 +273,31 @@
 	</div>
 	<script type="text/javascript" th:src="@{/js/getmordal.js}"></script>
 	<script src="js/home.js"></script>
+	<script>
+		// Added by kk. Prevent selecting the date before
+	    // Get the input element
+	    var input = document.getElementsByName('newReturnDate')[0];
+	    
+	    // Get today's date
+	    var today = new Date().toISOString().split('T')[0];
+	    
+	    // Set the minimum date for the input element to today
+	    input.setAttribute('min', today);
+	    
+	    // Function to handle input change
+	    function handleInput() {
+	        var selectedDate = input.value;
+	        
+	        // If the selected date is earlier than today, reset the value to today
+	        if (selectedDate < today) {
+	            input.value = today;
+	        }
+	    }
+	    
+	    // Add an event listener to the input element to handle changes
+	    input.addEventListener('change', handleInput);
+
+	</script>
 </body>
 
 </html>

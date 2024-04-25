@@ -222,8 +222,9 @@ body {
 
 .book_content_title{
 	margin-left:5%; 
-	overflow: hidden; 
-	text-overflow: ellipsis;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
 }
 .search_select_box {
 	border: none;

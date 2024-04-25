@@ -12,7 +12,10 @@
 		FROM 
 			books
 		WHERE
-			exhibition_flag=1;
+			exhibition_flag=1
+	<!--@Author lee add for sort from new to old -->
+	    ORDER BY
+	    	id desc;
 	</select>
 	<!-- @author kk -->
 	<select id="getNameBasedOnId" resultType="java.lang.String">
@@ -60,6 +63,9 @@
 		<if test="book_name != null">
 		  AND title LIKE CONCAT('%', #{book_name},'%')
 		</if>
+		<!--@Author lee add for sort from new to old -->
+	    ORDER BY
+	    	id desc;
 	</select>
 	
 	<select id="searchBooksByContent"
@@ -73,6 +79,9 @@
 		<if test="book_name != null">
 		  AND content LIKE CONCAT('%', #{book_name},'%')
 		</if>
+	<!--@Author lee add for sort from new to old -->
+	    ORDER BY
+	    	id desc;
 	</select>
 	
 	<select id="searchBooksByUser"
@@ -88,6 +97,9 @@
 		<if test="book_name != null">
 		  AND u.name LIKE CONCAT('%', #{book_name},'%')
 		</if>
+		<!--@Author lee add for sort from new to old -->
+	    ORDER BY
+	    	b.id desc;
 	</select>
 	
 	<select id="LendNotification"
@@ -166,6 +178,10 @@
 		 	books
 		WHERE 
 		 	exhibition_flag=1 AND exhibitor_user_id=#{userId}
+	<!-- 最新順で出力するように修正-->
+		ORDER BY
+			id desc
+	<!-- 最新順で出力するように修正-->			
 		LIMIT 
 		 	#{SUBLISTSIZE} OFFSET #{startIndex};
 	</select>
@@ -176,7 +192,7 @@
 			book_id,
 			lender_user_id,
 			borrower_user_id,
-			traded_date 
+			traded_date 	
 		FROM 
 			transactions;		
 	</select>
@@ -197,6 +213,10 @@
 			users AS u on u.id = t.borrower_user_id
 		WHERE
 			t.Lender_user_id = #{userId}
+<!-- 最新順で出力するように修正-->
+		ORDER BY
+			t.id desc
+<!-- 最新順で出力するように修正-->
 		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};	
 	</select>
 	<select id="displayBorrowLogs" resultType="com.example.todo.dto.SearchLogsDTO">
@@ -215,6 +235,10 @@
 			users as u on u.id = t.lender_user_id
 		WHERE 
 			t.borrower_user_id = #{userId}
+<!-- 最新順で出力するように修正-->
+		ORDER BY
+			t.id desc
+<!-- 最新順で出力するように修正-->
 		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};
 	</select>
 	<!-- @author Lee:貸し/借りログ/MY BOOKの大きさ計算-->

@@ -23,8 +23,8 @@
 			<div class="header_title"> 楽天図書館 </div>
 
 			<div class="header_btn_box">
-				
-				 
+
+
 				<table class="header_table">
 					<td>
 						<button type="submit" id="openModal" class="alert_box">
@@ -47,8 +47,8 @@
 								<form th:action="@{/home}" th:method="post">
 									<div th:if="${session.notification != null}">
 										<div class="notification" th:each="note:${session.notification}">
-											<input type="checkbox" name="note" th:value="${note.TransId}"
-												style="zoom:2.0;"> <span th:text="${note.message}"></span>
+											<!--<input type="checkbox" name="note" th:value="${note.TransId}"
+												style="zoom:2.0;"> <span th:text="${note.message}"></span>-->
 											<!-- added by kk. Avoid checkbox for extension request -->
 											<div th:if="${note.message.contains('延長要請')}">
 												<span th:text="${note.message}"></span>
@@ -177,7 +177,6 @@
 										<p th:text="${session.category_type}"></p>
 									</option>
 									<option value="title">タイトル</option>
-									<option value="content">コンテンツ</option>
 									<option value="lenduser">出品者</option>
 								</select>
 							</td>
@@ -193,8 +192,9 @@
 					</table>
 				</form>
 			</div>
-			 <div th:if="${alertMessage != null and alertMessage.contains('自分の')}" th:text="${alertMessage}" class="error_msg">
-			 </div>
+			<div th:if="${alertMessage != null and alertMessage.contains('自分の')}" th:text="${alertMessage}"
+				class="error_msg">
+			</div>
 			<div th:if="${session.bookshelf}">
 				<div class="main_content_box" th:if="${session.condition}">
 					<div class="condition">
@@ -286,7 +286,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<!--出品モーダル-->
 		<div id="exhibitModal" style="display:none">
 			<div class="modal-content">

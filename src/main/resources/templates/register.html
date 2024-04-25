@@ -48,40 +48,41 @@
 					<form th:action="@{/register}" th:method="POST" th:object="${userEntity}" onsubmit="return validatePasswords()">
 						<tr class="table_row">
 							<td>
-								<label for="login_id"> ID</label>
+								<label for="login_id">ID<h6>(4桁もしくは6桁の社員番号)</h6></label>
 								<span class="required">*</span>
 							</td>
 							<td>
-								<input th:field="*{loginId}" type="number" class="input_box" name="login_id" required>
+								<input th:field="*{loginId}" type="number" class="input_box" name="login_id" required >
 							</td>
 						</tr>
 						<tr class="table_row">
 							<td>
-								<label for="password">パスワード</label>
+								<label for="password">パスワード<h6>(4文字から16文字の英数字)</h6></label>
 								<span class="required">*</span>
 							</td>
 							<td>
-								<input id="password" th:field="*{password}" type="password" class="input_box" name="password" required>
+								<input id="password" th:field="*{password}" type="password" class="input_box" name="password" required minlength="4" maxlength="16">
 								<div id="passwordError" style="color: red; display: none;">パスワードは4文字以上16文字以下です</div>
 							</td>
 						</tr>
 						<tr class="table_row">
 				            <td>
-				                <label for="confirm_password">パスワード再入力</label>
+				                <label for="confirm_password">パスワード再入力<h6>(パスワードを再入力してください)</h6></label>
 								<span class="required">*</span>
 				            </td>
 				            <td>
-				                <input id="confirm_password" type="password" class="input_box" name="confirm_password" required>
+				                <input id="confirm_password" type="password" class="input_box" name="confirm_password" required minlength="4" maxlength="16">
 				                <span id="password_error" style="color: red; display: none;">同じパスワードを入力してください</span>
 				            </td>
 				       	</tr>
 						<tr class="table_row">
 							<td>
-								<label for="name"> 名前 </label>
+								<label for="name">名前<h6>(名前は20文字以内でお願いします)</h6></label>
 								<span class="required">*</span>
 							</td>
 							<td>
-								<input th:field="*{name}" type="text" class="input_box" name="name" required>
+								<input id="nameInput" th:field="*{name}" type="text" class="input_box" name="name" required minlength="1" maxlength="20">
+								<span id="name_error" style="color: red; display: none;">名前は20文字以内です</span>
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -101,11 +102,11 @@
 						</tr>
 						<tr class="table_row">
 							<td>
-								<label for="mailaddress"> メールアドレス</label>
-								<span class="required">*</span>
+								<label for="mailaddress">メールアドレス<h6>(メールアドレスの形式はxxx@xxx.xxxです)</h6></label>
+								<span class="required">*<span>
 							</td>
 							<td>
-								<input id="mailaddress" th:field="*{mailaddress}" type="text" class="input_box" name="mailaddress" required>
+								<input id="mailaddress" th:field="*{mailaddress}" type="text" class="input_box" name="mailaddress" required maxlength="255">
 								<div id="emailError" style="color: red;"></div>
 							</td>
 						</tr>
@@ -141,7 +142,7 @@
 			passwordField.addEventListener('input', function() {
 			    var passwordValue = passwordField.value.trim();
 			    
-			    if (passwordValue.length < 4) {
+			    if (passwordValue.length < 4 || passwordValue.length > 16) {
 			        passwordError.style.display = "block";
 			        passwordField.classList.add('error-border');
 			    } else {
@@ -149,6 +150,18 @@
 			        passwordField.classList.remove('error-border');
 			    }
 			});
+			
+			var nameInput = document.getElementById("nameInput");
+			var name_error = document.getElementById("name_error");
+			
+			nameInput.addEventListener('input', function() {
+				var nameInputValue = nameInput.value.trim();
+				if (nameInputValue.length > 20) {
+					name_error.style.display = "block";
+				} else {
+					name_error.style.display = "none";
+				}
+			})
 			
 			// Attach event listener to the confirm password field
 			confirmPasswordField.addEventListener("input", function() {

@@ -196,7 +196,7 @@
 							<td th:text="*{log.LenderName}" id="border-right"></td>
 							<td th:text="*{log.LimitDate}" id="border-right"></td>
 							<!-- added by kk. Use to send change return date request. -->
-							<td th:if="${!log.LimitDate.toString().equals('2999-12-31')}">
+							<td th:if="${log.LimitDate != null}">
 								変更希望日
 								<form th:action="@{/requestNewReturnDate}" th:method="POST">
 									<input type="date" name="newReturnDate" required>
@@ -204,7 +204,7 @@
 									<button>提出</button>
 								</form>
 							</td>
-							<td th:if="${log.LimitDate.toString().equals('2999-12-31')}">
+							<td th:if="${log.LimitDate == null}">
 								譲渡なので無期限です
 							</td>
 							<!-- until here added by kk. -->

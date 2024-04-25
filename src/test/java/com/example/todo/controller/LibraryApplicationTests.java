@@ -173,7 +173,7 @@ class LibraryApplicationTests {
         for (ConstraintViolation<UsersEntity> violation : violations) {
             if ("正しいメールアドレスの形式ではありません。".equals(violation.getMessage())) {
                 invalidEmailViolationFound = true;
-            } else if ("ログインID は 0 より大きい必要があります".equals(violation.getMessage())) {
+            } else if ("ログインID は 0 より大きい必要があります。".equals(violation.getMessage())) {
                 nonPositiveIdViolationFound = true;
             }
         }

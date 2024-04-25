@@ -105,7 +105,7 @@
 	<select id="LendNotification"
 		resultType="com.example.todo.dto.NotificationDTO">
 		SELECT 
-			t.id as TransId, u1.name as LenderName,u2.name as BorrowerName ,b.title as BookTitle, t.traded_date as NotificationDate
+			t.id as TransId, u1.name as LenderName,u2.name as BorrowerName ,b.title as BookTitle, b.category , t.traded_date as NotificationDate
 		FROM 
 			transactions AS t
 		LEFT JOIN 

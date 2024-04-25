@@ -285,7 +285,7 @@ public class LibraryController {
 		List<NotificationDTO> lend_notification = libraryService.LendNotification(user_id);
 		lend_notification.forEach(
 				e -> e.setMessage(e.getNotificationDate() + " : 【" + e.getBorrowerName() + "】様から【" + e.getBookTitle()
-						+ "】の貸出要請がありました"));
+						+ "】の【" + e.getCategory() + "】要請がありました"));
 
 		//お知らせ取得：期限
 		List<NotificationDTO> limit_notification = libraryService.LimitNotification(user_id);
@@ -721,11 +721,11 @@ public class LibraryController {
 			return "redirect:/login";
 		}
 
-			libraryService.bookDeliter(bookRequest);
-			redirectAttributes.addAttribute("deleteSuccess", "true");
-	        redirectAttributes.addAttribute("bookTitle", bookRequest.getTitle());
-		
-			return "redirect:/home?deleteSuccess=true";        
+		libraryService.bookDeliter(bookRequest);
+		redirectAttributes.addAttribute("deleteSuccess", "true");
+        redirectAttributes.addAttribute("bookTitle", bookRequest.getTitle());
+        DeleteSession(session);
+		return "redirect:/home?deleteSuccess=true";        
 
 	}
 	

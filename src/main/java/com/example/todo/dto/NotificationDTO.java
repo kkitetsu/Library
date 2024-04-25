@@ -23,6 +23,8 @@ public class NotificationDTO {
 	
 	private LocalDate NotificationDate;
 	
+	private String category;
+	
 	// added by kk
 	private String newDateRequested;
 	

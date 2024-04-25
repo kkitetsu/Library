@@ -202,12 +202,7 @@ public class LibraryController {
 		        }
 		    }
 		    model.addAttribute("errMsg", errorBuilder.toString());
-			// Edited by kk. Display user ID on the page
-			UsersEntity user = new UsersEntity();
-			user.setLoginId(
-				libraryService.getLoginIdBasedOnId(Integer.parseInt(session.getAttribute("userId").toString()))
-			);
-			model.addAttribute("userEntity", user);
+			model.addAttribute("userEntity", usersEntity);
 			return "/edituserInfo";
 		}
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));
@@ -748,7 +743,7 @@ public class LibraryController {
 				errorList.add(error.getDefaultMessage());
 			}
 			model.addAttribute("validationError", errorList);
-			model.addAttribute("bookAddRequest", new BookAddRequest());
+			model.addAttribute("bookAddRequest", bookRequest);
 			return "/add";
 		}
 		List<MultipartFile> multipartFile = bookRequest.getMultipartFile();
@@ -835,7 +830,7 @@ public class LibraryController {
 		for (UsersEntity eachUser : users) {
 			if (eachUser.getLoginId().equals(usersEntity.getLoginId())) {
 				model.addAttribute("errMsg", "このIDはすでに存在しています");
-				model.addAttribute("userEntity", new UsersEntity());
+				model.addAttribute("userEntity", usersEntity);
 				return "/register";
 			}
 		}
@@ -850,7 +845,7 @@ public class LibraryController {
 		        }
 		    }
 		    model.addAttribute("errMsg", errorBuilder.toString());
-		    model.addAttribute("userEntity", new UsersEntity());
+		    model.addAttribute("userEntity", usersEntity);
 		    return "/register";
 		}
 		usersEntity.setPassword(getHashedPassword(usersEntity.getPassword()));

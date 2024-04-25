@@ -331,6 +331,16 @@
 		            return true; // Allow form submission
 		        }
 		    }
+		    
+		    document.getElementById("password").addEventListener("input", function() {
+			    var password = this.value;
+			    var regex = /^[a-zA-Z0-9]*$/; // Regex to match only US letters and numbers
+			    if (!regex.test(password) || password.length < 4 || password.length > 16) {
+			        document.getElementById("passwordError").style.display = "block";
+			    } else {
+			        document.getElementById("passwordError").style.display = "none";
+			    }
+			});
 
 		</script>
 		<!--JavaScriptリンク-->

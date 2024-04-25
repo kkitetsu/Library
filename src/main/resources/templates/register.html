@@ -62,7 +62,7 @@
 							</td>
 							<td>
 								<input id="password" th:field="*{password}" type="password" class="input_box" name="password" required minlength="4" maxlength="16">
-								<div id="passwordError" style="color: red; display: none;">パスワードは4文字以上16文字以下です</div>
+								<div id="passwordError" style="color: red; display: none;">パスワードは4文字以上16文字の英数字です</div>
 							</td>
 						</tr>
 						<tr class="table_row">
@@ -201,6 +201,16 @@
 		            return true; // Allow form submission
 		        }
 		    }
+		    
+		    document.getElementById("password").addEventListener("input", function() {
+			    var password = this.value;
+			    var regex = /^[a-zA-Z0-9]*$/; // Regex to match only US letters and numbers
+			    if (!regex.test(password) || password.length < 4 || password.length > 16) {
+			        document.getElementById("passwordError").style.display = "block";
+			    } else {
+			        document.getElementById("passwordError").style.display = "none";
+			    }
+			});
 			
 		</script>
 

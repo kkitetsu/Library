@@ -46,6 +46,7 @@ public class UsersEntity {
 	
 	@NotEmpty(message="パスワードは空欄にできません。")
     @Size(min=4, max=16, message="パスワードは４文字から16文字の英数字です。")
+	@Pattern(regexp = "^[a-zA-Z0-9]*$", message="パスワードは英数字で入力してください。")
 	private String password;
 	
 	private LocalDate joined_date;

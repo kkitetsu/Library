@@ -877,7 +877,7 @@ public class LibraryController {
 		
 		if (exhibitorId.equals(session.getAttribute("userId").toString())) {
 			// User cannot borrow his or her own book
-			redirectAttributes.addFlashAttribute("alertMessage", "自分の本は借りる・もらうことができません");
+			redirectAttributes.addFlashAttribute("alertMessage", "自分の本は借りる・貰うことができません。");
 			return "redirect:/home";
 		}
 		BooksEntity book = new BooksEntity();

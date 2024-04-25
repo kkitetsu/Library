@@ -34,7 +34,7 @@
 		<div class="main">
 			<!--白い箱-->
 			<div th:if="${errMsg}" class="error_msg">
-		        <div th:text="${errMsg}"></div>
+		        <div th:utext="${errMsg}" class="error_msg"></div>
 		    </div>
    			<div class="main_title">
 				- 会員登録

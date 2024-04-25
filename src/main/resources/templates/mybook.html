@@ -186,7 +186,7 @@
 							<td th:text="*{book.category}" id="border-right"> </td>
 							<td th:text="*{book.title}" id="border-right" style="max-width:30%; word-break: break-all;">
 							</td>
-							<td th:text="*{book.limitdate}" id="border-right"> </td>
+							<td th:text="*{book.limitdate != null ? book.limitdate : '-'}" id="border-right"></td>
 							<td>
 								<form th:action="@{/editbook}"><button type="submit" class="btn btn-secondary"
 										id="edit">

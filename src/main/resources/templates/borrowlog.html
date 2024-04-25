@@ -194,7 +194,7 @@
 							<td th:text="*{log.BookTitle}" id="border-right"
 								style="max-width:40%; word-break: break-all;"></td>
 							<td th:text="*{log.LenderName}" id="border-right"></td>
-							<td th:text="*{log.LimitDate}" id="border-right"></td>
+							<td th:text="*{log.LimitDate != null ? log.LimitDate : '-'}" id="border-right"></td>
 							<!-- added by kk. Use to send change return date request. -->
 							<td th:if="${log.LimitDate != null}">
 								変更希望日
@@ -205,7 +205,7 @@
 								</form>
 							</td>
 							<td th:if="${log.LimitDate == null}">
-								譲渡なので無期限です
+								-
 							</td>
 							<!-- until here added by kk. -->
 						</tr>

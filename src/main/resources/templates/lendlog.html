@@ -186,7 +186,7 @@
 							<td th:text="*{log.TradedDate}" id="border-right"></td>
 							<td th:text="*{log.BookTitle}" id="border-right" style="max-width:40%; word-break: break-all;"></td>
 							<td th:text="*{log.BorrowerName}" id="border-right"></td>
-							<td th:text="*{log.LimitDate}"></td>
+							<td th:text="*{log.LimitDate != null ? log.LimitDate : '-'}"></td>
 						</tr>
 					</Table>
 

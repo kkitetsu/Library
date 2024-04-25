@@ -49,8 +49,6 @@ function handleInnerFormSubmission(btn, action) {
 
 
 //added by Aru below
-
-
 // 編集完了モーダル
 document.addEventListener('DOMContentLoaded', function() {
   var urlParams = new URLSearchParams(window.location.search);
@@ -91,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('deleteSuccess')) {
     openModal();
-    var bookTitle = urlParams.get('bookTitle'); // 本のタイトルを取得
+    var bookTitle = urlParams.get('bookTitle'); 
     var message = `${bookTitle}の削除が完了しました`;
     document.getElementById('deleteNotification').textContent = message;
   }
@@ -104,13 +102,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('deleteModal').style.display = 'none';
   }
 
-  // 確認ボタン
   var close = document.getElementById("closeDelete");
   if (close) {
     close.addEventListener('click', closeModal);
   }
 
-  // モーダルの外側をクリックした場合
   window.onclick = function(event) {
     var modal = document.getElementById('deleteModal');
     if (event.target == modal) {
@@ -127,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('exhibitSuccess')) {
     openModal();
-    var bookTitle = urlParams.get('bookTitle'); // 本のタイトルを取得
+    var bookTitle = urlParams.get('bookTitle'); 
     var message = `${bookTitle}の出品が完了しました`;
     document.getElementById('exhibitNotification').textContent = message;
   }
@@ -140,17 +136,24 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('exhibitModal').style.display = 'none';
   }
 
-  // 確認ボタン
   var close = document.getElementById("closeExhibit");
   if (close) {
     close.addEventListener('click', closeModal);
   }
 
-  // モーダルの外側をクリックした場合
   window.onclick = function(event) {
     var modal = document.getElementById('exhibitModal');
     if (event.target == modal) {
       closeModal();
     }
   };
+});
+
+
+//ハイフン表示
+window.addEventListener('DOMContentLoaded', (event) => {
+  var limitDateContent = document.getElementById('limitdateContent');
+  if (!limitDateContent.textContent.trim()) {
+    limitDateContent.textContent = '-';
+  }
 });

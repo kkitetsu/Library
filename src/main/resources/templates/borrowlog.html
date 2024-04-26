@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<!-- Bootstrap利用のため、必要なコード修正禁止 -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+		crossorigin="anonymous"></script>
+	<!-- CSS共通リンク -->
+	<link rel="stylesheet" href="css/common.css" />
+	<link rel="stylesheet" href="css/home.css" />
+	<!-- タイトルの選択-->
+	<title>R-Library: Register</title>
+</head>
+
+<body>
+	<!-- 画面全体始め（ヘッダー、メイン、フッター）-->
+
+	<div class="content_box">
+		<!-- ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
+		<header>
+			<div class="header_logo"> <a href="/home"><img src="img/rakuten_logo.png" alt="Rakuten_sec_mark"
+						class="main_logo"> </a></div>
+			<div class="header_title"> 楽天図書館 </div>
+			<div class="header_btn_box">
+				<!--ログイン時出力される（お知らせ遷移用アイコン、ユーザー別アイコン）-->
+				<table class="header_table">
+					<td>
+						<button type="submit" id="openModal" class="alert_box">
+							<img src="img/alarm_icon.png" class="alert_icon">
+						</button>
+					</td>
+					<td>
+						<div>
+							<img src="img/user_img.png" alt="user_icon" class="user_icon_trigger">
+						</div>
+					</td>
+				</table>
+			</div>
+			<!-- mordal starts-->
+			<div id="myModal" class="modal">
+				<div class="modal-content">
+					<div>
+						<div id="titleModal"> &lt お知らせ &gt </div>
+						<div id="closeModal">&times;</div>
+						<div class="contentBoxMordal">
+							<form th:action="@{/home}" th:method="post">
+								<div th:if="${session.notification} != null">
+									<div class="notification" th:each="note:${session.notification}">
+										<!-- added by kk. Avoid checkbox for extension request -->
+										<div th:if="${note.message.contains('延長要請')}">
+											<span th:text="${note.message}"></span>
+										</div>
+										<div th:unless="${note.message.contains('延長要請')}">
+											<input type="checkbox" name="note" th:value="${note.TransId}"
+												style="zoom:2.0;"> <span th:text="${note.message}"></span>
+										</div>
+										<!-- added by kk -->
+										<div class="inner-form">
+											<input type="hidden" name="bookId" th:value="${note.bookId}" />
+											<input type="hidden" name="bookTitle" th:value="${note.BookTitle}" />
+											<input type="hidden" name="newDateRequested"
+												th:value="${note.newDateRequested}" />
+											<input type="hidden" name="borrowerName" th:value="${note.BorrowerName}" />
+											<input type="hidden" name="transId" th:value="${note.TransId}" />
+											<button type="button" class="approve-btn"
+												th:if="${note.message.contains('延長要請')}">承認</button>
+											<button type="button" class="deny-btn"
+												th:if="${note.message.contains('延長要請')}">却下</button>
+										</div>
+										<!-- until here by kk -->
+									</div>
+								</div>
+								<div th:if="${session.notification} == null">
+									<div class="notification">現在、お知らせはありません</div>
+								</div>
+								<div class="center_box">
+									<input type="hidden" name="previousPage" value="borrowlog">
+									<input type="hidden" name="transId" value="" /> <!-- added by kk -->
+									<button type="submit" name="note" class="blue_btn">確認</button>
+								</div>
+							</form>
+							<!-- added by kk in order to avoid nested form. Logic is handled by home.js -->
+							<form id="inner-form" th:action="@{/home}" th:method="post" style="display: none;">
+								<input type="hidden" id="inner-book-id" name="bookId" />
+								<input type="hidden" id="inner-book-title" name="bookTitle" />
+								<input type="hidden" id="inner-new-date-requested" name="newDateRequested" />
+								<input type="hidden" id="inner-book-transId" name="transId" />
+								<input type="hidden" id="inner-borrower-name" name="borrowerName" />
+								<input type="hidden" id="inner-request-response" name="requestResponse" />
+							</form>
+							<!-- until here by kk -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- mordal end-->
+		</header>
+		<!--メインー（修正可能領域）-->
+		<div class="main">
+			<!--白い箱-->
+			<div class="main_title">
+				- レンタル履歴
+			</div>
+			<!--　サイドバー -->
+			<div class="overlay"></div>
+			<nav class="nav">
+				<div class="logo">
+					<a href="/home"><img src="img/rakuten_logo.png"></a>
+				</div>
+				<table class="linkList">
+					<Tr>
+						<td>
+							<div>
+								<img src="img/user_img.png" alt="user_icon" class="user_icon">
+							</div>
+
+						</td>
+					</Tr>
+					<tr>
+						<td>
+							<div class="user_name"> <span th:text="${session.userName}"></span> 様 </div>
+
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/edituser" method="get">
+								<input type="submit" value="会員情報修正" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/borrowlog" method="post">
+								<input type="submit" value="レンタル履歴" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/lendlog" method="post">
+								<input type="submit" value="貸出履歴" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/mybook" method="post">
+								<input type="submit" value="出品中リスト" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<form action="/logout" method="post">
+								<input type="submit" value="ログアウト" class="btn btn-light" id="side_bar_list"></input>
+							</form>
+						</td>
+					</tr>
+				</table>
+
+			</nav>
+			<!-- サイドバー終 -->
+
+			<!-- メインコンテンツが入る赤色の箱-->
+			<div class="main_content_box">
+				<div th:if="${LogsSize} > 0 " class="table_box">
+					<Table class="log_table" th:if="${BorrowLogs}">
+						<tr>
+							<th id="border-right">
+								借り出し日付
+							</th>
+							<th id="border-right">
+								タイトル
+							</th>
+							<th id="border-right">
+								本の持ち主
+							</th>
+							<th id="border-right">
+								期限
+							</th>
+							<th>
+								返す期限変更
+							</th>
+						</tr>
+						<!-- Table rows will be added dynamically here -->
+						<tr th:each="log :${BorrowLogs}">
+							<td th:text="*{log.TradedDate}" id="border-right"></td>
+							<td th:text="*{log.BookTitle}" id="border-right"
+								style="max-width:40%; word-break: break-all;"></td>
+							<td th:text="*{log.LenderName}" id="border-right"></td>
+							<td th:text="*{log.LimitDate != null ? log.LimitDate : '-'}" id="border-right"></td>
+							<!-- added by kk. Use to send change return date request. -->
+							<td th:if="${log.LimitDate != null}">
+								変更希望日
+								<form th:action="@{/requestNewReturnDate}" th:method="POST">
+									<input type="date" id="newReturnDate" name="newReturnDate" required>
+									<input type="hidden" name="transId" th:value="*{log.TransId}">
+									<button>提出</button>
+								</form>
+							</td>
+							<td th:if="${log.LimitDate == null}">
+								-
+							</td>
+							<!-- until here added by kk. -->
+						</tr>
+					</Table>
+					<!-- Show current page number -->
+					<table class="btn_box">
+						<tr>
+							<td>
+								<a th:href="@{/borrowlog(currPage=${currentPage - 1})}">
+									<div class="btn btn-danger" id="smaller_size" th:if="${currentPage} > 1">
+										&lt
+									</div>
+								</a>
+							</td>
+							<td>
+								<div id="small_size" style="text-align:center">
+									<span th:text="${currentPage}"></span> / <span th:text="${maxPageNum}">
+								</div>
+							</td>
+							<td>
+								<a th:href="@{/borrowlog(currPage=${currentPage + 1})}">
+									<div class="btn btn-danger" id="smaller_size" th:if="${currentPage<maxPageNum}">&gt
+									</div>
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<Td></Td>
+							<Td>
+								<div>
+									<form th:action="@{/home}" th:method="GET">
+										<button type="submit" class="btn btn-primary" id="small_size" value="home">
+											ホーム</button>
+									</form>
+								</div>
+							</Td>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+				<div th:if="${LogsSize} == 0">
+					<div class="no_result_img_box">
+						<img src="img/no_result_image.png" alt="No_Result_Img" class="no_result_img"></img>
+					</div>
+					<div th:if="${errMsg}" th:text="${errMsg}" class="error_msg"> </div>
+					<table class="btn_box">
+						<tr>
+							<Td>
+								<div>
+									<form th:action="@{/home}" th:method="GET">
+										<button type="submit" class="btn btn-primary" id="small_size" value="home">
+											ホーム</button>
+									</form>
+								</div>
+							</Td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-- フッター（修正禁止）-->
+		<footer>
+			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
+		</footer>
+	</div>
+	<script type="text/javascript" th:src="@{/js/getmordal.js}"></script>
+	<script src="js/home.js"></script>
+	<script>
+		// Added by kk. Prevent selecting the date before
+	    // Get the input element
+	    var input = document.getElementsByName('newReturnDate')[0];
+	    
+	    // Get today's date
+	    var today = new Date().toISOString().split('T')[0];
+	    
+	    // Set the minimum date for the input element to today
+	    input.setAttribute('min', today);
+	    
+	    // Function to handle input change
+	    function handleInput() {
+	        var selectedDate = input.value;
+	        
+	        // If the selected date is earlier than today, reset the value to today
+	        if (selectedDate < today) {
+	            input.value = today;
+	        }
+	    }
+	    
+	    // Add an event listener to the input element to handle changes
+	    input.addEventListener('change', handleInput);
+
+	</script>
+</body>
+
+</html>

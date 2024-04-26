@@ -1,10 +1,99 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
 
+<head>
+	<meta charset="UTF-8">
+	<!-- Bootstrap利用のため、必要なコード修正禁止 -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+		crossorigin="anonymous"></script>
+	<!-- CSS共通リンク -->
+	<link rel="stylesheet" href="css/common.css" />
+	<!-- タイトルの選択-->
+	<title>R-Library: Login</title>
+</head>
+
+<body>
+	<!-- 画面全体始め（ヘッダー、メイン、フッター）-->
+	<div class="content_box">
+		<!-- ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
+		<header>
+			<div class="header_logo">
+				<a href="/login">
+					<img src="img/rakuten_logo.png" alt="Rakuten_sec_mark" class="main_logo">
+				</a>
+			</div>
+			<div class="header_title"> 楽天図書館 </div>
+			<div class="header_btn_box"> </div>
+		</header>
+
+		<!--メインー（修正可能領域）-->
+		<div class="main">
+			<!--白い箱-->
+			<div class="main_title">
+				- ログイン
+			</div>
+			<div th:if="${errMsg}" class="error_msg">
+				<div th:text="${errMsg}"></div>
+			</div>
+			<!-- メインコンテンツが入る赤色の箱-->
+			<div class="main_content_box">
+				<!--actionの行き先修正必要 -->
+				<!-- 各inputのnameはusers tableの名前をそのまま使用-->
+				<form th:action="@{/login}" th:method="POST" th:object="${loginRequest}">
+					<table class="login_table">
+						<tr class="table_row">
+							<td>
+								<label for="login_id"> ID</label>
+							</td>
+							<td>
+								<input th:field="*{login_id}" type="number" class="input_box" name="login_id"
+									id="login_id" required>
+								<script>
+									window.onload = function () {
+										// Get the input field element
+										var loginIdInput = document.getElementById("login_id");
+
+										// Clear the default value
+										loginIdInput.value = "";
+									};
+								</script>
+							</td>
+						</tr>
+						<tr class="table_row">
+							<td>
+								<label for="password"> パスワード</label>
+							</td>
+							<td>
+								<input th:field="*{login_pw}" type="password" class="input_box" name="password"
+									required>
+							</td>
+						</tr>
+						<tr class="table_row">
+							<td>
+								<!-- 赤色、青色の箱はクラスを使って（赤：danger,青：primary）大きさはidで調整します。-->
+								<!-- 各ボタンの行き先を決めてください。-->
+								<input type="submit" class="btn btn-danger" id="small_size" value="ログイン">
+							</td>
+				</form>
+				<td>
+					<form action="/register">
+						<button type="submit" class="btn btn-primary" id="small_size" value="会員登録">会員登録</button>
+					</form>
+				</td>
+				</tr>
+				</table>
+
+			</div>
+
+		</div>
+		<!-- フッター（修正禁止）-->
+		<footer>
+			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
+		</footer>
+	</div>
 </body>
+
 </html>

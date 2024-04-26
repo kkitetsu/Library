@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.todo.mapper.LibraryMapper">
+	<!-- 
+	@auther shunsukekuzawa 
+	Search all books on display.
+	-->
+	<select id="displayBooks"
+		resultType="com.example.todo.entity.BooksEntity">
+		SELECT 
+			* 
+		FROM 
+			books
+		WHERE
+			exhibition_flag=1
+	<!--@Author lee add for sort from new to old -->
+	    ORDER BY
+	    	id desc;
+	</select>
+	<!-- @author kk -->
+	<select id="getNameBasedOnId" resultType="java.lang.String">
+		SELECT 
+			name
+		FROM
+			users
+		WHERE
+			id=#{id};
+	</select>
+
+	
+	<!-- @author kk -->
+	<select id="getLoginIdBasedOnId" resultType="int">
+		SELECT 
+			login_id
+		FROM
+			users
+		WHERE
+			id=#{id};
+	</select>
+	<!--  @author kk -->
+	<select id="getLastIdInUsers" resultType="int">
+		SELECT 
+			id
+		FROM 
+			users
+		ORDER BY 
+			id DESC
+		LIMIT 
+			1;
+	</select>
+	<!-- 
+	@auther shunsukekuzawa
+	 Search books searched by user with keyword.
+	-->
+	<select id="searchBooksByTitle"
+		resultType="com.example.todo.entity.BooksEntity">
+		SELECT 
+			*
+		FROM 
+			books
+		WHERE 
+			exhibition_flag = 1
+		<if test="book_name != null">
+		  AND title LIKE CONCAT('%', #{book_name},'%')
+		</if>
+		<!--@Author lee add for sort from new to old -->
+	    ORDER BY
+	    	id desc;
+	</select>
+	
+	<select id="searchBooksByContent"
+		resultType="com.example.todo.entity.BooksEntity">
+		SELECT 
+			*
+		FROM 
+			books
+		WHERE 
+			exhibition_flag = 1
+		<if test="book_name != null">
+		  AND content LIKE CONCAT('%', #{book_name},'%')
+		</if>
+	<!--@Author lee add for sort from new to old -->
+	    ORDER BY
+	    	id desc;
+	</select>
+	
+	<select id="searchBooksByUser"
+		resultType="com.example.todo.entity.BooksEntity">
+		SELECT 
+			*
+		FROM 
+			books AS b
+		LEFT JOIN
+			users AS u on b.exhibitor_user_id = u.id
+		WHERE 
+			exhibition_flag = 1
+		<if test="book_name != null">
+		  AND u.name LIKE CONCAT('%', #{book_name},'%')
+		</if>
+		<!--@Author lee add for sort from new to old -->
+	    ORDER BY
+	    	b.id desc;
+	</select>
+	
+	<select id="LendNotification"
+		resultType="com.example.todo.dto.NotificationDTO">
+		SELECT 
+			t.id as TransId, u1.name as LenderName,u2.name as BorrowerName ,b.title as BookTitle, b.category , t.traded_date as NotificationDate
+		FROM 
+			transactions AS t
+		LEFT JOIN 
+			books as b on b.id = t.book_id
+		INNER JOIN 
+			users as u1 on u1.id = t.lender_user_id
+		INNER JOIN 
+			users as u2 on u2.id = t.borrower_user_id
+		<if test="user_id != null">
+		  WHERE 
+			t.lender_user_id = #{user_id}
+		  AND 
+			t.notification_lender_flag = 1
+		</if>
+		
+	</select>
+
+	
+	<select id="LimitNotification"
+		resultType="com.example.todo.dto.NotificationDTO">
+		SELECT 
+			t.id as TransId, u1.name as LenderName,u2.name as BorrowerName ,b.title as BookTitle, DATE_SUB(b.limitdate,INTERVAL 7 DAY) as NotificationDate
+		FROM 
+			transactions AS t
+		LEFT JOIN 
+			books as b on b.id = t.book_id
+		INNER JOIN 
+			users as u1 on u1.id = t.lender_user_id
+		INNER JOIN 
+			users as u2 on u2.id = t.borrower_user_id 
+		<if test="user_id != null">
+		WHERE 
+			t.borrower_user_id = #{user_id}
+		AND 
+			b.limitdate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY) 
+		AND 
+			t.notification_borrower_flag = 1
+		</if>
+		</select>
+	
+	<!--  @author kk -->
+	<select id="login" resultType="com.example.todo.entity.UsersEntity">
+		SELECT 
+			* 
+		FROM 
+			users 
+		WHERE 
+			login_id=#{login_id} 
+		AND 
+			password=#{login_pw};
+	</select>
+	<!--  @author kk -->
+	<select id="getUsers" resultType="com.example.todo.entity.UsersEntity">
+		SELECT 
+			* 
+		FROM 
+			users;
+	</select>
+	<!-- @author Lee : Mybookのlistの為のSQL文-->
+	<select id="displayMyBooks"
+		resultType="com.example.todo.entity.BooksEntity">
+		SELECT 
+			id, 
+			title,
+			image,
+			exhibitor_user_id as exhibitorUserId, 
+			category, 
+			limitdate 
+		FROM 
+		 	books
+		WHERE 
+		 	exhibition_flag=1 AND exhibitor_user_id=#{userId}
+	<!-- 最新順で出力するように修正-->
+		ORDER BY
+			id desc
+	<!-- 最新順で出力するように修正-->			
+		LIMIT 
+		 	#{SUBLISTSIZE} OFFSET #{startIndex};
+	</select>
+	<!-- @author Lee : Transaction作成sql文 -->
+	<select id="displayLogs" resultType="com.example.todo.entity.TransactionEntity">
+		SELECT 
+			id,
+			book_id,
+			lender_user_id,
+			borrower_user_id,
+			traded_date 	
+		FROM 
+			transactions;		
+	</select>
+	<!-- @author Lee :他のユーザーに貸した(LEND)/借りた(BORROW)履歴 -->
+	<select id="displayLendLogs" resultType="com.example.todo.dto.SearchLogsDTO">
+		SELECT 
+			t.id AS TransId, 
+			t.traded_date AS TradedDate, 
+			b.title AS BookTitle, 
+			u.name AS BorrowerName, 
+			b.limitdate AS LimitDate,
+			t.lender_user_id AS LenderId 
+		FROM 
+			transactions AS t
+		INNER JOIN 
+			books AS b on b.id = t.book_id
+		INNER JOIN 
+			users AS u on u.id = t.borrower_user_id
+		WHERE
+			t.Lender_user_id = #{userId}
+<!-- 最新順で出力するように修正-->
+		ORDER BY
+			t.id desc
+<!-- 最新順で出力するように修正-->
+		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};	
+	</select>
+	<select id="displayBorrowLogs" resultType="com.example.todo.dto.SearchLogsDTO">
+		SELECT
+			t.id as TransId,
+			t.traded_date as TradedDate,
+			b.title as BookTitle, 
+			u.name as LenderName, 
+			b.limitdate as LimitDate,
+			t.borrower_user_id as BorrowerId 
+		From
+			 transactions as t
+		INNER JOIN
+			books AS b on b.id = t.book_id
+		INNER JOIN 
+			users as u on u.id = t.lender_user_id
+		WHERE 
+			t.borrower_user_id = #{userId}
+<!-- 最新順で出力するように修正-->
+		ORDER BY
+			t.id desc
+<!-- 最新順で出力するように修正-->
+		LIMIT #{SUBLISTSIZE} OFFSET #{startIndex};
+	</select>
+	<!-- @author Lee:貸し/借りログ/MY BOOKの大きさ計算-->
+	<select id="getLendLogsSize">
+		SELECT 
+			COUNT(*) AS row_count 
+		FROM 
+			transactions
+		WHERE
+			Lender_user_id =#{userId}
+	</select>
+	<select id="getBorrowLogsSize">
+		SELECT 
+			COUNT(*) AS row_count 
+		FROM 
+			transactions
+		WHERE
+		borrower_user_id =#{userId}
+	</select>
+	<select id="getMyBookLogsSize">
+		SELECT 
+			COUNT(*) AS row_count 
+		FROM 
+			books
+		WHERE 
+			exhibition_flag=1 
+		AND 
+			exhibitor_user_id=#{userId};
+	</select>
+	<!-- @author Lee: Lendable Bookの大きさ計算-->
+	<select id="getLendableBookSize">
+		SELECT 
+			COUNT(*) AS row_count 
+		FROM 
+			books
+		WHERE
+			exhibition_flag=1;
+	</select>
+	<!--  @author lee:ユーザーの情報アップデート -->
+	<update id="editUser">
+		UPDATE 
+			users 
+		SET 
+			name = #{name},
+			department  = #{department},
+			mailaddress = #{mailaddress}, 
+			password = #{password},
+		    edited_date = CURRENT_TIMESTAMP
+		WHERE 
+			id = #{id};
+	</update>
+	<!--  @author kk -->
+	<insert id="register">
+		INSERT INTO users 
+			(name, department, mailaddress, login_id, password, joined_date, edited_date, del_flag)
+		VALUES
+			(#{name}, #{department}, #{mailaddress}, #{loginId}, #{password}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 0)
+	</insert>
+	<!--  @author kk -->
+	<insert id="updateTransaction">
+		INSERT INTO transactions
+			(book_id, lender_user_id, borrower_user_id, traded_date)
+		VALUES
+			(#{bookId}, #{lenderId}, #{borrowerId}, CURRENT_TIMESTAMP);
+	</insert>
+	<update id="updateBooksNoLongerExhibit">
+		UPDATE
+			books
+		SET 
+			exhibition_flag=0
+		WHERE
+			id=#{bookId};
+	</update>
+	<insert id="bookRegister">
+	INSERT INTO books
+		(title, exhibitor_user_id, category, limitdate, image)
+	VALUES
+		(#{title}, #{userId}, #{category}, #{limitdate}, #{imgPath})
+	</insert>
+	<update id="bookEditer">
+		UPDATE
+			books
+		SET
+			title= #{title},
+			category= #{category},
+			limitdate= #{limitdate},
+			image= #{imgPath}
+		WHERE
+			id= #{id};
+	</update>
+	<update id="bookDeliter">
+		UPDATE
+			books
+		SET
+			exhibition_flag = 0
+		WHERE
+			id= #{id};
+	</update>
+	
+	<!--  edited by kk. Include return statement in order to see if any rows are affected -->
+	<update id="confirmBorrowerNotification" parameterType="map" statementType="PREPARED">
+		UPDATE
+			transactions
+		SET
+			notification_borrower_flag = 0
+		WHERE
+			id = #{note}
+		AND
+			borrower_user_id = #{user_id}
+	</update>
+	<update id="confirmLenderNotification" parameterType="map" statementType="PREPARED">
+		UPDATE
+			transactions
+		SET
+			notification_lender_flag = 0
+		WHERE
+			id = #{note}
+		AND
+			lender_user_id = #{user_id}
+	</update>
+	
+	<!--  writte by kk -->
+	<update id="addNewReturnDateRequested">
+		UPDATE
+			transactions
+		SET
+			new_date_requested = #{newDateRequested}
+		WHERE
+			id = #{transId}
+	</update>
+	
+	<!--  writte by kk -->
+	<select id="getAnyNewRequestedReturnDate" resultType="com.example.todo.dto.NotificationDTO">
+		SELECT 
+			b.title AS BookTitle,
+			u.name AS BorrowerName,
+			t.new_date_requested,
+			t.id AS TransId,
+			t.book_id AS bookId
+		FROM
+			transactions AS t
+		LEFT JOIN 
+			books AS b 
+		ON
+			b.id = t.book_id
+		INNER JOIN
+			users AS u
+		ON
+			u.id = t.borrower_user_id
+		WHERE
+			t.lender_user_id = #{userId}
+		AND 
+			t.new_date_requested IS NOT NULL
+		AND 
+			t.new_date_requested != "approve"
+    	AND 
+    		t.new_date_requested != "deny";
+	</select>
+	
+	<!--  writte by kk -->
+	<update id="updateNewReturnDate">
+		UPDATE
+			books
+		SET
+			limitdate = #{newDateRequested}
+		WHERE
+			id = #{bookId}
+	</update>
+	
+	<!--  writte by kk -->
+	<update id="removeNewReturnDate">
+		UPDATE
+			transactions
+		SET
+			new_date_requested = NULL
+		WHERE
+			id = #{transId}
+	</update>
+	
+	<!--  writte by kk -->
+	<update id="addApproveOrDenyOnTrans">
+		UPDATE
+			transactions
+		SET
+			new_date_requested = #{result}
+		WHERE
+			id = #{transId}
+	</update>
+	
+	<!--  writte by kk -->
+	<select id="getApproveOrDeny" resultType="com.example.todo.dto.NotificationDTO">
+		SELECT 
+			t.new_date_requested,
+			t.id AS TransId,
+			b.title AS BookTitle,
+			u.name AS LenderName
+		FROM
+			transactions AS t
+		LEFT JOIN 
+			books AS b 
+		ON
+			b.id = t.book_id
+		INNER JOIN
+			users AS u
+		ON
+			u.id = t.lender_user_id
+		WHERE
+			t.borrower_user_id = #{userId}
+	</select>
+	
+</mapper>

@@ -1,0 +1,662 @@
+@charset "UTF-8";
+/* 画面構成に使うCSSです。*/
+
+.content_box {
+	width: 100%;
+	padding: none;
+	min-height: 100%;
+}
+
+header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	height: 150px;
+	margin-bottom: 20px;
+	min-height: 15%vh;
+	background-color: rgb(188, 0, 1);
+	font-size: 40px;
+}
+
+.header_logo,
+.header_title,
+.header_btn_box {
+	height: 100%;
+}
+
+.header_logo {
+	width: 20%;
+	max-width: 500px;
+	position: relative;
+	justify-content: center;
+	align-items: center;
+}
+
+.header_logo a {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 140px;
+}
+
+.main_logo {
+	max-height: 100%;
+	max-width: 100%;
+}
+
+.header_title {
+	flex: 1;
+	color: white;
+	font-size: 50px;
+	text-align: center;
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.header_btn_box {
+	max-height: 100%;
+	width: 20%;
+	max-width: 250px;
+}
+
+#small_size,
+#small_size_loading,
+#small_size2 {
+	font-weight: bolder;
+	width: 350px;
+	height: auto;
+	font-size: 60px;
+	margin: 10px;
+	padding: 10px;
+	border-radius: 30px;
+	text-align: center;
+}
+
+#smaller_size {
+	font-weight: bolder;
+	width: 200px;
+	height: auto;
+	font-size: 60px;
+	margin: 10px;
+	padding: 10px;
+	border-radius: 30px;
+}
+
+#oneone_size,
+#onesecond_size,
+#onethird_size {
+	font-weight: bolder;
+	width: 90%;
+	height: auto;
+	font-size: 40px;
+	margin: 5px;
+	padding: 5px;
+	border-radius: 20px;
+	max-width:300px;
+}
+
+
+.content_box {
+	background-image: url("../img/backgroundimage.jpg");
+}
+
+.login_table,
+.register_table,
+edit_table,
+add_table,
+edit_book_table {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.table_row {
+	color: white;
+	/*	display: flex;*/
+	justify-content: center;
+	align-items: center;
+	font-size: 40px;
+}
+
+.main {
+	background-color: white;
+	width: 80%;
+	margin: 0 10%;
+	padding: 20px;
+	background: rgba(255, 255, 255, 0.4);
+	border-radius: 20px;
+	font-weight: bolder;
+	min-height: 70vh;
+}
+
+td {
+	margin: 10px;
+	padding: 10px;
+	text-align: center;
+}
+
+.main_title {
+	margin-left: 50px;
+	color: aliceblue;
+	font-size: 50px;
+	margin-bottom: 10px;
+}
+
+
+
+.main_content_box,
+.main_content_box_home {
+	background: rgba(216, 112, 147, 0.9);
+	padding: 30px 10px;
+	border-radius: 10px;
+	width: 90%;
+	margin: 0 5%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex-wrap: wrap;
+	padding-bottom: 60px;
+
+}
+
+.main_content_box {
+	justify-content: center;
+}
+
+.main_content_box_home {
+	justify-content: flex-start;
+}
+
+footer {
+	text-align: center;
+	font-size: 40px;
+	font-weight: bold;
+	background-color: rgb(188, 0, 1);
+	color: white;
+	margin-top: 15px;
+	min-height: 15%;
+	position: relative;
+	bottom: -40px;
+}
+
+.searchblock1 {
+	width: 240px;
+}
+
+.searchblock2 {
+	width: auto;
+}
+
+.searchblock3 {
+	min-width: 150px;
+}
+
+body {
+	min-width: 100vw;
+	min-height: 100vh;
+	margin: 0;
+	padding: 0;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.input_box, .input_box_2, .input_box_3 {
+	border: none;
+	height: 95%;
+	border-radius: 10px;
+	padding-left: 10px;
+	width: 95%;
+	margin-left:0;}
+	
+.input_box_2{
+	max-width: 200px;
+}
+.input_box_3{
+	max-width: 300px;
+}
+
+.book_content_title{
+	margin-left:5%; 
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+}
+.search_select_box {
+	border: none;
+	border-radius: 10px;
+	padding-left: 10px;
+	width: 95%;
+}
+
+.search_input_box {
+	border: none;
+	border-radius: 10px;
+	padding-left: 10px;
+	width: 95%;
+}
+
+#search_btn {
+	width: 100%;
+	font-size: 50px;
+	max-width: 500px;
+}
+
+.table_box {
+	width: 90%;
+	margin: 0 5%;
+}
+
+.log_table,
+.my_book_table {
+	width: 90%;
+	margin: 10px 5%;
+	background-color: rgb(188, 0, 1);
+	color: white;
+	font-size: 30px;
+	text-align: center;
+	border-radius: 25px;
+}
+
+.edit_box {
+	width: 100%;
+}
+
+.add_table,
+.edit_book_table {
+	width: 90%;
+	margin: 10px 5%;
+	color: white;
+	font-size: 30px;
+	text-align: center;
+	border-radius: 25px;
+}
+
+.edit_book_table .td1 {
+	width: 30%;
+}
+
+.edit_book_table .td2 {
+	width: 70%;
+}
+
+.search_table {
+	width: 90%;
+	margin: 10px 5%;
+	color: white;
+	font-size: 40px;
+	text-align: center;
+	border-radius: 25px;
+}
+
+
+
+
+.log_table td,
+.my_book_table td {
+	border-top: white solid;
+}
+
+#border-right {
+	border-right: white solid;
+}
+
+.btn_box {
+	width: 90%;
+	margin: 0 5%;
+}
+
+.btn_box td {
+	width: 33%;
+}
+
+#edit {
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.header_table {
+	height: 100%;
+	width: 100%;
+}
+
+.user_icon,
+.alert_icon {
+	width: 90%;
+	height: auto;
+	border-radius: 90%;
+}
+
+.user_icon_trigger {
+	width: 90%;
+	height: auto;
+	border-radius: 90%;
+	background-color: white;
+	cursor: pointer;
+}
+
+.header_table td {
+	width: 50%;
+}
+
+input[type="file"] {
+	font-size: 25px;
+}
+
+.user_icon {
+	background-color: white;
+}
+
+.header_table td {
+	width: 50%;
+}
+
+.image-upload-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 450px;
+	height: 600px;
+	border: 2px dashed #ccc;
+	cursor: pointer;
+	background-size: cover;
+	background-position: center center;
+	position: relative;
+	margin: 0 auto;
+	overflow: hidden;
+	object-fit: cover;
+}
+
+.image-preview img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: none;
+}
+
+.no_result_img_box {
+	width: 100%;
+	height: auto;
+	text-align: center;
+}
+
+.no_result_img {
+	width: 90%;
+	max-width: 400px;
+	height: auto;
+	margin: 10px 5%;
+	border-radius: 20px;
+}
+
+
+.image-upload-placeholder {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	pointer-events: none;
+	font-size: 40px;
+}
+
+#existingImage {
+	max-width: 100%;
+	/*枠の幅に合わせる*/
+	max-height: 100%;
+	/*枠の高さに合わせる*/
+	width: 100%;
+	/* 幅を自動調整 */
+	height: 100%;
+	/* 高さを自動調整 */
+	top: 0;
+	/* 上端から0の位置 */
+	left: 0;
+	/* 左端から0の位置 */
+	object-fit: cover;
+	/* 画像を枠に合わせてトリミング */
+	object-fit: contain;
+	position: relative;
+	z-index: 5;
+	/* テキストより下に表示 */
+}
+
+#apiPreview{
+	z-index: 4; /* テキストより下に表示 */
+}
+
+#apiPreview{
+	max-width: 100%;  /*枠の幅に合わせる*/ 
+  max-height: 100%;  /*枠の高さに合わせる*/
+  width: 100%; /* 幅を自動調整 */
+  height: 100%; /* 高さを自動調整 */
+  top: 0; /* 上端から0の位置 */
+  left: 0; /* 左端から0の位置 */
+  object-fit: cover; /* 画像を枠に合わせてトリミング */
+  object-fit: contain;
+  position: relative;
+  z-index: 4; /* テキストより下に表示 */
+}
+
+#previewImage {
+	max-width: 100%;
+	max-height: 100%;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	object-fit: contain;
+	position: relative;
+	z-index: 5;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.center_box {
+	text-align: center;
+}
+
+a:hover {
+	color: black;
+}
+
+#error {
+	color: red;
+}
+
+.error_msg {
+	background-color: white;
+	color: red;
+	text-decoration: underline;
+	margin: 10px 2.5%;
+	padding: 10px;
+	border-radius: 5px;
+	font-size: 30px;
+	text-align: center;
+	opacity: 0.8;
+	width: 95%;
+}
+
+#side_bar_list {
+	width: 80%;
+	font-size: 25px;
+	font-weight: bolder;
+	border: 2px black solid;
+	border-radius: 25px;
+}
+
+/*以下ローディング画面(id="loading")用CSS*/
+#loading {
+	width: 100vw;
+	height: 100vh;
+	transition: all 1s;
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgb(255, 255, 255, 0.6);
+	z-index: -9999;
+}
+
+.loading_msg_box {
+	width: 100%;
+	margin: 10% 0 10% 0;
+	font-size: 100px;
+	text-align: center;
+	color: black;
+	font-weight: bold;
+	font-family: cursive;
+}
+
+.loader,
+.loader:before,
+.loader:after {
+	border-radius: 30px;
+	background: black;
+	-webkit-animation: load1 1s infinite ease-in-out;
+	animation: load1 1s infinite ease-in-out;
+	width: 2em;
+	height: 8em;
+}
+
+.loader {
+	color: black;
+	text-indent: -9999em;
+	margin: 88px auto;
+	position: relative;
+	font-size: 55px;
+	-webkit-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-animation-delay: -0.16s;
+	animation-delay: -0.16s;
+}
+
+.loader:before,
+.loader:after {
+	position: absolute;
+	top: 0;
+	content: '';
+}
+
+.loader:before {
+	left: -3.0em;
+	-webkit-animation-delay: -0.32s;
+	animation-delay: -0.32s;
+}
+
+.loader:after {
+	left: 3.0em;
+}
+
+@-webkit-keyframes load1 {
+
+	0%,
+	80%,
+	100% {
+		box-shadow: 0 0;
+		height: 4em;
+	}
+
+	40% {
+		box-shadow: 0 -2em;
+		height: 5em;
+	}
+}
+
+@keyframes load1 {
+
+	0%,
+	80%,
+	100% {
+		box-shadow: 0 0;
+		height: 4em;
+	}
+
+	40% {
+		box-shadow: 0 -2em;
+		height: 5em;
+	}
+}
+
+
+
+@keyframes sk-scaleout {
+	0% {
+		transition: scale(0);
+	}
+
+	100% {
+		transition: scale(1.0);
+		opacity: 0;
+	}
+}
+
+.gallery {
+	display: grid;
+	gap: .5rem;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.loading_img {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+}
+
+/* edited by kk. Used to avoid unfocusable issue when input box is hidden and limitdate */
+.input_box.hidden-input {
+	 display: none
+}
+
+
+/* width: 1200 以下の際 */
+@media screen and (max-width:1300px) {
+	.search_table {
+		font-size: 30px;
+	}
+
+	#search_btn {
+		font-size: 30px;
+	}
+}
+
+/* width: 1100 以下の際 */
+@media screen and (max-width:1100px) {
+	#search_btn {
+		font-size: 20px;
+	}
+
+	#small_size {
+		width: 200px;
+		font-size: 30px;
+		border-radius: 15px;
+	}
+
+
+
+	.table_row,
+	.input_box {
+		font-size: 30px;
+	}
+
+	.main_title {
+		font-size: 40px;
+	}
+
+
+	#onethird_size {
+		font-size: 25px;
+		margin: 5px;
+		padding: 5px;
+		border-radius: 10px;
+	}
+
+
+}

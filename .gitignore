@@ -1,8 +1,10 @@
 HELP.md
+pom.xml
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+pom.xml
 
 ### STS ###
 .apt_generated

@@ -1,10 +1,219 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<!-- Bootstrap利用のため、必要なコード修正禁止 -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+		crossorigin="anonymous"></script>
+	<!-- CSS共通リンク -->
+	<link rel="stylesheet" href="css/common.css" />
+	
+	<!-- also use register.css -->
+	<link rel="stylesheet" href="css/register.css">
+	
+	<!-- タイトルの選択-->
+	<title>R-Library: Register</title>
 </head>
+
 <body>
+	<!-- 画面全体始め（ヘッダー、メイン、フッター）-->
+
+	<div class="content_box">
+		<!-- ヘッダー（header_btn_box のみ修正可能（ログイン前後の違い））-->
+		<header>
+			<div class="header_logo">  <a href="/login"><img src="img/rakuten_logo.png"
+						alt="Rakuten_sec_mark" class="main_logo"> </a></div>
+			<div class="header_title"> 楽天図書館 </div>
+			<div class="header_btn_box"></div>
+		</header>
+		<!--メインー（修正可能領域）-->
+		<div class="main">
+			<!--白い箱-->
+			<div th:if="${errMsg}" class="error_msg">
+		        <div th:utext="${errMsg}" class="error_msg"></div>
+		    </div>
+   			<div class="main_title">
+				- 会員登録
+			</div>
+			<!-- メインコンテンツが入る赤色の箱-->
+			<div class="main_content_box">
+				<!--actionの行き先修正必要 -->
+				<!-- 各inputのnameはusers tableの名前をそのまま使用-->
+				<!-- 各inputに条件必要-->
+				<table class="register_table">
+					<form th:action="@{/register}" th:method="POST" th:object="${userEntity}" onsubmit="return validatePasswords()">
+						<tr class="table_row">
+							<td>
+								<label for="login_id">ID<h6>(4桁もしくは6桁の社員番号)</h6></label>
+								<span class="required">*</span>
+							</td>
+							<td>
+								<input th:field="*{loginId}" type="number" class="input_box" name="login_id" required >
+							</td>
+						</tr>
+						<tr class="table_row">
+							<td>
+								<label for="password">パスワード<h6>(4文字から16文字の英数字)</h6></label>
+								<span class="required">*</span>
+							</td>
+							<td>
+								<input id="password" th:field="*{password}" type="password" class="input_box" name="password" required minlength="4" maxlength="16">
+								<div id="passwordError" style="color: red; display: none;">パスワードは4文字以上16文字の英数字です</div>
+							</td>
+						</tr>
+						<tr class="table_row">
+				            <td>
+				                <label for="confirm_password">パスワード再入力<h6>(パスワードを再入力してください)</h6></label>
+								<span class="required">*</span>
+				            </td>
+				            <td>
+				                <input id="confirm_password" type="password" class="input_box" name="confirm_password" required minlength="4" maxlength="16">
+				                <span id="password_error" style="color: red; display: none;">同じパスワードを入力してください</span>
+				            </td>
+				       	</tr>
+						<tr class="table_row">
+							<td>
+								<label for="name">名前<h6>(名前は20文字以内でお願いします)</h6></label>
+								<span class="required">*</span>
+							</td>
+							<td>
+								<input id="nameInput" th:field="*{name}" type="text" class="input_box" name="name" required minlength="1" maxlength="20">
+								<span id="name_error" style="color: red; display: none;">名前は20文字以内です</span>
+							</td>
+						</tr>
+						<tr class="table_row">
+							<td>
+								<label for="department"> 部署</label>
+								<span class="required">*</span>
+							</td>
+							<td>
+								<!--部署別value修正必要-->
+								<select th:field="*{department}" class="input_box" name="department">
+									<option value="人事総務部">人事総務部</option>
+									<option value="IT本部">IT本部</option>
+									<option value="マーケティング推進部">マーケティング推進部</option>
+									<option value="その他" selected>その他</option>
+								</select>
+							</td>
+						</tr>
+						<tr class="table_row">
+							<td>
+								<label for="mailaddress">メールアドレス<h6>(メールアドレスの形式はxxx@xxx.xxxです)</h6></label>
+								<span class="required">*<span>
+							</td>
+							<td>
+								<input id="mailaddress" th:field="*{mailaddress}" type="text" class="input_box" name="mailaddress" required maxlength="255">
+								<div id="emailError" style="color: red;"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td>
+								<!-- 赤色、青色の箱はクラスを使って（赤：danger,青：primary）大きさはidで調	整します。-->
+								<input type="submit" class="btn btn-danger" id="small_size" value="登録">
+					</form>
+							</td>
+							<td>
+								<form action="/login">
+									<input type="submit" class="btn btn-primary" id="small_size" value="キャンセル">
+								</form>
+							</td>
+						</tr>
+				</table>
+			</div>
+			<!-- フッター（修正禁止）-->
+
+		</div>
+		<footer>
+			問い合わせ先：rakuten_tarou@rakuten-sec.co.jp
+		</footer>
+		
+		<script>
+			// Get references to the password and confirm password fields
+			var passwordField = document.getElementById("password");
+			var confirmPasswordField = document.getElementById("confirm_password");
+			var password_error = document.getElementById("password_error");
+			var passwordError = document.getElementById('passwordError');
+			
+			passwordField.addEventListener('input', function() {
+			    var passwordValue = passwordField.value.trim();
+			    
+			    if (passwordValue.length < 4 || passwordValue.length > 16) {
+			        passwordError.style.display = "block";
+			        passwordField.classList.add('error-border');
+			    } else {
+			        passwordError.style.display = "none";
+			        passwordField.classList.remove('error-border');
+			    }
+			});
+			
+			var nameInput = document.getElementById("nameInput");
+			var name_error = document.getElementById("name_error");
+			
+			nameInput.addEventListener('input', function() {
+				var nameInputValue = nameInput.value.trim();
+				if (nameInputValue.length > 20) {
+					name_error.style.display = "block";
+				} else {
+					name_error.style.display = "none";
+				}
+			})
+			
+			// Attach event listener to the confirm password field
+			confirmPasswordField.addEventListener("input", function() {
+			    // Check if passwords match
+			    if (passwordField.value !== confirmPasswordField.value) {
+			        password_error.style.display = "block";
+			    } else {
+			        password_error.style.display = "none";
+			    }
+			});
+			
+			var emailInput = document.getElementById('mailaddress');
+			var emailError = document.getElementById('emailError');
+			
+			emailInput.addEventListener('input', function() {
+			    var emailPattern = /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
+			    var emailValue = emailInput.value.trim();
+			    
+			    if (!emailPattern.test(emailValue)) {
+			        emailError.textContent = "メールアドレスがおかしいです";
+			        emailInput.classList.add('error-border');
+			    } else {
+			        emailError.textContent = "";
+			        emailInput.classList.remove('error-border');
+			    }
+			});
+			
+			function validatePasswords() {
+		        var password = document.getElementById("password").value;
+		        var confirmPassword = document.getElementById("confirm_password").value;
+		
+		        if (password !== confirmPassword) {
+		            document.getElementById("password_error").style.display = "inline";
+		            return false; // Prevent form submission
+		        } else {
+		            document.getElementById("password_error").style.display = "none";
+		            return true; // Allow form submission
+		        }
+		    }
+		    
+		    document.getElementById("password").addEventListener("input", function() {
+			    var password = this.value;
+			    var regex = /^[a-zA-Z0-9]*$/; // Regex to match only US letters and numbers
+			    if (!regex.test(password) || password.length < 4 || password.length > 16) {
+			        document.getElementById("passwordError").style.display = "block";
+			    } else {
+			        document.getElementById("passwordError").style.display = "none";
+			    }
+			});
+			
+		</script>
 
 </body>
+
 </html>

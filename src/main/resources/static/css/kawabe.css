@@ -1,0 +1,39 @@
+@charset "UTF-8";
+
+.lists__item {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    display: inline-block;
+    width: 33%;
+    padding: 0 20px 20px 0;
+    vertical-align: top;
+    text-align: center;
+}
+.lists__item__inner {
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+}
+.lists__item__link {
+    display: block;
+    text-decoration: none;
+}
+.lists__item__img {
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 150px;
+    -webkit-box-shadow: 0 1px 5px #ccc;
+            box-shadow: 0 1px 5px #ccc;
+}
+.lists__item__detail {
+    margin-bottom: 10px;
+    padding-left: 5em;
+    text-indent: -5em;
+    line-height: 1.5em;
+    text-align: left;
+    font-size: 12px;
+}
+.message {
+    margin-bottom: 50px;
+    text-align: center;
+}
